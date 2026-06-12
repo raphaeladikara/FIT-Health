@@ -1,0 +1,9 @@
+﻿label,binary_positives,text_positives,agreement_rows,agreement_pct
+malaria,270,270,300,100.0
+dengue,56,56,300,100.0
+chikungunya,0,0,300,100.0
+yellow_fever,12,12,300,100.0
+typhoid,29,29,300,100.0
+zika,0,0,300,100.0
+other_diseases,99,99,300,100.0
+option_8,0,0,300,100.0

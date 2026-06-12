@@ -1,0 +1,128 @@
+# =====================================================================
+# VECTRA-X — Dataset-Aware configuration
+# Multi-label, leakage-aware clinical triage intelligence (FIT 2026, Track IV)
+# All paths are resolved RELATIVE to the project root (folder containing this
+# config's parent). Override anything here without touching code.
+# =====================================================================
+
+project:
+  name: "VECTRA-X"
+  full_name: "VECTRA-X: A Multi-label, Explainable, and Uncertainty-Aware Clinical Triage Intelligence System for Vector-Borne Disease Response"
+  competition: "FIT Competition 2026 — Track IV: AI-based Vector-Borne Disease Prediction"
+  random_state: 42
+
+paths:
+  raw_csv: "data/raw/data.csv"
+  raw_dict: "data/raw/desciption.xlsx"
+  interim: "data/interim"
+  processed: "data/processed"
+  figures: "outputs/figures"
+  tables: "outputs/tables"
+  models: "outputs/models"
+  reports: "outputs/reports"
+  dashboard_data: "outputs/dashboard_data"
+
+io:
+  # data.csv is a semicolon-separated, decimal-comma French/English export.
+  sep: ";"
+  decimal: ","
+  encodings_to_try: ["utf-8", "utf-8-sig", "latin1", "cp1252"]
+  uuid_col: "_uuid"
+
+# ---------------------------------------------------------------------
+# Target / label detection
+# ---------------------------------------------------------------------
+labels:
+  # Multi-label binary columns share this prefix in the raw export.
+  binary_prefix: "Maladies diagnostiquées/"
+  text_label_col: "Maladies diagnostiquées"
+  # Canonical English label aliases keyed by the French raw suffix fragment.
+  alias_map:
+    "Paludisme (Malaria)": "malaria"
+    "Dengue": "dengue"
+    "Chikunguya": "chikungunya"
+    "Fièvre jaune (yellow fever)": "yellow_fever"
+    "Fièvre Typhoïde (Thyphoid fever)": "typhoid"
+    "Zika": "zika"
+    "Autres maladies diagnostiqué (Others diseases)": "other_diseases"
+    "Option 8": "option_8"
+  # Labels with zero positive samples in this file — reported as a limitation,
+  # never scored as primary targets (verified, not assumed).
+  drop_if_no_positives: true
+
+# ---------------------------------------------------------------------
+# Leakage audit — name patterns + statistical screens
+# ---------------------------------------------------------------------
+leakage:
+  name_patterns:
+    - dengue
+    - dengua
+    - malaria
+    - palu
+    - typh
+    - typhus
+    - yellow
+    - jaune
+    - fever
+    - fièvre
+    - diagnos
+    - test
+    - tdr
+    - goutte
+    - thick
+    - smear
+    - microscopy
+    - pcr
+    - positive
+    - positif
+    - result
+    - résultat
+    - serolog
+    - antigen
+    - igm
+    - igg
+    - ns1
+    - lab
+    - confirm
+  # Mutual-information / single-feature AUC screen thresholds.
+  mi_flag_threshold: 0.30
+  single_feature_auc_flag: 0.90
+  # Genuine ordered lab / rapid diagnostic tests (T2 stage). These are the
+  # legitimate confirmation features used ONLY by the lab-aware model. Note:
+  # "Dengue (Dengua)" is intentionally NOT here — it is a near-perfect target
+  # restatement (post-diagnosis indicator) and is auto-routed to research-only.
+  # "Dengue dans le menage (Household Dengue)" is a self-reported exposure
+  # history (a legitimate pre-lab epidemiological risk factor), also not here.
+  known_lab_confirmation:
+    - "Test TDR"
+    - "Goutte épaisse "
+
+# ---------------------------------------------------------------------
+# Preprocessing
+# ---------------------------------------------------------------------
+preprocessing:
+  yes_tokens: ["oui", "positif", "positive", "yes", "1", "true", "présent", "present"]
+  no_tokens: ["non", "négatif", "negatif", "negative", "no", "0", "false", "absent"]
+  gender_col_fragment: "Genre"
+  center_col_fragment: "Centre de santé"
+  age_col_fragment: "Âge"
+  high_missing_threshold: 0.60      # flagged "use cautiously" but not auto-dropped
+  near_constant_threshold: 0.99     # share of the single most-common value
+  high_cardinality_threshold: 0.50  # unique/non-null ratio for object cols
+
+# ---------------------------------------------------------------------
+# Modeling
+# ---------------------------------------------------------------------
+modeling:
+  cv_folds: 5
+  test_size: 0.25
+  calibration_size: 0.5             # share of the train pool reserved for conformal/calibration
+  conformal_alpha: 0.10             # target miscoverage (=> ~90% coverage)
+  # Per-label clinical risk weights used by the triage engine.
+  risk_weights:
+    malaria: 1.0
+    dengue: 1.4
+    typhoid: 1.3
+    yellow_fever: 2.0
+    other_diseases: 0.8
+  severe_labels: ["yellow_fever", "dengue", "typhoid"]

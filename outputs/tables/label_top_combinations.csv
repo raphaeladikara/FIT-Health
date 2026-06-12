@@ -1,0 +1,17 @@
+﻿combination,n_patients
+malaria,119
+malaria+other_diseases,74
+malaria+dengue,36
+malaria+typhoid,24
+other_diseases,14
+malaria+yellow_fever,8
+dengue,8
+malaria+other_diseases+dengue,5
+other_diseases+dengue,3
+dengue+yellow_fever,2
+malaria+other_diseases+typhoid,2
+malaria+other_diseases+yellow_fever,1
+dengue+typhoid,1
+None,1
+malaria+dengue+typhoid,1
+typhoid+yellow_fever,1

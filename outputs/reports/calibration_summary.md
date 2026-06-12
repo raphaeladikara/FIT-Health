@@ -1,0 +1,25 @@
+# Calibration Summary
+
+*Trustworthy probabilities*
+
+_Generated: 2026-06-13 02:43 — VECTRA-X pipeline_
+
+| label | base_rate | brier | ece | mean_pred | variant |
+| --- | --- | --- | --- | --- | --- |
+| malaria | 0.8701 | 0.1071 | 0.0579 | 0.8461 | uncalibrated |
+| other_diseases | 0.3247 | 0.0380 | 0.1337 | 0.3387 | uncalibrated |
+| dengue | 0.1818 | 0.1299 | 0.0922 | 0.2600 | uncalibrated |
+| typhoid | 0.0909 | 0.1008 | 0.1121 | 0.1588 | uncalibrated |
+| yellow_fever | 0.0390 | 0.0338 | 0.0445 | 0.0796 | uncalibrated |
+| malaria | 0.8701 | 0.1109 | 0.0465 | 0.9167 | calibrated |
+| other_diseases | 0.3247 | 0.0146 | 0.0237 | 0.3224 | calibrated |
+| dengue | 0.1818 | 0.1219 | 0.0715 | 0.1714 | calibrated |
+| typhoid | 0.0909 | 0.0793 | 0.0513 | 0.0835 | calibrated |
+| yellow_fever | 0.0390 | 0.0363 | 0.0020 | 0.0370 | calibrated |
+
+Mean uncalibrated Brier (pre-lab, test) = 0.0819.
+
+
+![Reliability curves](../figures/calibration_curves.png)
+
+*Reliability curves*

@@ -1,0 +1,4 @@
+﻿policy,flagged_malaria,flagged_other_diseases,flagged_dengue,flagged_typhoid,flagged_yellow_fever,total_flags,avg_flags_per_patient
+performance,300,94,102,43,44,583,1.943
+safety,300,94,152,48,161,755,2.517
+operational,300,94,102,43,110,649,2.163

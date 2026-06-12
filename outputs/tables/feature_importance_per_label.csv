@@ -1,0 +1,411 @@
+﻿label,feature,importance_mean,importance_std
+dengue,Pâleur cutanéo muqueuse ou Anémie (Mucosal skin pallor or Anemia),0.04148,0.01356
+dengue,Douleur articulaire (Joint pain),0.03561,0.04352
+dengue,Sensation de frissons ou de froid (Shiver or cold sensation),0.03526,0.03127
+dengue,center_code,0.0165,0.02446
+dengue,Douleur musculaire ( Muscle pain),0.01242,0.0442
+dengue,Poids (Weight)__missing,0.00815,0.00668
+dengue,"Haute température.(temperature, Hyperpyrexia)",0.00809,0.02471
+dengue,Perte d'appétit ou Anorexie (Loss of appetite or Anorexia),0.00743,0.00506
+dengue,Oligurie (Oliguria),0.00652,0.02057
+dengue,Hépatomégalie (Hepatomegaly),0.00466,0.01457
+dengue,Détresse respiratoire (Respiratory distress),0.00338,0.00273
+dengue,bp_diastolic,0.00047,0.00119
+dengue,Maux de tête (headache),0.0003,0.04136
+dengue,Drépanocytose,9e-05,0.00022
+dengue,Gonflement des articulations (Joint Swelling),0.0,0.0
+dengue,Éruptions cutanées ou Exanthème (Skin rash or Exanthema),0.0,0.0
+dengue,Éruption morbilliforme (Morbilliform rash),0.0,0.0
+dengue,Mal de gorge (throat pain),0.0,0.0
+dengue,Mictions fréquentes.(Frequent Urination),0.0,0.0
+dengue,Constipation,0.0,0.0
+dengue,Mictions fréquentes. (Frequent Urination),0.0,0.0
+dengue,Ictère (Icterus),0.0,0.0
+dengue,Epistaxis ((Bleeding nose),0.0,0.0
+dengue,Confusion/ niveau de conscience altéré (impaired level of consciousness),0.0,0.0
+dengue,Gonflement du visage (Facial Swelling),0.0,0.0
+dengue,Délire /Discours irrationnel (Delirium/ Irrational Talking),0.0,0.0
+dengue,Hémoglobinurie (Hemoglobinuria),0.0,0.0
+dengue,Goût amer dans la gorge (Bitter taste in your Throat),0.0,0.0
+dengue,Choc septique (Shock),0.0,0.0
+dengue,Insuffisance cardiaque  ou Myocardite(Heart failure or Myocarditis),0.0,0.0
+dengue,Accumulation de liquide et détresse respiratoire (Accumulation of fluid and respiratory distress),0.0,0.0
+dengue,Choc septique (Septicemia),0.0,0.0
+dengue,Syndrome d'icterus subaigu (Sub-icterus),0.0,0.0
+dengue,Lymphadénopathie / Lymphadenopa thy,0.0,0.0
+dengue,bp_parse_failed,0.0,0.0
+dengue,Temps de remplissage capillaire (médiane secs IQR). / Capillary refill time (median secs IQR),0.0,0.0
+dengue,Hypoglycémie (Hypoglycemia),0.0,0.0
+dengue,Asthme (Astma),0.0,0.0
+dengue,Dengue dans le menage (Household Dengue),0.0,0.0
+dengue,Raideur (Stiffness),-0.00018,6e-05
+dengue,Saignement/ Manifestations hémorragiques (Bleeding),-0.00027,0.00082
+dengue,Pneumonie (Pneumonia),-0.00036,0.0016
+dengue,Distension abdominale (Ventre gonflé) (Abdominal Distension (Swelling Stomach)/ Ascites),-0.0004,0.00082
+dengue,Délire,-0.0004,0.00119
+dengue,Douleur rétro-orbitrale (Retro-orbital pain),-0.00053,0.01463
+dengue,Diarrhée  (Diarrhea),-0.00066,0.00348
+dengue,Arthrose,-0.00084,0.00151
+dengue,Température axillaire (médiane IQR) (°C) /Axillary temperature (median IQR) (°C),-0.00089,0.00292
+dengue,Circonference du bras (Mua circumference),-0.001,0.00173
+dengue,Rhinorrhée (Rhinorrhea),-0.00116,0.00336
+dengue,Diabète,-0.00165,0.00121
+dengue,Fièvre depuis 48 heures(Fever 48 hrs),-0.00187,0.02554
+dengue,Convulsions généralisées ou focales (Generalised or focal convulsion),-0.00197,0.00096
+dengue,Poids (Weight),-0.00206,0.00818
+dengue,Vertige (Dizzy),-0.00259,0.00548
+dengue,gender_female,-0.00363,0.0048
+dengue,Mal de dos / Douleur rachidienne ( Back pain / Rachiodynia),-0.00367,0.00676
+dengue,Toux (Cough),-0.00402,0.003
+dengue,Hypertension artérielle,-0.00413,0.00331
+dengue,Fièvre au cours des 7 derniers jours (Fever in the last 7 days),-0.00426,0.00354
+dengue,Température axillaire (médiane IQR) (°C) /Axillary temperature (median IQR) (°C)__missing,-0.00447,0.0027
+dengue,Perte de poids (Loss of Weight),-0.00454,0.00584
+dengue,Céphalée (Headache),-0.00466,0.03059
+dengue,bp_systolic,-0.00513,0.00377
+dengue,Nausée (Nausea),-0.00533,0.00932
+dengue,Douleur Thoracique (Chaist pain),-0.00564,0.00289
+dengue,Fréquence du pouls (battements/m in ± SD)./ Pulse rate (mean beats/min ± SD) - Shock ou Myocarditis__missing,-0.00613,0.0049
+dengue,Fréquence du pouls (battements/m in ± SD)./ Pulse rate (mean beats/min ± SD) - Shock ou Myocarditis,-0.00724,0.00432
+dengue,Vomissement (Vomiting),-0.00802,0.00427
+dengue,Splénomégalie modérée,-0.00803,0.00831
+dengue,Test de garrot positif (Positive tourniquet test),-0.00902,0.00654
+dengue,autres_maladies_pr_sent_es_par_le_patien__present,-0.00902,0.04884
+dengue,Somnolence ou léthargie  (Drowsiness or lethargy),-0.00938,0.00621
+dengue,Convulsions multiples (Multiple convulsions),-0.00939,0.01053
+dengue,Prostration,-0.00941,0.00874
+dengue,Fréquence respiratoire (médiane IQR) / Respiratory rate (median breaths/min IQR),-0.01024,0.00558
+dengue,Âge (Age),-0.0126,0.00908
+dengue,Douleur abdominale (stomac pain),-0.01365,0.00683
+dengue,Troubles de la conscience (Consciousness trouble),-0.01414,0.01491
+dengue,Fréquence respiratoire (médiane IQR) / Respiratory rate (median breaths/min IQR)__missing,-0.02127,0.00722
+dengue,bp__missing,-0.02665,0.04674
+dengue,Type de fièvre (Type of Fever),-0.02757,0.03405
+malaria,Pâleur cutanéo muqueuse ou Anémie (Mucosal skin pallor or Anemia),0.01565,0.00792
+malaria,Somnolence ou léthargie  (Drowsiness or lethargy),0.01409,0.01057
+malaria,Sensation de frissons ou de froid (Shiver or cold sensation),0.00987,0.00512
+malaria,Douleur rétro-orbitrale (Retro-orbital pain),0.00611,0.00473
+malaria,Douleur articulaire (Joint pain),0.00558,0.00517
+malaria,Douleur musculaire ( Muscle pain),0.00548,0.00413
+malaria,Distension abdominale (Ventre gonflé) (Abdominal Distension (Swelling Stomach)/ Ascites),0.00366,0.00088
+malaria,Température axillaire (médiane IQR) (°C) /Axillary temperature (median IQR) (°C)__missing,0.00337,0.00111
+malaria,Toux (Cough),0.00326,0.00223
+malaria,Prostration,0.00314,0.00464
+malaria,Saignement/ Manifestations hémorragiques (Bleeding),0.00299,0.00115
+malaria,Douleur abdominale (stomac pain),0.00291,0.00448
+malaria,Fièvre depuis 48 heures(Fever 48 hrs),0.00271,0.00097
+malaria,Troubles de la conscience (Consciousness trouble),0.00244,0.0007
+malaria,Splénomégalie modérée,0.00229,0.00195
+malaria,Perte d'appétit ou Anorexie (Loss of appetite or Anorexia),0.00227,0.00291
+malaria,Âge (Age),0.00225,0.00114
+malaria,Convulsions généralisées ou focales (Generalised or focal convulsion),0.00186,0.0007
+malaria,Type de fièvre (Type of Fever),0.0015,0.00117
+malaria,bp_diastolic,0.00131,0.00092
+malaria,Mictions fréquentes.(Frequent Urination),0.00109,0.00022
+malaria,Mictions fréquentes. (Frequent Urination),0.00096,0.00014
+malaria,Convulsions multiples (Multiple convulsions),0.00094,0.00038
+malaria,Test de garrot positif (Positive tourniquet test),0.00087,0.00175
+malaria,Fréquence du pouls (battements/m in ± SD)./ Pulse rate (mean beats/min ± SD) - Shock ou Myocarditis__missing,0.00086,0.00247
+malaria,"Haute température.(temperature, Hyperpyrexia)",0.00069,0.00066
+malaria,Vomissement (Vomiting),0.00063,0.00149
+malaria,autres_maladies_pr_sent_es_par_le_patien__present,0.00046,0.0044
+malaria,Hépatomégalie (Hepatomegaly),0.00044,0.00099
+malaria,Douleur Thoracique (Chaist pain),0.00042,0.00077
+malaria,Diabète,0.00036,0.0004
+malaria,Oligurie (Oliguria),0.00034,0.00179
+malaria,Fréquence respiratoire (médiane IQR) / Respiratory rate (median breaths/min IQR),0.00031,0.00052
+malaria,Perte de poids (Loss of Weight),0.00028,0.0002
+malaria,Température axillaire (médiane IQR) (°C) /Axillary temperature (median IQR) (°C),0.00015,0.00123
+malaria,Nausée (Nausea),0.00011,0.00332
+malaria,Gonflement des articulations (Joint Swelling),8e-05,0.00058
+malaria,Éruptions cutanées ou Exanthème (Skin rash or Exanthema),0.0,0.0
+malaria,Éruption morbilliforme (Morbilliform rash),0.0,0.0
+malaria,Constipation,0.0,0.0
+malaria,Ictère (Icterus),0.0,0.0
+malaria,Epistaxis ((Bleeding nose),0.0,0.0
+malaria,Confusion/ niveau de conscience altéré (impaired level of consciousness),0.0,0.0
+malaria,Gonflement du visage (Facial Swelling),0.0,0.0
+malaria,Délire /Discours irrationnel (Delirium/ Irrational Talking),0.0,0.0
+malaria,Hémoglobinurie (Hemoglobinuria),0.0,0.0
+malaria,Goût amer dans la gorge (Bitter taste in your Throat),0.0,0.0
+malaria,Raideur (Stiffness),0.0,0.0
+malaria,Choc septique (Shock),0.0,0.0
+malaria,Insuffisance cardiaque  ou Myocardite(Heart failure or Myocarditis),0.0,0.0
+malaria,Accumulation de liquide et détresse respiratoire (Accumulation of fluid and respiratory distress),0.0,0.0
+malaria,Choc septique (Septicemia),0.0,0.0
+malaria,Syndrome d'icterus subaigu (Sub-icterus),0.0,0.0
+malaria,Lymphadénopathie / Lymphadenopa thy,0.0,0.0
+malaria,bp_parse_failed,0.0,0.0
+malaria,Temps de remplissage capillaire (médiane secs IQR). / Capillary refill time (median secs IQR),0.0,0.0
+malaria,Drépanocytose,0.0,0.0
+malaria,Arthrose,0.0,0.0
+malaria,Asthme (Astma),0.0,0.0
+malaria,Dengue dans le menage (Household Dengue),0.0,0.0
+malaria,Hypoglycémie (Hypoglycemia),-1e-05,0.00107
+malaria,Pneumonie (Pneumonia),-2e-05,0.00022
+malaria,Détresse respiratoire (Respiratory distress),-8e-05,0.00081
+malaria,Délire,-0.00015,0.00182
+malaria,bp_systolic,-0.00015,0.00043
+malaria,Circonference du bras (Mua circumference),-0.00018,0.00038
+malaria,Hypertension artérielle,-0.00019,0.00076
+malaria,Maux de tête (headache),-0.00021,0.00052
+malaria,bp__missing,-0.00023,0.0017
+malaria,Mal de gorge (throat pain),-0.00025,0.00034
+malaria,Rhinorrhée (Rhinorrhea),-0.00028,0.00067
+malaria,Fréquence respiratoire (médiane IQR) / Respiratory rate (median breaths/min IQR)__missing,-0.00037,0.00163
+malaria,Fréquence du pouls (battements/m in ± SD)./ Pulse rate (mean beats/min ± SD) - Shock ou Myocarditis,-0.00057,0.00101
+malaria,Diarrhée  (Diarrhea),-0.00066,0.00034
+malaria,Mal de dos / Douleur rachidienne ( Back pain / Rachiodynia),-0.00089,0.00026
+malaria,Fièvre au cours des 7 derniers jours (Fever in the last 7 days),-0.00178,0.00631
+malaria,Poids (Weight),-0.00219,0.0019
+malaria,Vertige (Dizzy),-0.00219,0.00057
+malaria,gender_female,-0.00302,0.00209
+malaria,Poids (Weight)__missing,-0.00302,0.00236
+malaria,Céphalée (Headache),-0.00327,0.00461
+malaria,center_code,-0.0096,0.00676
+other_diseases,autres_maladies_pr_sent_es_par_le_patien__present,0.39608,0.05877
+other_diseases,Distension abdominale (Ventre gonflé) (Abdominal Distension (Swelling Stomach)/ Ascites),0.00209,0.00039
+other_diseases,Hypertension artérielle,0.00197,0.00114
+other_diseases,Maux de tête (headache),0.00188,0.00114
+other_diseases,Fièvre depuis 48 heures(Fever 48 hrs),0.00144,0.00117
+other_diseases,center_code,0.0013,0.0006
+other_diseases,Drépanocytose,0.00095,0.0
+other_diseases,Toux (Cough),0.00085,0.00177
+other_diseases,"Haute température.(temperature, Hyperpyrexia)",0.00084,0.00076
+other_diseases,Somnolence ou léthargie  (Drowsiness or lethargy),0.0008,0.00123
+other_diseases,Test de garrot positif (Positive tourniquet test),0.00076,0.00038
+other_diseases,Poids (Weight)__missing,0.00075,0.00056
+other_diseases,Céphalée (Headache),0.00028,0.00062
+other_diseases,gender_female,9e-05,0.00028
+other_diseases,Âge (Age),9e-05,0.00028
+other_diseases,Poids (Weight),0.0,0.0
+other_diseases,Circonference du bras (Mua circumference),0.0,0.0
+other_diseases,Fièvre au cours des 7 derniers jours (Fever in the last 7 days),0.0,0.0
+other_diseases,Perte de poids (Loss of Weight),0.0,0.0
+other_diseases,Nausée (Nausea),0.0,0.0
+other_diseases,Vomissement (Vomiting),0.0,0.0
+other_diseases,Gonflement des articulations (Joint Swelling),0.0,0.0
+other_diseases,Mal de dos / Douleur rachidienne ( Back pain / Rachiodynia),0.0,0.0
+other_diseases,Troubles de la conscience (Consciousness trouble),0.0,0.0
+other_diseases,Éruptions cutanées ou Exanthème (Skin rash or Exanthema),0.0,0.0
+other_diseases,Éruption morbilliforme (Morbilliform rash),0.0,0.0
+other_diseases,Saignement/ Manifestations hémorragiques (Bleeding),0.0,0.0
+other_diseases,Rhinorrhée (Rhinorrhea),0.0,0.0
+other_diseases,Vertige (Dizzy),0.0,0.0
+other_diseases,Mal de gorge (throat pain),0.0,0.0
+other_diseases,Diarrhée  (Diarrhea),0.0,0.0
+other_diseases,Douleur rétro-orbitrale (Retro-orbital pain),0.0,0.0
+other_diseases,Mictions fréquentes.(Frequent Urination),0.0,0.0
+other_diseases,Constipation,0.0,0.0
+other_diseases,Mictions fréquentes. (Frequent Urination),0.0,0.0
+other_diseases,Ictère (Icterus),0.0,0.0
+other_diseases,Epistaxis ((Bleeding nose),0.0,0.0
+other_diseases,Convulsions multiples (Multiple convulsions),0.0,0.0
+other_diseases,Délire,0.0,0.0
+other_diseases,Confusion/ niveau de conscience altéré (impaired level of consciousness),0.0,0.0
+other_diseases,Gonflement du visage (Facial Swelling),0.0,0.0
+other_diseases,Délire /Discours irrationnel (Delirium/ Irrational Talking),0.0,0.0
+other_diseases,Hémoglobinurie (Hemoglobinuria),0.0,0.0
+other_diseases,Goût amer dans la gorge (Bitter taste in your Throat),0.0,0.0
+other_diseases,Raideur (Stiffness),0.0,0.0
+other_diseases,Choc septique (Shock),0.0,0.0
+other_diseases,Hépatomégalie (Hepatomegaly),0.0,0.0
+other_diseases,Insuffisance cardiaque  ou Myocardite(Heart failure or Myocarditis),0.0,0.0
+other_diseases,Accumulation de liquide et détresse respiratoire (Accumulation of fluid and respiratory distress),0.0,0.0
+other_diseases,Splénomégalie modérée,0.0,0.0
+other_diseases,Choc septique (Septicemia),0.0,0.0
+other_diseases,Syndrome d'icterus subaigu (Sub-icterus),0.0,0.0
+other_diseases,Lymphadénopathie / Lymphadenopa thy,0.0,0.0
+other_diseases,Température axillaire (médiane IQR) (°C) /Axillary temperature (median IQR) (°C),0.0,0.0
+other_diseases,Température axillaire (médiane IQR) (°C) /Axillary temperature (median IQR) (°C)__missing,0.0,0.0
+other_diseases,Fréquence respiratoire (médiane IQR) / Respiratory rate (median breaths/min IQR),0.0,0.0
+other_diseases,Fréquence respiratoire (médiane IQR) / Respiratory rate (median breaths/min IQR)__missing,0.0,0.0
+other_diseases,Fréquence du pouls (battements/m in ± SD)./ Pulse rate (mean beats/min ± SD) - Shock ou Myocarditis,0.0,0.0
+other_diseases,Fréquence du pouls (battements/m in ± SD)./ Pulse rate (mean beats/min ± SD) - Shock ou Myocarditis__missing,0.0,0.0
+other_diseases,bp_systolic,0.0,0.0
+other_diseases,bp_diastolic,0.0,0.0
+other_diseases,bp_parse_failed,0.0,0.0
+other_diseases,bp__missing,0.0,0.0
+other_diseases,Temps de remplissage capillaire (médiane secs IQR). / Capillary refill time (median secs IQR),0.0,0.0
+other_diseases,Hypoglycémie (Hypoglycemia),0.0,0.0
+other_diseases,Diabète,0.0,0.0
+other_diseases,Arthrose,0.0,0.0
+other_diseases,Asthme (Astma),0.0,0.0
+other_diseases,Dengue dans le menage (Household Dengue),0.0,0.0
+other_diseases,Douleur Thoracique (Chaist pain),-1e-05,0.00044
+other_diseases,Convulsions généralisées ou focales (Generalised or focal convulsion),-1e-05,0.00044
+other_diseases,Prostration,-0.00012,0.00081
+other_diseases,Sensation de frissons ou de froid (Shiver or cold sensation),-0.0004,0.00049
+other_diseases,Oligurie (Oliguria),-0.00043,0.00101
+other_diseases,Pneumonie (Pneumonia),-0.00051,0.00066
+other_diseases,Perte d'appétit ou Anorexie (Loss of appetite or Anorexia),-0.0006,0.00049
+other_diseases,Type de fièvre (Type of Fever),-0.00071,0.00046
+other_diseases,Détresse respiratoire (Respiratory distress),-0.00071,0.00046
+other_diseases,Pâleur cutanéo muqueuse ou Anémie (Mucosal skin pallor or Anemia),-0.00071,0.00046
+other_diseases,Douleur articulaire (Joint pain),-0.00072,0.00081
+other_diseases,Douleur musculaire ( Muscle pain),-0.00076,0.00138
+other_diseases,Douleur abdominale (stomac pain),-0.00091,0.0003
+typhoid,Douleur abdominale (stomac pain),0.08164,0.04056
+typhoid,Diabète,0.0708,0.00126
+typhoid,Vertige (Dizzy),0.05827,0.04494
+typhoid,Perte d'appétit ou Anorexie (Loss of appetite or Anorexia),0.05745,0.03278
+typhoid,Âge (Age),0.04344,0.03703
+typhoid,Somnolence ou léthargie  (Drowsiness or lethargy),0.03999,0.05515
+typhoid,Céphalée (Headache),0.0395,0.04661
+typhoid,Type de fièvre (Type of Fever),0.03506,0.04749
+typhoid,autres_maladies_pr_sent_es_par_le_patien__present,0.03402,0.05797
+typhoid,Convulsions multiples (Multiple convulsions),0.0325,0.0492
+typhoid,Fréquence du pouls (battements/m in ± SD)./ Pulse rate (mean beats/min ± SD) - Shock ou Myocarditis,0.03243,0.0497
+typhoid,Troubles de la conscience (Consciousness trouble),0.0296,0.04698
+typhoid,Température axillaire (médiane IQR) (°C) /Axillary temperature (median IQR) (°C)__missing,0.02874,0.04847
+typhoid,Fréquence respiratoire (médiane IQR) / Respiratory rate (median breaths/min IQR)__missing,0.02475,0.05222
+typhoid,Pâleur cutanéo muqueuse ou Anémie (Mucosal skin pallor or Anemia),0.02362,0.06499
+typhoid,Convulsions généralisées ou focales (Generalised or focal convulsion),0.02186,0.03253
+typhoid,Fièvre au cours des 7 derniers jours (Fever in the last 7 days),0.02026,0.04445
+typhoid,"Haute température.(temperature, Hyperpyrexia)",0.01878,0.04102
+typhoid,bp__missing,0.01569,0.03274
+typhoid,Fièvre depuis 48 heures(Fever 48 hrs),0.01551,0.02979
+typhoid,Fréquence respiratoire (médiane IQR) / Respiratory rate (median breaths/min IQR),0.01316,0.02156
+typhoid,center_code,0.01057,0.05533
+typhoid,Fréquence du pouls (battements/m in ± SD)./ Pulse rate (mean beats/min ± SD) - Shock ou Myocarditis__missing,0.00864,0.021
+typhoid,Maux de tête (headache),0.00471,0.02236
+typhoid,Test de garrot positif (Positive tourniquet test),0.004,0.02079
+typhoid,Prostration,0.00306,0.00315
+typhoid,Vomissement (Vomiting),0.00247,0.00178
+typhoid,Détresse respiratoire (Respiratory distress),0.00148,0.0027
+typhoid,Douleur Thoracique (Chaist pain),0.0006,0.0018
+typhoid,Nausée (Nausea),0.00035,0.00034
+typhoid,Température axillaire (médiane IQR) (°C) /Axillary temperature (median IQR) (°C),0.00034,0.00475
+typhoid,Oligurie (Oliguria),0.00031,0.00116
+typhoid,Circonference du bras (Mua circumference),0.00025,0.00213
+typhoid,Pneumonie (Pneumonia),0.00025,0.00213
+typhoid,Perte de poids (Loss of Weight),3e-05,9e-05
+typhoid,Diarrhée  (Diarrhea),3e-05,9e-05
+typhoid,Poids (Weight),0.0,0.00026
+typhoid,Gonflement des articulations (Joint Swelling),0.0,0.0
+typhoid,Éruptions cutanées ou Exanthème (Skin rash or Exanthema),0.0,0.0
+typhoid,Éruption morbilliforme (Morbilliform rash),0.0,0.0
+typhoid,Saignement/ Manifestations hémorragiques (Bleeding),0.0,0.0
+typhoid,Rhinorrhée (Rhinorrhea),0.0,0.0
+typhoid,Distension abdominale (Ventre gonflé) (Abdominal Distension (Swelling Stomach)/ Ascites),0.0,0.0
+typhoid,Mal de gorge (throat pain),0.0,0.0
+typhoid,Mictions fréquentes.(Frequent Urination),0.0,0.0
+typhoid,Constipation,0.0,0.0
+typhoid,Mictions fréquentes. (Frequent Urination),0.0,0.0
+typhoid,Ictère (Icterus),0.0,0.0
+typhoid,Epistaxis ((Bleeding nose),0.0,0.0
+typhoid,Délire,0.0,0.0
+typhoid,Confusion/ niveau de conscience altéré (impaired level of consciousness),0.0,0.0
+typhoid,Gonflement du visage (Facial Swelling),0.0,0.0
+typhoid,Délire /Discours irrationnel (Delirium/ Irrational Talking),0.0,0.0
+typhoid,Hémoglobinurie (Hemoglobinuria),0.0,0.0
+typhoid,Goût amer dans la gorge (Bitter taste in your Throat),0.0,0.0
+typhoid,Raideur (Stiffness),0.0,0.0
+typhoid,Choc septique (Shock),0.0,0.0
+typhoid,Insuffisance cardiaque  ou Myocardite(Heart failure or Myocarditis),0.0,0.0
+typhoid,Accumulation de liquide et détresse respiratoire (Accumulation of fluid and respiratory distress),0.0,0.0
+typhoid,Choc septique (Septicemia),0.0,0.0
+typhoid,Syndrome d'icterus subaigu (Sub-icterus),0.0,0.0
+typhoid,Lymphadénopathie / Lymphadenopa thy,0.0,0.0
+typhoid,bp_parse_failed,0.0,0.0
+typhoid,Temps de remplissage capillaire (médiane secs IQR). / Capillary refill time (median secs IQR),0.0,0.0
+typhoid,Hypoglycémie (Hypoglycemia),0.0,0.0
+typhoid,Drépanocytose,0.0,0.0
+typhoid,Arthrose,0.0,0.0
+typhoid,Asthme (Astma),0.0,0.0
+typhoid,Dengue dans le menage (Household Dengue),0.0,0.0
+typhoid,Splénomégalie modérée,-0.00019,0.00107
+typhoid,gender_female,-0.0003,0.00499
+typhoid,Poids (Weight)__missing,-0.00036,0.00023
+typhoid,bp_systolic,-0.00065,0.00122
+typhoid,Douleur musculaire ( Muscle pain),-0.00135,0.00245
+typhoid,Hypertension artérielle,-0.00249,0.00371
+typhoid,bp_diastolic,-0.00254,0.00124
+typhoid,Mal de dos / Douleur rachidienne ( Back pain / Rachiodynia),-0.00486,0.00431
+typhoid,Douleur articulaire (Joint pain),-0.00599,0.00718
+typhoid,Sensation de frissons ou de froid (Shiver or cold sensation),-0.01092,0.00555
+typhoid,Hépatomégalie (Hepatomegaly),-0.01292,0.04081
+typhoid,Douleur rétro-orbitrale (Retro-orbital pain),-0.05743,0.01908
+typhoid,Toux (Cough),-0.08013,0.06594
+yellow_fever,Toux (Cough),0.07225,0.02804
+yellow_fever,Température axillaire (médiane IQR) (°C) /Axillary temperature (median IQR) (°C)__missing,0.06456,0.07201
+yellow_fever,autres_maladies_pr_sent_es_par_le_patien__present,0.03102,0.07289
+yellow_fever,Douleur articulaire (Joint pain),0.00545,0.09241
+yellow_fever,Convulsions généralisées ou focales (Generalised or focal convulsion),0.00206,0.02039
+yellow_fever,Troubles de la conscience (Consciousness trouble),0.0018,0.07497
+yellow_fever,Douleur Thoracique (Chaist pain),0.00074,0.01566
+yellow_fever,Douleur rétro-orbitrale (Retro-orbital pain),0.00031,0.00062
+yellow_fever,Diarrhée  (Diarrhea),0.00015,0.00046
+yellow_fever,Perte de poids (Loss of Weight),0.0,0.0
+yellow_fever,Gonflement des articulations (Joint Swelling),0.0,0.0
+yellow_fever,Éruptions cutanées ou Exanthème (Skin rash or Exanthema),0.0,0.0
+yellow_fever,Éruption morbilliforme (Morbilliform rash),0.0,0.0
+yellow_fever,Saignement/ Manifestations hémorragiques (Bleeding),0.0,0.0
+yellow_fever,Rhinorrhée (Rhinorrhea),0.0,0.0
+yellow_fever,Distension abdominale (Ventre gonflé) (Abdominal Distension (Swelling Stomach)/ Ascites),0.0,0.0
+yellow_fever,Mal de gorge (throat pain),0.0,0.0
+yellow_fever,Mictions fréquentes.(Frequent Urination),0.0,0.0
+yellow_fever,Constipation,0.0,0.0
+yellow_fever,Ictère (Icterus),0.0,0.0
+yellow_fever,Epistaxis ((Bleeding nose),0.0,0.0
+yellow_fever,Délire,0.0,0.0
+yellow_fever,Confusion/ niveau de conscience altéré (impaired level of consciousness),0.0,0.0
+yellow_fever,Gonflement du visage (Facial Swelling),0.0,0.0
+yellow_fever,Délire /Discours irrationnel (Delirium/ Irrational Talking),0.0,0.0
+yellow_fever,Hémoglobinurie (Hemoglobinuria),0.0,0.0
+yellow_fever,Goût amer dans la gorge (Bitter taste in your Throat),0.0,0.0
+yellow_fever,Raideur (Stiffness),0.0,0.0
+yellow_fever,Choc septique (Shock),0.0,0.0
+yellow_fever,Insuffisance cardiaque  ou Myocardite(Heart failure or Myocarditis),0.0,0.0
+yellow_fever,Accumulation de liquide et détresse respiratoire (Accumulation of fluid and respiratory distress),0.0,0.0
+yellow_fever,Choc septique (Septicemia),0.0,0.0
+yellow_fever,Syndrome d'icterus subaigu (Sub-icterus),0.0,0.0
+yellow_fever,Lymphadénopathie / Lymphadenopa thy,0.0,0.0
+yellow_fever,bp_parse_failed,0.0,0.0
+yellow_fever,Temps de remplissage capillaire (médiane secs IQR). / Capillary refill time (median secs IQR),0.0,0.0
+yellow_fever,Hypoglycémie (Hypoglycemia),0.0,0.0
+yellow_fever,Drépanocytose,0.0,0.0
+yellow_fever,Arthrose,0.0,0.0
+yellow_fever,Asthme (Astma),0.0,0.0
+yellow_fever,Pneumonie (Pneumonia),0.0,0.0
+yellow_fever,Dengue dans le menage (Household Dengue),0.0,0.0
+yellow_fever,Mictions fréquentes. (Frequent Urination),-0.001,0.00082
+yellow_fever,Température axillaire (médiane IQR) (°C) /Axillary temperature (median IQR) (°C),-0.00164,0.00249
+yellow_fever,Hypertension artérielle,-0.0021,0.00992
+yellow_fever,Détresse respiratoire (Respiratory distress),-0.0026,0.00982
+yellow_fever,Circonference du bras (Mua circumference),-0.00333,0.01
+yellow_fever,Test de garrot positif (Positive tourniquet test),-0.00506,0.00079
+yellow_fever,Vertige (Dizzy),-0.00577,0.02183
+yellow_fever,bp_systolic,-0.00605,0.01289
+yellow_fever,Diabète,-0.00667,0.01333
+yellow_fever,Douleur abdominale (stomac pain),-0.00903,0.03911
+yellow_fever,Convulsions multiples (Multiple convulsions),-0.01409,0.03218
+yellow_fever,"Haute température.(temperature, Hyperpyrexia)",-0.01414,0.05126
+yellow_fever,Fièvre depuis 48 heures(Fever 48 hrs),-0.01414,0.05126
+yellow_fever,Céphalée (Headache),-0.01795,0.01657
+yellow_fever,Pâleur cutanéo muqueuse ou Anémie (Mucosal skin pallor or Anemia),-0.02511,0.01462
+yellow_fever,Mal de dos / Douleur rachidienne ( Back pain / Rachiodynia),-0.02894,0.06611
+yellow_fever,Fièvre au cours des 7 derniers jours (Fever in the last 7 days),-0.03621,0.06522
+yellow_fever,Fréquence du pouls (battements/m in ± SD)./ Pulse rate (mean beats/min ± SD) - Shock ou Myocarditis__missing,-0.03706,0.06232
+yellow_fever,Prostration,-0.04115,0.08276
+yellow_fever,bp_diastolic,-0.04331,0.04275
+yellow_fever,Fréquence respiratoire (médiane IQR) / Respiratory rate (median breaths/min IQR)__missing,-0.04705,0.07907
+yellow_fever,gender_female,-0.04712,0.11149
+yellow_fever,bp__missing,-0.05579,0.06128
+yellow_fever,Maux de tête (headache),-0.05644,0.12181
+yellow_fever,Douleur musculaire ( Muscle pain),-0.06053,0.18065
+yellow_fever,Fréquence respiratoire (médiane IQR) / Respiratory rate (median breaths/min IQR),-0.06271,0.08597
+yellow_fever,Type de fièvre (Type of Fever),-0.06746,0.07979
+yellow_fever,Poids (Weight)__missing,-0.06767,0.03154
+yellow_fever,Fréquence du pouls (battements/m in ± SD)./ Pulse rate (mean beats/min ± SD) - Shock ou Myocarditis,-0.08314,0.09495
+yellow_fever,Nausée (Nausea),-0.08332,0.09381
+yellow_fever,center_code,-0.08876,0.08659
+yellow_fever,Âge (Age),-0.09446,0.09358
+yellow_fever,Vomissement (Vomiting),-0.09857,0.10208
+yellow_fever,Poids (Weight),-0.09938,0.08412
+yellow_fever,Splénomégalie modérée,-0.10933,0.02364
+yellow_fever,Perte d'appétit ou Anorexie (Loss of appetite or Anorexia),-0.13066,0.16475
+yellow_fever,Hépatomégalie (Hepatomegaly),-0.13456,0.06873
+yellow_fever,Sensation de frissons ou de froid (Shiver or cold sensation),-0.13544,0.12841
+yellow_fever,Oligurie (Oliguria),-0.1408,0.06831
+yellow_fever,Somnolence ou léthargie  (Drowsiness or lethargy),-0.1821,0.15274

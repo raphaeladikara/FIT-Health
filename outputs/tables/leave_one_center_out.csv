@@ -1,0 +1,3 @@
+﻿train_on,test_on,n_test,macro_f1,micro_f1,recall_malaria,recall_other_diseases,recall_dengue,recall_typhoid,recall_yellow_fever
+others,CMA de DO,147,0.3782,0.7765,0.9779,0.9697,0.0,0.0,0.0
+others,CMA de DAFRA,153,0.3721,0.864,1.0,0.9545,0.0,0.0,0.0

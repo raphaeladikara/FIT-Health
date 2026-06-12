@@ -1,0 +1,26 @@
+﻿feature,importance_mean
+autres_maladies_pr_sent_es_par_le_patien__present,0.09051200000000001
+Température axillaire (médiane IQR) (°C) /Axillary temperature (median IQR) (°C)__missing,0.01844
+Diabète,0.012568000000000001
+Douleur abdominale (stomac pain),0.012192000000000003
+Pâleur cutanéo muqueuse ou Anémie (Mucosal skin pallor or Anemia),0.010986000000000001
+Vertige (Dizzy),0.009544
+Douleur articulaire (Joint pain),0.007986000000000002
+Convulsions généralisées ou focales (Generalised or focal convulsion),0.00476
+Troubles de la conscience (Consciousness trouble),0.00394
+"Haute température.(temperature, Hyperpyrexia)",0.0028520000000000004
+Céphalée (Headache),0.002779999999999999
+Convulsions multiples (Multiple convulsions),0.0019920000000000003
+Distension abdominale (Ventre gonflé) (Abdominal Distension (Swelling Stomach)/ Ascites),0.00107
+Fièvre depuis 48 heures(Fever 48 hrs),0.0007300000000000001
+Saignement/ Manifestations hémorragiques (Bleeding),0.000544
+Détresse respiratoire (Respiratory distress),0.0002940000000000001
+Mictions fréquentes.(Frequent Urination),0.000218
+Drépanocytose,0.000208
+Gonflement des articulations (Joint Swelling),1.6000000000000003e-05
+Syndrome d'icterus subaigu (Sub-icterus),0.0
+Ictère (Icterus),0.0
+Temps de remplissage capillaire (médiane secs IQR). / Capillary refill time (median secs IQR),0.0
+Constipation,0.0
+Choc septique (Shock),0.0
+Confusion/ niveau de conscience altéré (impaired level of consciousness),0.0

@@ -1,0 +1,6 @@
+﻿label,malaria,other_diseases,dengue,typhoid,yellow_fever
+malaria,270,82,42,27,9
+other_diseases,82,99,8,2,1
+dengue,42,8,56,2,2
+typhoid,27,2,2,29,1
+yellow_fever,9,1,2,1,12
