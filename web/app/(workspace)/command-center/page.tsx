@@ -4,7 +4,7 @@ import { SafetyNote } from "@/components/ui/safety-note";
 import { loadDashboardData } from "@/lib/data";
 
 export default async function CommandCenterPage() {
-  const { patients } = await loadDashboardData();
+  const { patients, manifest } = await loadDashboardData();
   return (
     <>
       <PageHeader
@@ -12,7 +12,7 @@ export default async function CommandCenterPage() {
         description="Turn calibrated multi-label risk, uncertainty, and limited capacity into a clear queue for human action."
         aside={<SafetyNote compact />}
       />
-      <CommandCenter patients={patients} />
+      <CommandCenter patients={patients} manifest={manifest} />
     </>
   );
 }
