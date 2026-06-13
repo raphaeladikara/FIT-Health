@@ -1,22 +1,23 @@
-import Link from "next/link";
+import { Differentiators } from "@/components/landing/differentiators";
+import { EvidenceSnapshot } from "@/components/landing/evidence-snapshot";
+import { LandingHero } from "@/components/landing/landing-hero";
+import { LimitationsBand } from "@/components/landing/limitations-band";
+import { OperationalFlow } from "@/components/landing/operational-flow";
+import { PathSelector } from "@/components/landing/path-selector";
+import { buildLandingSnapshot } from "@/lib/landing-content";
+import { loadDashboardData } from "@/lib/data";
 
-// Placeholder landing — replaced by the full product briefing in Phase 3 (Task 6).
-export default function LandingPage() {
+export default async function LandingPage() {
+  const data = await loadDashboardData();
+  const snapshot = buildLandingSnapshot(data);
   return (
-    <section className="landing-placeholder">
-      <h1>VECTRA-X Outbreak Triage</h1>
-      <p>
-        Calibrated, uncertainty-aware multi-label triage decision support for
-        vector-borne disease response.
-      </p>
-      <div className="landing-placeholder-actions">
-        <Link href="/demo" className="public-cta">
-          Start guided demo
-        </Link>
-        <Link href="/command-center" className="public-nav-link">
-          Open command center
-        </Link>
-      </div>
-    </section>
+    <div className="landing">
+      <LandingHero manifest={data.manifest} />
+      <OperationalFlow />
+      <Differentiators />
+      <EvidenceSnapshot snapshot={snapshot} />
+      <PathSelector />
+      <LimitationsBand />
+    </div>
   );
 }
