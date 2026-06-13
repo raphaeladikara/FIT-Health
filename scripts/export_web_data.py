@@ -26,6 +26,10 @@ CANONICAL_PROFILE = "full"
 DEFAULT_EVALUATION_MODE = "held_out"
 # Per-label thresholds applied to patient decisions by default.
 DEFAULT_THRESHOLD_POLICY = "operational"
+# The deployable model track that produces the triage dashboard records.
+DASHBOARD_MODEL_TRACK = "PRE_LAB"
+# Patient records are out-of-fold predictions over the full cohort, not held-out test rows.
+DASHBOARD_RECORD_SOURCE = "full_cohort_oof"
 
 PRIVATE_COLUMNS = {
     "uuid",
@@ -131,10 +135,67 @@ def _write_json(path: Path, value: Any) -> None:
     )
 
 
-def _public_patients(frame: pd.DataFrame) -> list[dict[str, Any]]:
+def _load_thresholds(
+    tables_dir: Path, policy: str, active_labels: list[str]
+) -> dict[str, float]:
+    """Per-label decision thresholds for ``policy`` from threshold_policies.csv.
+
+    Fails the export when an active label has no tuned threshold so the dashboard
+    can never silently fall back to a misleading fixed 0.50 cutoff.
+    """
+    path = tables_dir / "threshold_policies.csv"
+    if not path.exists():
+        raise FileNotFoundError(f"Required dashboard artifact is missing: {path}")
+    frame = pd.read_csv(path)
+    if "label" not in frame.columns or policy not in frame.columns:
+        raise ValueError(
+            f"threshold_policies.csv must contain 'label' and {policy!r} columns; "
+            f"found {list(frame.columns)}"
+        )
+    mapping = {str(row["label"]): float(row[policy]) for _, row in frame.iterrows()}
+    missing = [label for label in active_labels if label not in mapping]
+    if missing:
+        raise ValueError(
+            f"No {policy!r} threshold for active label(s): {missing}"
+        )
+    return {label: mapping[label] for label in active_labels}
+
+
+def _public_patients(
+    frame: pd.DataFrame,
+    thresholds: dict[str, float],
+    active_labels: list[str],
+    threshold_policy: str,
+) -> list[dict[str, Any]]:
     public = frame.drop(columns=list(PRIVATE_COLUMNS), errors="ignore").copy()
     public.insert(0, "case_id", [f"Case {index + 1:03d}" for index in range(len(public))])
-    return _records(public)
+    records = _records(public)
+
+    for record in records:
+        decisions: dict[str, dict[str, Any]] = {}
+        predicted: list[str] = []
+        for label in active_labels:
+            raw = record.get(f"calprob_{label}")
+            probability = float(raw) if raw is not None else 0.0
+            threshold = thresholds[label]
+            is_predicted = probability >= threshold
+            decisions[label] = {
+                "probability": probability,
+                "threshold": threshold,
+                "predicted": is_predicted,
+            }
+            if is_predicted:
+                predicted.append(label)
+        # Keep the displayed prediction set consistent with the thresholds we show,
+        # so the chip, the probability bar, and the threshold marker never disagree.
+        record["label_decisions"] = decisions
+        record["predicted_labels"] = (
+            "{" + (", ".join(predicted) if predicted else "none") + "}"
+        )
+        record["model_track"] = DASHBOARD_MODEL_TRACK
+        record["threshold_policy"] = threshold_policy
+        record["record_source"] = DASHBOARD_RECORD_SOURCE
+    return records
 
 
 def export_dashboard_data(
@@ -157,7 +218,13 @@ def export_dashboard_data(
 
     summary = _load_required_json(summary_path)
     patient_frame = _load_required_csv(patient_path)
-    patients = _public_patients(patient_frame)
+
+    active_labels = list(summary.get("active_labels", []))
+    threshold_policy = summary.get("threshold_policy", DEFAULT_THRESHOLD_POLICY)
+    thresholds = _load_thresholds(tables_dir, threshold_policy, active_labels)
+    patients = _public_patients(
+        patient_frame, thresholds, active_labels, threshold_policy
+    )
 
     execution_profile = summary.get("execution_profile", "unknown")
     canonical = execution_profile == CANONICAL_PROFILE
@@ -188,7 +255,6 @@ def export_dashboard_data(
     data_checksum = _sha256(patient_path)
     config_checksum = _sha256(CONFIG_PATH) if CONFIG_PATH.exists() else "unavailable"
     evaluation_mode = summary.get("evaluation_mode", DEFAULT_EVALUATION_MODE)
-    threshold_policy = summary.get("threshold_policy", DEFAULT_THRESHOLD_POLICY)
     run_id = "-".join(
         [
             generated_at[:10].replace("-", ""),

@@ -66,6 +66,13 @@ def _fixture_outputs(root: Path, execution_profile: str = "full") -> tuple[Path,
         ],
     )
     _write_csv(tables / "model_leaderboard.csv", [{"track": "PRE_LAB", "macro_f1": 0.61}])
+    _write_csv(
+        tables / "threshold_policies.csv",
+        [
+            {"label": "malaria", "performance": 0.05, "safety": 0.05, "operational": 0.05},
+            {"label": "dengue", "performance": 0.5, "safety": 0.2, "operational": 0.5},
+        ],
+    )
     return outputs, root / "web" / "public" / "data"
 
 
@@ -109,6 +116,33 @@ class WebExportTests(unittest.TestCase):
             self.assertTrue(
                 any("Development artifact" in warning for warning in manifest["warnings"])
             )
+
+    def test_export_attaches_per_label_decisions_from_thresholds(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            outputs, destination = _fixture_outputs(Path(directory))
+
+            export_web_data.export_dashboard_data(outputs, destination)
+
+            patients = json.loads((destination / "patients.json").read_text(encoding="utf-8"))
+            first = patients[0]
+            self.assertEqual(first["model_track"], "PRE_LAB")
+            self.assertEqual(first["threshold_policy"], "operational")
+            self.assertEqual(first["record_source"], "full_cohort_oof")
+            dengue = first["label_decisions"]["dengue"]
+            self.assertEqual(dengue["threshold"], 0.5)
+            # calprob_dengue 0.1 < operational threshold 0.5 -> not predicted.
+            self.assertFalse(dengue["predicted"])
+            # predicted_labels is regenerated to agree with the shown thresholds.
+            self.assertEqual(first["predicted_labels"], "{malaria}")
+
+    def test_export_fails_when_active_label_has_no_threshold(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            outputs, destination = _fixture_outputs(Path(directory))
+            policies = outputs / "tables" / "threshold_policies.csv"
+            policies.write_text("label,operational\nmalaria,0.05\n", encoding="utf-8")
+
+            with self.assertRaisesRegex(ValueError, "threshold"):
+                export_web_data.export_dashboard_data(outputs, destination)
 
     def test_export_removes_private_patient_fields_and_generates_case_ids(self) -> None:
         with tempfile.TemporaryDirectory() as directory:

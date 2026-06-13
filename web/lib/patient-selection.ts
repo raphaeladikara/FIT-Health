@@ -24,7 +24,13 @@ export function selectRepresentativePatient(
     return sorted.find((patient) => patient.uncertainty_level === "high");
   }
   if (scenario === "co-infection") {
-    return sorted.find((patient) => parseLabelSet(patient.predicted_labels).length > 1);
+    // The co-infection detector is a separate risk signal, distinct from how many
+    // labels happen to clear their thresholds. Pick the strongest detector score.
+    return [...patients].sort(
+      (a, b) =>
+        b.coinfection_prob - a.coinfection_prob ||
+        b.triage_score - a.triage_score,
+    )[0];
   }
   if (scenario === "routine") {
     return sorted.find((patient) => patient.triage_category === "Routine Monitoring");

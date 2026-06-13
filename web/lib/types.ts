@@ -1,3 +1,7 @@
+import type { LabelDecision } from "@/lib/thresholds";
+
+export type { LabelDecision } from "@/lib/thresholds";
+
 export type TriageCategory =
   | "Routine Monitoring"
   | "Clinical Review"
@@ -5,6 +9,8 @@ export type TriageCategory =
   | "Urgent Response Priority";
 
 export type UncertaintyLevel = "low" | "moderate" | "high";
+
+export type ModelTrack = "PRE_LAB" | "LAB_AWARE" | "FULL";
 
 export type Patient = {
   case_id: string;
@@ -15,6 +21,10 @@ export type Patient = {
   triage_score: number;
   triage_category: TriageCategory;
   recommended_action: string;
+  label_decisions: Record<string, LabelDecision>;
+  model_track: ModelTrack;
+  threshold_policy: string;
+  record_source: string;
   [key: `calprob_${string}`]: number;
 };
 

@@ -20,6 +20,12 @@ export const manifestSchema = z
   })
   .strict();
 
+export const labelDecisionSchema = z.object({
+  probability: z.number(),
+  threshold: z.number(),
+  predicted: z.boolean(),
+});
+
 export const patientSchema = z
   .object({
     case_id: z.string(),
@@ -35,6 +41,10 @@ export const patientSchema = z
       "Urgent Response Priority",
     ]),
     recommended_action: z.string(),
+    label_decisions: z.record(z.string(), labelDecisionSchema),
+    model_track: z.enum(["PRE_LAB", "LAB_AWARE", "FULL"]),
+    threshold_policy: z.string(),
+    record_source: z.string(),
   })
   .catchall(z.number());
 

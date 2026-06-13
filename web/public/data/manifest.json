@@ -1,10 +1,10 @@
 {
   "schema_version": 2,
-  "run_id": "20260613-f79a69db-b95fdfac-cff858e2",
-  "git_commit": "f79a69db2c1c57fc275887108738fd099f40ca5b",
+  "run_id": "20260613-d7ef4c63-b95fdfac-cff858e2",
+  "git_commit": "d7ef4c63a35e325a49202e95c4e35d5f8210e864",
   "data_checksum": "b95fdfac59f1df84dfc2abaaff1d66f8ee6dd097d3b7e2a1b7ea8b5c1f22fb05",
   "config_checksum": "cff858e2a5814e27c52dc7eea57d835c65db53af0744c528e8df6c124f24b8d1",
-  "generated_at": "2026-06-13T19:27:33.800063+00:00",
+  "generated_at": "2026-06-13T19:33:15.378742+00:00",
   "execution_profile": "quick_smoke",
   "canonical": false,
   "evaluation_mode": "held_out",
