@@ -3,7 +3,25 @@ import type {
   CapacityInput,
   CapacityRow,
   Patient,
+  ResourceName,
 } from "@/lib/types";
+
+/** Categories eligible for a confirmatory rapid test under the simulator's rule. */
+const TEST_ELIGIBLE = ["Confirmatory Test Priority", "Urgent Response Priority"];
+
+/**
+ * Plain-language, clinically unvalidated demand assumptions. These make the simulator's
+ * heuristics inspectable rather than presenting them as validated clinical thresholds.
+ */
+export const DEMAND_ASSUMPTIONS: Record<ResourceName, string> = {
+  "Rapid tests":
+    "One rapid test per confirmatory-test-priority or urgent case (heuristic, not a clinical protocol).",
+  Beds: "One inpatient bed per urgent-response case (heuristic).",
+  "Monitoring slots":
+    "One monitoring slot per clinical-review or confirmatory-test case (heuristic).",
+  "Staff review slots":
+    "One review per non-routine case plus one extra review per high-uncertainty case (heuristic).",
+};
 
 export function calculateCapacity(
   patients: Patient[],
@@ -13,9 +31,7 @@ export function calculateCapacity(
     (patient) => patient.triage_category === "Urgent Response Priority",
   ).length;
   const confirmatory = patients.filter((patient) =>
-    ["Confirmatory Test Priority", "Urgent Response Priority"].includes(
-      patient.triage_category,
-    ),
+    TEST_ELIGIBLE.includes(patient.triage_category),
   ).length;
   const monitoring = patients.filter((patient) =>
     ["Clinical Review", "Confirmatory Test Priority"].includes(
@@ -32,7 +48,7 @@ export function calculateCapacity(
     ).length +
     patients.filter((patient) => patient.uncertainty_level === "high").length;
 
-  const rows: Array<[CapacityRow["resource"], number, number]> = [
+  const rows: Array<[ResourceName, number, number]> = [
     ["Rapid tests", confirmatory, input.rapidTests],
     ["Beds", urgent, input.beds],
     ["Monitoring slots", monitoring, input.monitoringSlots],
@@ -43,8 +59,10 @@ export function calculateCapacity(
     resource,
     demand,
     capacity,
-    gap: capacity - demand,
+    shortfall: Math.max(demand - capacity, 0),
+    surplus: Math.max(capacity - demand, 0),
     status: capacity >= demand ? "Sufficient" : "Insufficient",
+    assumption: DEMAND_ASSUMPTIONS[resource],
   }));
 }
 
@@ -61,15 +79,14 @@ export function allocateRapidTests(
         left.case_id.localeCompare(right.case_id),
     )
     .map((patient) => {
-      const eligible = [
-        "Confirmatory Test Priority",
-        "Urgent Response Priority",
-      ].includes(patient.triage_category);
+      const eligible = TEST_ELIGIBLE.includes(patient.triage_category);
       const receivesTest = eligible && allocated < available;
       if (receivesTest) allocated += 1;
-      return {
-        ...patient,
-        test_allocation: receivesTest ? "Allocated" : "Waiting",
-      };
+      const test_allocation = !eligible
+        ? "Not eligible"
+        : receivesTest
+          ? "Allocated"
+          : "Waitlisted";
+      return { ...patient, test_allocation };
     });
 }

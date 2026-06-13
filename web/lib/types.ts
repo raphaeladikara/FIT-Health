@@ -95,14 +95,27 @@ export type CapacityInput = {
   staffReviews: number;
 };
 
+export type ResourceName =
+  | "Rapid tests"
+  | "Beds"
+  | "Monitoring slots"
+  | "Staff review slots";
+
 export type CapacityRow = {
-  resource: "Rapid tests" | "Beds" | "Monitoring slots" | "Staff review slots";
+  resource: ResourceName;
   demand: number;
   capacity: number;
-  gap: number;
+  /** Unmet demand, never negative. */
+  shortfall: number;
+  /** Spare capacity, never negative. */
+  surplus: number;
   status: "Sufficient" | "Insufficient";
+  /** Plain-language, clinically unvalidated demand assumption. */
+  assumption: string;
 };
 
+export type TestAllocation = "Allocated" | "Waitlisted" | "Not eligible";
+
 export type AllocatedPatient = Patient & {
-  test_allocation: "Allocated" | "Waiting";
+  test_allocation: TestAllocation;
 };
