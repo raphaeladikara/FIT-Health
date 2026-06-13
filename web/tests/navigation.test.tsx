@@ -8,15 +8,24 @@ vi.mock("next/navigation", () => ({
 }));
 
 describe("side navigation", () => {
-  it("marks the current workspace and exposes meaningful labels", () => {
+  it("marks the current workspace and exposes the operational labels", () => {
     render(<SideNavigation />);
 
     expect(screen.getByRole("navigation", { name: "Primary navigation" })).toBeVisible();
-    expect(screen.getByRole("link", { name: /Resource Allocation/i })).toHaveAttribute(
+    for (const label of [
+      "Command Center",
+      "Patient Review",
+      "Batch Intake",
+      "Resource Scenarios",
+      "Trust Center",
+    ]) {
+      expect(screen.getByRole("link", { name: new RegExp(label, "i") })).toBeVisible();
+    }
+    expect(screen.getByRole("link", { name: /Resource Scenarios/i })).toHaveAttribute(
       "aria-current",
       "page",
     );
-    expect(screen.getByRole("link", { name: /Patient Intelligence/i })).not.toHaveAttribute(
+    expect(screen.getByRole("link", { name: /Patient Review/i })).not.toHaveAttribute(
       "aria-current",
     );
   });

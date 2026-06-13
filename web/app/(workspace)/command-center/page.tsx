@@ -3,7 +3,7 @@ import { PageHeader } from "@/components/ui/page-header";
 import { SafetyNote } from "@/components/ui/safety-note";
 import { loadDashboardData } from "@/lib/data";
 
-export default async function HomePage() {
+export default async function CommandCenterPage() {
   const { patients } = await loadDashboardData();
   return (
     <>
