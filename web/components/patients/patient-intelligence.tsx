@@ -1,114 +1,122 @@
 "use client";
 
-import { AlertTriangle, Gauge, HelpCircle, Layers3, ShieldCheck } from "lucide-react";
-import { useMemo, useState } from "react";
+import { Gauge, Layers3, ShieldCheck } from "lucide-react";
+import { useState } from "react";
 
-import { MetricStrip } from "@/components/ui/metric-strip";
+import { ActionRecord } from "@/components/patients/action-record";
+import { CaseReport } from "@/components/patients/case-report";
+import { DecisionSummary } from "@/components/patients/decision-summary";
+import { LabelDecisionList } from "@/components/patients/label-decision-list";
+import { PatientSelector } from "@/components/patients/patient-selector";
+import { UncertaintyPanel } from "@/components/patients/uncertainty-panel";
+import { EmptyState } from "@/components/ui/empty-state";
 import { Panel } from "@/components/ui/panel";
-import { StatusBadge } from "@/components/ui/status-badge";
 import {
-  parseLabelSet,
   selectRepresentativePatient,
   type RepresentativeScenario,
 } from "@/lib/patient-selection";
-import { titleCase } from "@/lib/format";
-import type { Patient } from "@/lib/types";
-
-const scenarios: Array<{ value: RepresentativeScenario; label: string }> = [
-  { value: "highest-priority", label: "Highest priority" },
-  { value: "high-uncertainty", label: "High uncertainty" },
-  { value: "co-infection", label: "Potential co-infection" },
-  { value: "routine", label: "Routine monitoring" },
-];
+import type { Manifest, Patient } from "@/lib/types";
 
 export function PatientIntelligence({
   patients,
-  labels,
+  manifest,
+  initialCaseId,
+  initialScenario,
 }: {
   patients: Patient[];
   labels: string[];
+  manifest: Manifest;
+  initialCaseId?: string;
+  initialScenario?: RepresentativeScenario;
 }) {
-  const initial = selectRepresentativePatient(patients, "highest-priority") ?? patients[0];
-  const [caseId, setCaseId] = useState(initial.case_id);
-  const selected = patients.find((patient) => patient.case_id === caseId) ?? initial;
-  const probabilities = useMemo(
-    () =>
-      labels.map((label) => ({
-        label,
-        value: Number(selected[`calprob_${label}`] ?? 0),
-      })),
-    [labels, selected],
+  const requestedCase = initialCaseId
+    ? patients.find((patient) => patient.case_id === initialCaseId)
+    : undefined;
+  const scenarioPatient = selectRepresentativePatient(
+    patients,
+    initialScenario ?? "highest-priority",
   );
+  const fallback = scenarioPatient ?? patients[0];
+
+  const [caseId, setCaseId] = useState((requestedCase ?? fallback)?.case_id);
+  const [scenario, setScenario] = useState<RepresentativeScenario | null>(
+    initialCaseId ? null : (initialScenario ?? "highest-priority"),
+  );
+
+  // Unknown-case recovery: a case id was requested but does not exist.
+  if (initialCaseId && !requestedCase) {
+    return (
+      <EmptyState
+        title="Case not found"
+        description={`No anonymous case matches "${initialCaseId}".`}
+        actionHref="/patients?scenario=highest-priority"
+        actionLabel="Open highest-priority case"
+        icon={<ShieldCheck size={22} />}
+      />
+    );
+  }
+
+  const selected = patients.find((patient) => patient.case_id === caseId) ?? fallback;
 
   function chooseScenario(value: RepresentativeScenario) {
     const patient = selectRepresentativePatient(patients, value);
-    if (patient) setCaseId(patient.case_id);
+    if (patient) {
+      setCaseId(patient.case_id);
+      setScenario(value);
+    }
+  }
+
+  function chooseCase(value: string) {
+    setCaseId(value);
+    setScenario(null);
   }
 
   return (
     <>
-      <div className="controls-row">
-        <label className="field">
-          Representative scenario
-          <select onChange={(event) => chooseScenario(event.target.value as RepresentativeScenario)}>
-            {scenarios.map((scenario) => (
-              <option value={scenario.value} key={scenario.value}>{scenario.label}</option>
-            ))}
-          </select>
-        </label>
-        <label className="field">
-          Anonymous case
-          <select value={caseId} onChange={(event) => setCaseId(event.target.value)}>
-            {patients.map((patient) => (
-              <option key={patient.case_id}>{patient.case_id}</option>
-            ))}
-          </select>
-        </label>
-      </div>
-      <MetricStrip
-        items={[
-          { label: "Triage priority", value: selected.triage_category.replace(" Priority", ""), detail: selected.case_id, tone: "urgent", icon: AlertTriangle },
-          { label: "Triage score", value: selected.triage_score.toFixed(3), detail: "Operational ranking", tone: "primary", icon: Gauge },
-          { label: "Uncertainty", value: titleCase(selected.uncertainty_level), detail: "Entropy-derived review need", tone: "review", icon: HelpCircle },
-          { label: "Co-infection risk", value: selected.coinfection_prob.toFixed(2), detail: "Separate detector", tone: "violet", icon: Layers3 },
-          { label: "Caution set", value: parseLabelSet(selected.conformal_set).length, detail: "Plausible labels", tone: "primary", icon: ShieldCheck },
-        ]}
-      />
+      <Panel
+        title="Select a case"
+        description="Jump to a representative scenario or pick any anonymous case. Identities are never shown."
+        aside={<CaseReport patient={selected} manifest={manifest} />}
+      >
+        <PatientSelector
+          patients={patients}
+          selected={selected}
+          activeScenario={scenario}
+          onScenario={chooseScenario}
+          onCase={chooseCase}
+        />
+      </Panel>
+
+      <DecisionSummary patient={selected} />
+
       <div className="workspace-grid">
         <div>
-          <Panel title="Calibrated disease probabilities" description="Probability after calibration. These values are risk signals, not diagnoses.">
-            <div className="probability-list">
-              {probabilities.map(({ label, value }) => (
-                <div className="probability-row" key={label}>
-                  <span>{titleCase(label)}</span>
-                  <div
-                    className="probability-track"
-                    role="img"
-                    aria-label={`${titleCase(label)} probability ${(value * 100).toFixed(1)} percent`}
-                  >
-                    <div className="probability-fill" style={{ width: `${value * 100}%` }} />
-                  </div>
-                  <strong>{(value * 100).toFixed(0)}%</strong>
-                </div>
-              ))}
-            </div>
+          <Panel
+            title="Per-disease decisions"
+            description="Each calibrated probability is judged against its own tuned threshold (the marker), not a fixed 0.50 cutoff."
+            icon={Gauge}
+          >
+            <LabelDecisionList decisions={selected.label_decisions} />
           </Panel>
-          <Panel title="Explanation boundary" description="The current public artifact contains cohort-level feature importance.">
+          <Panel
+            title="Explanation boundary"
+            description="The current public artifact contains cohort-level feature importance only."
+          >
             <p className="insight">
-              Feature contributions describe model behavior, not medical causality.
-              Patient-specific explanations are intentionally withheld when they cannot be
-              linked to an out-of-fold decision record with sufficient provenance.
+              Feature contributions describe model behaviour, not medical causality.
+              Patient-specific explanations are withheld when they cannot be linked to an
+              out-of-fold decision record with sufficient provenance.
             </p>
           </Panel>
         </div>
-        <Panel title="Decision-support record" description="Four separate outputs keep probability, uncertainty, priority, and action distinct.">
-          <dl className="record-list">
-            <div><dt>Priority</dt><dd><StatusBadge value={selected.triage_category} /></dd></div>
-            <div><dt>Predicted signals</dt><dd>{selected.predicted_labels}</dd></div>
-            <div><dt>Uncertainty-aware caution set</dt><dd>{selected.conformal_set}</dd></div>
-            <div><dt>Recommended human action</dt><dd>{selected.recommended_action}</dd></div>
-          </dl>
-        </Panel>
+        <div className="rail">
+          <Panel title="Ambiguity & co-infection" description="How sure the model is, and what it keeps in play." icon={Layers3}>
+            <UncertaintyPanel patient={selected} />
+          </Panel>
+          <Panel title="Action record" description="Probability, uncertainty, priority, and action stay distinct.">
+            <ActionRecord patient={selected} />
+          </Panel>
+        </div>
       </div>
     </>
   );

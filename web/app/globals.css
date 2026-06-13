@@ -546,6 +546,73 @@ a { color: inherit; }
 }
 
 /* ============================================================
+   Patient review
+   ============================================================ */
+.patient-selector-pick { display: flex; align-items: center; gap: 14px; margin-top: 16px; }
+.print-button { cursor: pointer; }
+
+.decision-summary {
+  display: flex; align-items: center; gap: 18px; padding: 20px 22px; margin-bottom: 20px;
+  background: var(--surface); border: 1px solid var(--line); border-left: 4px solid var(--primary);
+  border-radius: var(--radius-md); box-shadow: var(--shadow-card);
+}
+.decision-summary[data-tone="urgent"] { border-left-color: var(--urgent); }
+.decision-summary[data-tone="confirm"] { border-left-color: var(--confirm); }
+.decision-summary[data-tone="review"] { border-left-color: var(--review); }
+.decision-summary[data-tone="routine"] { border-left-color: var(--routine); }
+.decision-summary-main { flex: 1; min-width: 0; }
+.decision-summary-eyebrow { margin: 0 0 8px; color: var(--ink-faint); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; }
+.decision-summary-badges { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.decision-summary-track { font-size: 12px; color: var(--ink-muted); font-variant-numeric: tabular-nums; }
+.decision-summary-action { margin: 10px 0 0; color: var(--ink); font-size: 14.5px; line-height: 1.5; }
+.decision-summary-score { flex: none; text-align: right; }
+.decision-summary-score span { display: block; color: var(--ink-faint); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; }
+.decision-summary-score strong { font-family: var(--font-jakarta); font-size: 30px; font-weight: 750; letter-spacing: -.02em; font-variant-numeric: tabular-nums; }
+
+.label-decision-list { display: grid; gap: 16px; }
+.label-decision { display: grid; grid-template-columns: 124px 1fr auto auto; align-items: center; gap: 14px; }
+.label-decision-name { font-size: 13.5px; text-transform: capitalize; }
+.label-decision-value { text-align: right; }
+.label-decision-value strong { font-variant-numeric: tabular-nums; font-size: 14px; }
+.label-decision-value small { display: block; font-size: 10.5px; color: var(--ink-faint); }
+.label-decision-flag { padding: 3px 9px; border-radius: var(--radius-pill); font-size: 11px; font-weight: 700; }
+.label-decision-flag[data-predicted="true"] { background: var(--confirm-soft); color: var(--confirm-text); }
+.label-decision-flag[data-predicted="false"] { background: var(--surface-strong); color: var(--ink-faint); }
+
+.uncertainty-panel { display: grid; gap: 14px; }
+.uncertainty-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.uncertainty-key { color: var(--ink-faint); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; }
+.uncertainty-coinf { font-family: var(--font-jakarta); font-weight: 700; font-variant-numeric: tabular-nums; }
+.uncertainty-block { display: grid; gap: 10px; }
+.uncertainty-note { margin: 4px 0 0; color: var(--ink-muted); font-size: 12.5px; line-height: 1.5; }
+
+/* print-only case report */
+.case-report { display: none; }
+
+@media print {
+  .sidebar, .top-bar, .mobile-header, .page-header-aside, .public-header, .public-footer,
+  .patient-selector, .print-button, .decision-chain, .pagination { display: none !important; }
+  .app-main { margin-left: 0 !important; }
+  body { background: #fff !important; }
+  .panel, .decision-summary { box-shadow: none !important; border-color: #ccc !important; }
+  .case-report { display: block !important; }
+  .case-report h2 { font-size: 18px; margin: 0 0 6px; }
+  .case-report-meta { font-size: 11px; color: #333; font-variant-numeric: tabular-nums; }
+  .case-report-warn { margin: 8px 0; font-weight: 700; }
+  .case-report-table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 12px; }
+  .case-report-table th, .case-report-table td { border: 1px solid #ccc; padding: 6px 8px; text-align: left; }
+  .case-report dl { display: grid; grid-template-columns: max-content 1fr; gap: 4px 16px; font-size: 12px; }
+  .case-report dt { font-weight: 700; }
+}
+
+@media (max-width: 760px) {
+  .decision-summary { flex-wrap: wrap; }
+  .decision-summary-score { text-align: left; }
+  .label-decision { grid-template-columns: 92px 1fr auto; }
+  .label-decision-flag { grid-column: 2 / -1; justify-self: start; }
+}
+
+/* ============================================================
    Page header
    ============================================================ */
 .page-header {
