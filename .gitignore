@@ -2,3 +2,9 @@
 __pycache__/
 *.pyc
 .ipynb_checkpoints/
+.env
+.env.local
+.env.*.local
+web/node_modules/
+web/.next/
+~$*.docx

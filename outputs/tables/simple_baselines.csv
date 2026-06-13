@@ -1,0 +1,2 @@
+﻿baseline,micro_f1,macro_f1,weighted_f1,samples_f1,hamming_loss,subset_accuracy,jaccard_samples,macro_recall,macro_precision,macro_roc_auc,macro_pr_auc
+train_prevalence_0.5,0.6943,0.1861,0.5375,0.7251,0.1532,0.4545,0.6558,0.2,0.174,0.5,0.3013

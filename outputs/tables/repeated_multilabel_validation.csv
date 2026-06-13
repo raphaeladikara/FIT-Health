@@ -1,0 +1,4 @@
+﻿repeat,random_state,micro_f1,macro_f1,weighted_f1,samples_f1,hamming_loss,subset_accuracy,jaccard_samples,macro_recall,macro_precision,macro_roc_auc,macro_pr_auc
+1,42,0.8173,0.601,0.8445,0.8357,0.1247,0.5785,0.7735,0.6855,0.562,0.7826,0.558
+2,43,0.8132,0.5902,0.8439,0.8292,0.1274,0.5336,0.7608,0.6674,0.5598,0.7803,0.5492
+3,44,0.8106,0.5796,0.8371,0.8309,0.1283,0.5785,0.7687,0.6289,0.5537,0.7762,0.567

@@ -48,6 +48,152 @@ class FeatureMeta:
         return self.numeric_cols + self.binary_cols + self.indicator_cols
 
 
+@dataclass
+class _FittedColumn:
+    source: str
+    kind: str
+    outputs: list[str]
+    categories: list[str] = field(default_factory=list)
+    add_missing: bool = False
+
+
+@dataclass
+class FittedFeatureFrame:
+    """Train-fitted deterministic feature-frame transformer.
+
+    Unlike :func:`make_feature_frame`, every data-dependent decision is learned
+    in ``fit`` and then frozen. Unknown categories at transform time map to an
+    all-zero one-hot block and never create new columns.
+    """
+
+    missing_indicator_threshold: float = 0.05
+    cfg: dict[str, Any] | None = None
+    columns_: list[_FittedColumn] = field(default_factory=list)
+    meta_: FeatureMeta = field(default_factory=FeatureMeta)
+    feature_cols_: list[str] = field(default_factory=list)
+
+    @property
+    def meta(self) -> FeatureMeta:
+        return self.meta_
+
+    def fit(self, df: pd.DataFrame, feature_cols: list[str]) -> "FittedFeatureFrame":
+        self.cfg = self.cfg or ru.load_config()
+        self.feature_cols_ = list(feature_cols)
+        self.columns_ = []
+        self.meta_ = FeatureMeta()
+        pp_cfg = self.cfg["preprocessing"]
+        gender_frag = pp_cfg["gender_col_fragment"].lower()
+
+        for col in self.feature_cols_:
+            s = df[col]
+            non_null = s.dropna()
+            if non_null.nunique() <= 1:
+                self.meta_.dropped_constant.append(col)
+                continue
+
+            name = col.lower()
+            add_missing = s.isna().mean() > self.missing_indicator_threshold
+            if ("pression art" in name) or ("blood pressure" in name):
+                outputs = [f"{_alias(col)}__systolic", f"{_alias(col)}__diastolic"]
+                self.columns_.append(_FittedColumn(col, "blood_pressure", outputs, add_missing=add_missing))
+                self.meta_.numeric_cols.extend(outputs)
+                parse_flag = f"{_alias(col)}__parse_failed"
+                self.meta_.binary_cols.append(parse_flag)
+                if add_missing:
+                    self.meta_.indicator_cols.append(f"{_alias(col)}__missing")
+                continue
+
+            if gender_frag in name:
+                output = f"{_alias(col)}__female"
+                self.columns_.append(_FittedColumn(col, "gender", [output], add_missing=add_missing))
+                self.meta_.binary_cols.append(output)
+                if add_missing:
+                    self.meta_.indicator_cols.append(f"{_alias(col)}__missing")
+                continue
+
+            if _is_binary_col(s):
+                self.columns_.append(_FittedColumn(col, "binary", [col], add_missing=add_missing))
+                self.meta_.binary_cols.append(col)
+                if add_missing:
+                    self.meta_.indicator_cols.append(f"{col}__missing")
+                continue
+
+            numeric = _parse_numeric(s)
+            if numeric.notna().mean() >= 0.5:
+                self.columns_.append(_FittedColumn(col, "numeric", [col], add_missing=add_missing))
+                self.meta_.numeric_cols.append(col)
+                if add_missing:
+                    self.meta_.indicator_cols.append(f"{col}__missing")
+                continue
+
+            if non_null.nunique() > 15 and non_null.astype(str).str.len().mean() > 8:
+                output = f"{_alias(col)}__present"
+                self.columns_.append(_FittedColumn(col, "presence", [output]))
+                self.meta_.binary_cols.append(output)
+                self.meta_.notes.append(f"high-cardinality text '{col}' -> presence flag")
+                continue
+
+            categories = sorted(str(v).strip() for v in non_null.unique())
+            outputs = [
+                f"{_alias(col)}__cat_{index}_{_alias(value)}"
+                for index, value in enumerate(categories)
+            ]
+            self.columns_.append(
+                _FittedColumn(col, "categorical", outputs, categories=categories, add_missing=add_missing)
+            )
+            self.meta_.binary_cols.extend(outputs)
+            self.meta_.notes.append(
+                f"categorical '{col}' one-hot encoded from train categories: {categories[:8]}"
+            )
+            if add_missing:
+                self.meta_.indicator_cols.append(f"{_alias(col)}__missing")
+        return self
+
+    def transform(self, df: pd.DataFrame) -> pd.DataFrame:
+        if not self.feature_cols_:
+            raise RuntimeError("FittedFeatureFrame must be fit before transform.")
+        missing_sources = [c for c in self.feature_cols_ if c not in df.columns]
+        if missing_sources:
+            raise ValueError(f"Missing fitted source columns: {missing_sources}")
+
+        out = pd.DataFrame(index=df.index)
+        for spec in self.columns_:
+            s = df[spec.source]
+            alias = _alias(spec.source)
+            if spec.kind == "blood_pressure":
+                parsed = parse_blood_pressure(s)
+                out[spec.outputs[0]] = parsed["bp_systolic"]
+                out[spec.outputs[1]] = parsed["bp_diastolic"]
+                out[f"{alias}__parse_failed"] = parsed["bp_parse_failed"].astype(float)
+            elif spec.kind == "gender":
+                values = s.astype("string").str.strip().str.lower()
+                out[spec.outputs[0]] = values.map(
+                    lambda v: 1.0 if isinstance(v, str) and v.startswith("f")
+                    else (0.0 if isinstance(v, str) and v.startswith("h") else np.nan)
+                )
+            elif spec.kind == "binary":
+                out[spec.outputs[0]] = _encode_binary(s)
+            elif spec.kind == "numeric":
+                out[spec.outputs[0]] = _parse_numeric(s)
+            elif spec.kind == "presence":
+                out[spec.outputs[0]] = s.notna().astype(float)
+            elif spec.kind == "categorical":
+                values = s.astype("string").str.strip()
+                for category, output in zip(spec.categories, spec.outputs):
+                    out[output] = (values == category).astype(float)
+            if spec.add_missing:
+                missing_name = (
+                    f"{spec.source}__missing"
+                    if spec.kind in {"binary", "numeric"}
+                    else f"{alias}__missing"
+                )
+                out[missing_name] = s.isna().astype(float)
+        return out.reindex(columns=self.meta_.all_cols)
+
+    def fit_transform(self, df: pd.DataFrame, feature_cols: list[str]) -> pd.DataFrame:
+        return self.fit(df, feature_cols).transform(df)
+
+
 def _parse_numeric(series: pd.Series) -> pd.Series:
     s = series.astype("string").str.replace(",", ".", regex=False)
     s = s.str.extract(r"(-?\d+(?:\.\d+)?)", expand=False)

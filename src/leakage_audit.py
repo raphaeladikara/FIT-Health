@@ -74,7 +74,7 @@ def _encode_for_screen(series: pd.Series) -> pd.Series:
         else:
             codes, _ = pd.factorize(s, use_na_sentinel=True)
             out = pd.Series(codes, index=s.index).replace(-1, np.nan)
-    out = pd.to_numeric(out, errors="coerce")
+    out = pd.to_numeric(out, errors="coerce").astype(float)
     if out.notna().any():
         out = out.fillna(out.median())
     else:

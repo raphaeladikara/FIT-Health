@@ -1,0 +1,41 @@
+{
+  "project": "VECTRA-X",
+  "title": "Uncertainty-Aware Triage Intelligence for Vector-Borne Disease Response in Resource-Limited Humanitarian Settings",
+  "random_state": 42,
+  "data": {
+    "encoding": "utf-8",
+    "separator": ";",
+    "decimal": ",",
+    "sha256": "365344fe8ce553288f952c6d32771cdde2b7c633006538ddb1d6c82de325efb1"
+  },
+  "selected_model": "Extra Trees",
+  "selection_metric": "training-only OOF macro PR-AUC plus triage suitability review",
+  "python": "3.12.6",
+  "packages": {
+    "pandas": "3.0.2",
+    "numpy": "2.4.4",
+    "scikit_learn": "1.8.0",
+    "xgboost": "3.2.0",
+    "lightgbm": "4.6.0",
+    "shap": "0.52.0"
+  },
+  "outputs": [
+    "calibration_metrics.csv",
+    "center_transfer.csv",
+    "confidence_intervals.csv",
+    "conformal_metrics.csv",
+    "decision_curve_net_benefit.csv",
+    "fairness_metrics.csv",
+    "feature_importance.csv",
+    "held_out_metrics.csv",
+    "held_out_track_comparison.csv",
+    "model_comparison.csv",
+    "model_rationale.csv",
+    "patient_decision_support.csv",
+    "per_label_metrics.csv",
+    "repeated_validation.csv",
+    "resource_simulation.csv",
+    "threshold_resource_tradeoff.csv",
+    "thresholds.csv"
+  ]
+}

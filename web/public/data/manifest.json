@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-06-13T15:07:01.096469+00:00",
+  "execution_profile": "quick_smoke",
+  "patient_count": 300,
+  "active_labels": [
+    "malaria",
+    "other_diseases",
+    "dengue",
+    "typhoid",
+    "yellow_fever"
+  ],
+  "available_evidence": [
+    "model_leaderboard.csv",
+    "per_label_metrics.csv",
+    "calibration_metrics.csv",
+    "conformal_metrics.csv",
+    "fairness_metrics.csv",
+    "fairness_recall_gaps.csv",
+    "leave_one_center_out.csv",
+    "feature_importance_global.csv",
+    "leakage_candidates.csv",
+    "headline_metric_bootstrap_ci.csv",
+    "label_prevalence_confidence_intervals.csv",
+    "threshold_policy_resource_tradeoff.csv"
+  ],
+  "warnings": []
+}

@@ -2,7 +2,7 @@
 
 *Three clinical policies*
 
-_Generated: 2026-06-13 12:31 — VECTRA-X pipeline_
+_Generated: 2026-06-13 13:56 — VECTRA-X pipeline_
 
 Default 0.5 is rarely optimal under imbalance. Thresholds tuned per label on out-of-fold train predictions.
 
@@ -12,10 +12,10 @@ Default 0.5 is rarely optimal under imbalance. Thresholds tuned per label on out
 | label | thr_maxF1 | f1 | thr_recall_oriented | recall | thr_balanced |
 | --- | --- | --- | --- | --- | --- |
 | malaria | 0.0500 | 0.9531 | 0.0500 | 1.0000 | 0.0500 |
-| other_diseases | 0.5000 | 0.9722 | 0.0500 | 1.0000 | 0.5000 |
-| dengue | 0.3500 | 0.5000 | 0.2000 | 0.8571 | 0.3500 |
-| typhoid | 0.5000 | 0.4444 | 0.4500 | 0.5455 | 0.5000 |
-| yellow_fever | 0.2500 | 0.1579 | 0.0500 | 0.3889 | 0.1000 |
+| other_diseases | 0.4500 | 0.9467 | 0.0500 | 1.0000 | 0.4500 |
+| dengue | 0.5000 | 0.5000 | 0.2000 | 0.8571 | 0.5000 |
+| typhoid | 0.5500 | 0.4314 | 0.4500 | 0.5909 | 0.5500 |
+| yellow_fever | 0.2500 | 0.1739 | 0.0500 | 0.3889 | 0.1000 |
 
 
 ## Policies
@@ -23,9 +23,9 @@ Default 0.5 is rarely optimal under imbalance. Thresholds tuned per label on out
 | label | performance | safety | operational |
 | --- | --- | --- | --- |
 | malaria | 0.0500 | 0.0500 | 0.0500 |
-| other_diseases | 0.5000 | 0.5000 | 0.5000 |
-| dengue | 0.3500 | 0.2000 | 0.3500 |
-| typhoid | 0.5000 | 0.4500 | 0.5000 |
+| other_diseases | 0.4500 | 0.4500 | 0.4500 |
+| dengue | 0.5000 | 0.2000 | 0.5000 |
+| typhoid | 0.5500 | 0.4500 | 0.5500 |
 | yellow_fever | 0.2500 | 0.0500 | 0.1000 |
 
 - **Performance** — maximise per-label F1.

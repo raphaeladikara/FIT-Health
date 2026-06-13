@@ -39,6 +39,7 @@ from src import (
     preprocessing as pp,
     report_utils as ru,
     schema_audit as sa,
+    scientific_analysis as sci,
     triage_engine as te,
     visualization as viz,
 )
@@ -94,12 +95,23 @@ def main(quick: bool = False, use_cache: bool = False) -> None:
     summary["inactive_labels"] = labels_info["inactive_labels"]
     summary["n_multilabel_patients"] = labels_info["n_multilabel_patients"]
 
-    # ---------------- Stage 3: leakage audit + feature sets ------------- #
+    # The untouched holdout is created before any target-aware audit or
+    # data-driven schema decision.
+    train_idx, test_idx = M.train_test_indices(y, cfg["modeling"]["test_size"], rs)
+    summary["n_train"], summary["n_test"] = len(train_idx), len(test_idx)
+
+    # ---------------- Stage 3: train-only leakage audit + feature sets -- #
     feat_cols = ld.feature_columns(df, labels_info["label_columns_raw"], cfg)
     dcats = {}
     if "dict_category" in audit["data_dictionary"].columns:
         dcats = dict(zip(audit["data_dictionary"]["column"], audit["data_dictionary"]["dict_category"]))
-    leak = lk.audit_leakage(df, y, feat_cols, dcats, cfg)
+    leak = lk.audit_leakage(
+        df.iloc[train_idx].reset_index(drop=True),
+        y.iloc[train_idx].reset_index(drop=True),
+        feat_cols,
+        dcats,
+        cfg,
+    )
     ru.save_table(leak["leakage_candidates"], T / "leakage_candidates.csv")
     ru.save_table(leak["feature_sets_long"], T / "feature_sets.csv")
     ru.save_table(leak["audit"], T / "leakage_audit_full.csv")
@@ -112,10 +124,29 @@ def main(quick: bool = False, use_cache: bool = False) -> None:
     ru.save_table(pd.concat([uuid, df[fs["FULL_RESEARCH_ONLY"]]], axis=1), PROC / "X_full.csv")
     summary["feature_set_sizes"] = {k: len(v) for k, v in fs.items()}
 
-    # clean design frames per track
-    X_pre, meta_pre = pp.make_feature_frame(df, fs["PRE_LAB_TRIAGE"], cfg)
-    X_lab, meta_lab = pp.make_feature_frame(df, fs["LAB_AWARE_CONFIRMATION"], cfg)
-    X_full, meta_full = pp.make_feature_frame(df, fs["FULL_RESEARCH_ONLY"], cfg)
+    # Fit every data-driven schema decision on train only, then freeze it.
+    transformers = {}
+    design_frames = {}
+    for track, key in [
+        ("PRE_LAB", "PRE_LAB_TRIAGE"),
+        ("LAB_AWARE", "LAB_AWARE_CONFIRMATION"),
+        ("FULL", "FULL_RESEARCH_ONLY"),
+    ]:
+        transformer = pp.FittedFeatureFrame(cfg=cfg).fit(
+            df.iloc[train_idx], fs[key]
+        )
+        transformers[track] = transformer
+        design_frames[track] = transformer.transform(df)
+    X_pre, X_lab, X_full = (
+        design_frames["PRE_LAB"],
+        design_frames["LAB_AWARE"],
+        design_frames["FULL"],
+    )
+    meta_pre, meta_lab, meta_full = (
+        transformers["PRE_LAB"].meta,
+        transformers["LAB_AWARE"].meta,
+        transformers["FULL"].meta,
+    )
     tracks = {
         "PRE_LAB": (X_pre, meta_pre),
         "LAB_AWARE": (X_lab, meta_lab),
@@ -131,6 +162,22 @@ def main(quick: bool = False, use_cache: bool = False) -> None:
     viz.demographics(raw, acol, gcol, ccol, F / "demographics.png")
     viz.correlation_matrix(X_full, F / "association_matrix.png")
     viz.coinfection_profile(labels_info["top_combinations"], F / "coinfection_profile.png")
+    prevalence_ci = sci.prevalence_intervals(y)
+    ru.save_table(prevalence_ci, T / "label_prevalence_confidence_intervals.csv")
+    if ccol:
+        center_prevalence = sci.center_label_prevalence(raw[ccol], y)
+        ru.save_table(center_prevalence, T / "center_label_prevalence.csv")
+        missing_dependence = sci.missingness_dependence(
+            raw[feat_cols],
+            {
+                "center": raw[ccol],
+                **{
+                    f"label_{label}": y[label].map({0: "negative", 1: "positive"})
+                    for label in active
+                },
+            },
+        )
+        ru.save_table(missing_dependence, T / "missingness_dependence.csv")
     try:
         from sklearn.decomposition import PCA
         pre = pp.build_preprocessor(meta_pre, scale_numeric=True)
@@ -142,11 +189,15 @@ def main(quick: bool = False, use_cache: bool = False) -> None:
     except Exception as exc:
         logger.warning("PCA projection skipped: %s", exc)
 
-    # ---------------- Stage 5: split + leaderboard ---------------------- #
-    train_idx, test_idx = M.train_test_indices(y, cfg["modeling"]["test_size"], rs)
-    summary["n_train"], summary["n_test"] = len(train_idx), len(test_idx)
+    # ---------------- Stage 5: train-only leaderboard ------------------- #
     model_names = M.available_model_names()
+    if quick:
+        model_names = [
+            name for name in model_names
+            if name in {"logreg", "extra_trees", "hist_gb"}
+        ]
     summary["models_available"] = model_names
+    summary["execution_profile"] = "quick_smoke" if quick else "full_benchmark"
     logger.info("Models available: %s", model_names)
 
     cache_path = DASH / "_cache_leaderboard.joblib"
@@ -222,6 +273,7 @@ def main(quick: bool = False, use_cache: bool = False) -> None:
         # save deployable models for pre-lab + lab-aware
         if track in ("PRE_LAB", "LAB_AWARE"):
             joblib.dump({"model": model, "labels": active, "thresholds": thr,
+                         "feature_transformer": transformers[track],
                          "feature_set": fs["PRE_LAB_TRIAGE" if track == "PRE_LAB"
                                           else "LAB_AWARE_CONFIRMATION"]},
                         MODELS / f"{track.lower()}_model.joblib")
@@ -229,6 +281,109 @@ def main(quick: bool = False, use_cache: bool = False) -> None:
     per_label_metrics = pd.concat(per_label_all, ignore_index=True)
     ru.save_table(per_label_metrics, T / "per_label_metrics.csv")
     summary["test_metrics"] = {k: v["test_metrics"] for k, v in test_results.items()}
+
+    # Headline uncertainty intervals on the untouched holdout.
+    pre_test_pred = ev.apply_thresholds(
+        test_results["PRE_LAB"]["test_proba"],
+        thresholds_by_track["PRE_LAB"],
+        active,
+    )
+    bootstrap_ci = ev.bootstrap_multilabel_metrics(
+        y.iloc[test_idx].reset_index(drop=True),
+        pre_test_pred,
+        test_results["PRE_LAB"]["test_proba"],
+        n_bootstrap=1000,
+        random_state=rs,
+    )
+    ru.save_table(bootstrap_ci, T / "headline_metric_bootstrap_ci.csv")
+
+    # Simple prevalence baseline for context.
+    train_prevalence = y.iloc[train_idx].mean().to_numpy()
+    prevalence_proba = np.tile(train_prevalence, (len(test_idx), 1))
+    prevalence_pred = (prevalence_proba >= 0.5).astype(int)
+    baseline_rows = [
+        {
+            "baseline": "train_prevalence_0.5",
+            **ev.multilabel_summary(
+                y.iloc[test_idx], prevalence_pred, prevalence_proba
+            ),
+        }
+    ]
+    ru.save_table(pd.DataFrame(baseline_rows), T / "simple_baselines.csv")
+
+    # Repeated train-only multi-label validation for model-selection variance.
+    repeated_rows = []
+    for repeat, seed in enumerate([rs, rs + 1, rs + 2], start=1):
+        splits = M.make_cv_splits(y.iloc[train_idx], cfg["modeling"]["cv_folds"], seed)
+        repeated_oof = M.cross_val_proba(
+            best["PRE_LAB"], meta_pre, X_pre.iloc[train_idx], y.iloc[train_idx], splits, seed
+        )
+        repeated_pred = ev.apply_thresholds(
+            repeated_oof, thresholds_by_track["PRE_LAB"], active
+        )
+        repeated_rows.append(
+            {
+                "repeat": repeat,
+                "random_state": seed,
+                **ev.multilabel_summary(
+                    y.iloc[train_idx], repeated_pred, repeated_oof
+                ),
+            }
+        )
+    ru.save_table(pd.DataFrame(repeated_rows), T / "repeated_multilabel_validation.csv")
+
+    # Focused preprocessing ablations on the same training folds.
+    ablation_rows = []
+    base_splits = M.make_cv_splits(y.iloc[train_idx], cfg["modeling"]["cv_folds"], rs)
+    variants = {"strict_train_only": (X_pre, meta_pre)}
+    if meta_pre.indicator_cols:
+        no_ind_cols = [c for c in X_pre.columns if c not in meta_pre.indicator_cols]
+        no_ind_meta = pp.FeatureMeta(
+            numeric_cols=[c for c in meta_pre.numeric_cols if c in no_ind_cols],
+            binary_cols=[c for c in meta_pre.binary_cols if c in no_ind_cols],
+        )
+        variants["without_missing_indicators"] = (X_pre[no_ind_cols], no_ind_meta)
+    center_cols = [c for c in X_pre.columns if "centre_de_sant" in c or "center" in c]
+    if center_cols:
+        no_center_cols = [c for c in X_pre.columns if c not in center_cols]
+        no_center_meta = pp.FeatureMeta(
+            numeric_cols=[c for c in meta_pre.numeric_cols if c in no_center_cols],
+            binary_cols=[c for c in meta_pre.binary_cols if c in no_center_cols],
+            indicator_cols=[c for c in meta_pre.indicator_cols if c in no_center_cols],
+        )
+        variants["without_center"] = (X_pre[no_center_cols], no_center_meta)
+    for variant, (variant_x, variant_meta) in variants.items():
+        variant_oof = M.cross_val_proba(
+            best["PRE_LAB"],
+            variant_meta,
+            variant_x.iloc[train_idx],
+            y.iloc[train_idx],
+            base_splits,
+            rs,
+        )
+        variant_pred = ev.apply_thresholds(
+            variant_oof, thresholds_by_track["PRE_LAB"], active
+        )
+        ablation_rows.append(
+            {
+                "variant": variant,
+                "n_features": variant_x.shape[1],
+                **ev.multilabel_summary(
+                    y.iloc[train_idx], variant_pred, variant_oof
+                ),
+            }
+        )
+    ru.save_table(pd.DataFrame(ablation_rows), T / "preprocessing_ablation.csv")
+
+    decision_curves = []
+    for j, label in enumerate(active):
+        curve = sci.decision_curve_net_benefit(
+            y.iloc[test_idx][label],
+            test_results["PRE_LAB"]["test_proba"][:, j],
+        )
+        curve.insert(0, "label", label)
+        decision_curves.append(curve)
+    ru.save_table(pd.concat(decision_curves, ignore_index=True), T / "decision_curve_net_benefit.csv")
 
     # figures on best PRE_LAB (the honest headline model)
     best_track = "PRE_LAB"
@@ -411,13 +566,14 @@ def main(quick: bool = False, use_cache: bool = False) -> None:
     }, DASH / "artifacts.joblib")
     with open(DASH / "summary.json", "w", encoding="utf-8") as fh:
         json.dump(summary, fh, indent=2, default=str)
-
-    # ---- refresh the static (Vercel-ready) web dashboard bundle ------- #
-    try:
-        import export_web_data
-        export_web_data.main()
-    except Exception as exc:  # pragma: no cover - web export is non-critical
-        logger.info("Web export skipped (%s). Run `python export_web_data.py` manually.", exc)
+    provenance = sci.build_provenance_manifest(
+        root=ru.PROJECT_ROOT,
+        data_path=ru.PROJECT_ROOT / cfg["paths"]["raw_csv"],
+        config_path=ru.PROJECT_ROOT / "config" / "config.yaml",
+        execution_mode="quick_smoke" if quick else "full_benchmark",
+    )
+    with open(DASH / "artifact_manifest.json", "w", encoding="utf-8") as fh:
+        json.dump(provenance, fh, indent=2)
 
     logger.info("=" * 70)
     logger.info("PIPELINE COMPLETE.")

@@ -1,0 +1,18 @@
+{
+  "generated_at_utc": "2026-06-13T06:56:42.140543+00:00",
+  "execution_mode": "quick_smoke",
+  "git_commit": "406ea12cc8fecc66bb6a172b157afc8b86b83ab1",
+  "data_path": "data\\raw\\data.csv",
+  "data_sha256": "365344fe8ce553288f952c6d32771cdde2b7c633006538ddb1d6c82de325efb1",
+  "config_path": "config\\config.yaml",
+  "config_sha256": "cff858e2a5814e27c52dc7eea57d835c65db53af0744c528e8df6c124f24b8d1",
+  "package_versions": {
+    "python": "3.12.6",
+    "pandas": "3.0.2",
+    "numpy": "2.4.4",
+    "scikit-learn": "1.8.0",
+    "iterative-stratification": "0.1.9",
+    "xgboost": "3.2.0",
+    "lightgbm": "4.6.0"
+  }
+}

@@ -1,0 +1,9 @@
+model,rationale,limitation,complexity
+Dummy / Prevalence,Base-rate reference,No patient discrimination,Very low
+Logistic Regression,"Stable, interpretable linear baseline",Misses nonlinear interactions,Low
+Random Forest,Robust nonlinear bagging,Larger and less calibrated,Medium
+Extra Trees,"Strong small-tabular benchmark, low variance",Feature effects are less direct,Medium
+HistGradientBoosting,Efficient regularized boosting,Binary relevance required,Medium
+XGBoost,Strong tabular ranking performance,External dependency and tuning sensitivity,High
+LightGBM,Fast boosting with flexible leaves,Can overfit tiny rare-label samples,High
+Classifier Chain,Models label dependence,Order-sensitive and less stable for rare labels,Medium

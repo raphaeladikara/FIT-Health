@@ -1,0 +1,241 @@
+﻿axis,level,feature,support,missing_rate
+center,CMA de DAFRA,Circonference du bras (Mua circumference),153,0.9019607843137255
+center,CMA de DAFRA,Temps de remplissage capillaire (médiane secs IQR). / Capillary refill time (median secs IQR),153,0.40522875816993464
+center,CMA de DAFRA,Autres maladies présentées par le patient,153,0.5882352941176471
+center,CMA de DAFRA,Pression artérielle (moyenne mmHg ± SD). / Arterial blood pressure (mean mmHg ± SD),153,0.6666666666666666
+center,CMA de DAFRA,Lymphocytes,153,0.09803921568627451
+center,CMA de DAFRA,Hematocrite (Hematrocrit),153,0.08496732026143791
+center,CMA de DAFRA,Poids (Weight),153,0.24183006535947713
+center,CMA de DAFRA,Fréquence respiratoire (médiane IQR) / Respiratory rate (median breaths/min IQR),153,0.41830065359477125
+center,CMA de DAFRA,Créatinine élevée / Elevated Creatinine,153,0.20915032679738563
+center,CMA de DAFRA,Neutrophiles / Neutrophils,153,0.22875816993464052
+center,CMA de DAFRA,Nombre de globules blancs (cellules/ML) / White blood cell count / WBC count (cells/ML),153,0.0392156862745098
+center,CMA de DAFRA,Numération plaquettaire Platelet count,153,0.0718954248366013
+center,CMA de DAFRA,Fréquence du pouls (battements/m in ± SD)./ Pulse rate (mean beats/min ± SD) - Shock ou Myocarditis,153,0.0784313725490196
+center,CMA de DAFRA,Température axillaire (médiane IQR) (°C) /Axillary temperature (median IQR) (°C),153,0.0196078431372549
+center,CMA de DAFRA,Goutte épaisse,153,0.1895424836601307
+center,CMA de DAFRA,Test TDR,153,0.1895424836601307
+center,CMA de DAFRA,CRP>50 /CRP 10-50,153,0.11764705882352941
+center,CMA de DAFRA,ALAT / ASAT élevés. / Elevated ALAT / Elevated ASAT,153,0.09803921568627451
+center,CMA de DAFRA,Transaminases (Transaminases),153,0.0784313725490196
+center,CMA de DAFRA,Thrombocytopénie(Thrombocytopenia),153,0.058823529411764705
+center,CMA de DO,Circonference du bras (Mua circumference),147,0.9319727891156463
+center,CMA de DO,Temps de remplissage capillaire (médiane secs IQR). / Capillary refill time (median secs IQR),147,1.0
+center,CMA de DO,Autres maladies présentées par le patient,147,0.7891156462585034
+center,CMA de DO,Pression artérielle (moyenne mmHg ± SD). / Arterial blood pressure (mean mmHg ± SD),147,0.46938775510204084
+center,CMA de DO,Lymphocytes,147,0.9387755102040817
+center,CMA de DO,Hematocrite (Hematrocrit),147,0.6258503401360545
+center,CMA de DO,Poids (Weight),147,0.4557823129251701
+center,CMA de DO,Fréquence respiratoire (médiane IQR) / Respiratory rate (median breaths/min IQR),147,0.16326530612244897
+center,CMA de DO,Créatinine élevée / Elevated Creatinine,147,0.3401360544217687
+center,CMA de DO,Neutrophiles / Neutrophils,147,0.3129251700680272
+center,CMA de DO,Nombre de globules blancs (cellules/ML) / White blood cell count / WBC count (cells/ML),147,0.32653061224489793
+center,CMA de DO,Numération plaquettaire Platelet count,147,0.2653061224489796
+center,CMA de DO,Fréquence du pouls (battements/m in ± SD)./ Pulse rate (mean beats/min ± SD) - Shock ou Myocarditis,147,0.17006802721088435
+center,CMA de DO,Température axillaire (médiane IQR) (°C) /Axillary temperature (median IQR) (°C),147,0.23129251700680273
+center,CMA de DO,Goutte épaisse,147,0.006802721088435374
+center,CMA de DO,Test TDR,147,0.0
+center,CMA de DO,CRP>50 /CRP 10-50,147,0.02040816326530612
+center,CMA de DO,ALAT / ASAT élevés. / Elevated ALAT / Elevated ASAT,147,0.02040816326530612
+center,CMA de DO,Transaminases (Transaminases),147,0.006802721088435374
+center,CMA de DO,Thrombocytopénie(Thrombocytopenia),147,0.02040816326530612
+label_malaria,negative,Circonference du bras (Mua circumference),30,0.9333333333333333
+label_malaria,negative,Temps de remplissage capillaire (médiane secs IQR). / Capillary refill time (median secs IQR),30,0.6
+label_malaria,negative,Autres maladies présentées par le patient,30,0.5333333333333333
+label_malaria,negative,Pression artérielle (moyenne mmHg ± SD). / Arterial blood pressure (mean mmHg ± SD),30,0.5666666666666667
+label_malaria,negative,Lymphocytes,30,0.4
+label_malaria,negative,Hematocrite (Hematrocrit),30,0.3
+label_malaria,negative,Poids (Weight),30,0.3333333333333333
+label_malaria,negative,Fréquence respiratoire (médiane IQR) / Respiratory rate (median breaths/min IQR),30,0.26666666666666666
+label_malaria,negative,Créatinine élevée / Elevated Creatinine,30,0.43333333333333335
+label_malaria,negative,Neutrophiles / Neutrophils,30,0.23333333333333334
+label_malaria,negative,Nombre de globules blancs (cellules/ML) / White blood cell count / WBC count (cells/ML),30,0.16666666666666666
+label_malaria,negative,Numération plaquettaire Platelet count,30,0.2
+label_malaria,negative,Fréquence du pouls (battements/m in ± SD)./ Pulse rate (mean beats/min ± SD) - Shock ou Myocarditis,30,0.16666666666666666
+label_malaria,negative,Température axillaire (médiane IQR) (°C) /Axillary temperature (median IQR) (°C),30,0.16666666666666666
+label_malaria,negative,Goutte épaisse,30,0.23333333333333334
+label_malaria,negative,Test TDR,30,0.13333333333333333
+label_malaria,negative,CRP>50 /CRP 10-50,30,0.1
+label_malaria,negative,ALAT / ASAT élevés. / Elevated ALAT / Elevated ASAT,30,0.1
+label_malaria,negative,Transaminases (Transaminases),30,0.06666666666666667
+label_malaria,negative,Thrombocytopénie(Thrombocytopenia),30,0.06666666666666667
+label_malaria,positive,Circonference du bras (Mua circumference),270,0.9148148148148149
+label_malaria,positive,Temps de remplissage capillaire (médiane secs IQR). / Capillary refill time (median secs IQR),270,0.7074074074074074
+label_malaria,positive,Autres maladies présentées par le patient,270,0.7037037037037037
+label_malaria,positive,Pression artérielle (moyenne mmHg ± SD). / Arterial blood pressure (mean mmHg ± SD),270,0.5703703703703704
+label_malaria,positive,Lymphocytes,270,0.5222222222222223
+label_malaria,positive,Hematocrite (Hematrocrit),270,0.35555555555555557
+label_malaria,positive,Poids (Weight),270,0.34814814814814815
+label_malaria,positive,Fréquence respiratoire (médiane IQR) / Respiratory rate (median breaths/min IQR),270,0.2962962962962963
+label_malaria,positive,Créatinine élevée / Elevated Creatinine,270,0.25555555555555554
+label_malaria,positive,Neutrophiles / Neutrophils,270,0.2740740740740741
+label_malaria,positive,Nombre de globules blancs (cellules/ML) / White blood cell count / WBC count (cells/ML),270,0.1814814814814815
+label_malaria,positive,Numération plaquettaire Platelet count,270,0.16296296296296298
+label_malaria,positive,Fréquence du pouls (battements/m in ± SD)./ Pulse rate (mean beats/min ± SD) - Shock ou Myocarditis,270,0.11851851851851852
+label_malaria,positive,Température axillaire (médiane IQR) (°C) /Axillary temperature (median IQR) (°C),270,0.11851851851851852
+label_malaria,positive,Goutte épaisse,270,0.08518518518518518
+label_malaria,positive,Test TDR,270,0.09259259259259259
+label_malaria,positive,CRP>50 /CRP 10-50,270,0.06666666666666667
+label_malaria,positive,ALAT / ASAT élevés. / Elevated ALAT / Elevated ASAT,270,0.05555555555555555
+label_malaria,positive,Transaminases (Transaminases),270,0.040740740740740744
+label_malaria,positive,Thrombocytopénie(Thrombocytopenia),270,0.037037037037037035
+label_other_diseases,negative,Circonference du bras (Mua circumference),201,0.900497512437811
+label_other_diseases,negative,Temps de remplissage capillaire (médiane secs IQR). / Capillary refill time (median secs IQR),201,0.6716417910447762
+label_other_diseases,negative,Autres maladies présentées par le patient,201,1.0
+label_other_diseases,negative,Pression artérielle (moyenne mmHg ± SD). / Arterial blood pressure (mean mmHg ± SD),201,0.6218905472636815
+label_other_diseases,negative,Lymphocytes,201,0.572139303482587
+label_other_diseases,negative,Hematocrite (Hematrocrit),201,0.3880597014925373
+label_other_diseases,negative,Poids (Weight),201,0.2835820895522388
+label_other_diseases,negative,Fréquence respiratoire (médiane IQR) / Respiratory rate (median breaths/min IQR),201,0.24378109452736318
+label_other_diseases,negative,Créatinine élevée / Elevated Creatinine,201,0.2885572139303483
+label_other_diseases,negative,Neutrophiles / Neutrophils,201,0.24875621890547264
+label_other_diseases,negative,Nombre de globules blancs (cellules/ML) / White blood cell count / WBC count (cells/ML),201,0.21890547263681592
+label_other_diseases,negative,Numération plaquettaire Platelet count,201,0.1791044776119403
+label_other_diseases,negative,Fréquence du pouls (battements/m in ± SD)./ Pulse rate (mean beats/min ± SD) - Shock ou Myocarditis,201,0.12437810945273632
+label_other_diseases,negative,Température axillaire (médiane IQR) (°C) /Axillary temperature (median IQR) (°C),201,0.14427860696517414
+label_other_diseases,negative,Goutte épaisse,201,0.06965174129353234
+label_other_diseases,negative,Test TDR,201,0.04477611940298507
+label_other_diseases,negative,CRP>50 /CRP 10-50,201,0.04975124378109453
+label_other_diseases,negative,ALAT / ASAT élevés. / Elevated ALAT / Elevated ASAT,201,0.04975124378109453
+label_other_diseases,negative,Transaminases (Transaminases),201,0.03482587064676617
+label_other_diseases,negative,Thrombocytopénie(Thrombocytopenia),201,0.029850746268656716
+label_other_diseases,positive,Circonference du bras (Mua circumference),99,0.9494949494949495
+label_other_diseases,positive,Temps de remplissage capillaire (médiane secs IQR). / Capillary refill time (median secs IQR),99,0.7474747474747475
+label_other_diseases,positive,Autres maladies présentées par le patient,99,0.050505050505050504
+label_other_diseases,positive,Pression artérielle (moyenne mmHg ± SD). / Arterial blood pressure (mean mmHg ± SD),99,0.46464646464646464
+label_other_diseases,positive,Lymphocytes,99,0.3838383838383838
+label_other_diseases,positive,Hematocrite (Hematrocrit),99,0.2727272727272727
+label_other_diseases,positive,Poids (Weight),99,0.47474747474747475
+label_other_diseases,positive,Fréquence respiratoire (médiane IQR) / Respiratory rate (median breaths/min IQR),99,0.3939393939393939
+label_other_diseases,positive,Créatinine élevée / Elevated Creatinine,99,0.24242424242424243
+label_other_diseases,positive,Neutrophiles / Neutrophils,99,0.31313131313131315
+label_other_diseases,positive,Nombre de globules blancs (cellules/ML) / White blood cell count / WBC count (cells/ML),99,0.10101010101010101
+label_other_diseases,positive,Numération plaquettaire Platelet count,99,0.1414141414141414
+label_other_diseases,positive,Fréquence du pouls (battements/m in ± SD)./ Pulse rate (mean beats/min ± SD) - Shock ou Myocarditis,99,0.12121212121212122
+label_other_diseases,positive,Température axillaire (médiane IQR) (°C) /Axillary temperature (median IQR) (°C),99,0.08080808080808081
+label_other_diseases,positive,Goutte épaisse,99,0.16161616161616163
+label_other_diseases,positive,Test TDR,99,0.20202020202020202
+label_other_diseases,positive,CRP>50 /CRP 10-50,99,0.1111111111111111
+label_other_diseases,positive,ALAT / ASAT élevés. / Elevated ALAT / Elevated ASAT,99,0.08080808080808081
+label_other_diseases,positive,Transaminases (Transaminases),99,0.06060606060606061
+label_other_diseases,positive,Thrombocytopénie(Thrombocytopenia),99,0.06060606060606061
+label_dengue,negative,Circonference du bras (Mua circumference),244,0.9016393442622951
+label_dengue,negative,Temps de remplissage capillaire (médiane secs IQR). / Capillary refill time (median secs IQR),244,0.6434426229508197
+label_dengue,negative,Autres maladies présentées par le patient,244,0.6475409836065574
+label_dengue,negative,Pression artérielle (moyenne mmHg ± SD). / Arterial blood pressure (mean mmHg ± SD),244,0.6475409836065574
+label_dengue,negative,Lymphocytes,244,0.45901639344262296
+label_dengue,negative,Hematocrite (Hematrocrit),244,0.3155737704918033
+label_dengue,negative,Poids (Weight),244,0.3360655737704918
+label_dengue,negative,Fréquence respiratoire (médiane IQR) / Respiratory rate (median breaths/min IQR),244,0.3073770491803279
+label_dengue,negative,Créatinine élevée / Elevated Creatinine,244,0.27049180327868855
+label_dengue,negative,Neutrophiles / Neutrophils,244,0.26639344262295084
+label_dengue,negative,Nombre de globules blancs (cellules/ML) / White blood cell count / WBC count (cells/ML),244,0.1598360655737705
+label_dengue,negative,Numération plaquettaire Platelet count,244,0.1557377049180328
+label_dengue,negative,Fréquence du pouls (battements/m in ± SD)./ Pulse rate (mean beats/min ± SD) - Shock ou Myocarditis,244,0.12295081967213115
+label_dengue,negative,Température axillaire (médiane IQR) (°C) /Axillary temperature (median IQR) (°C),244,0.11065573770491803
+label_dengue,negative,Goutte épaisse,244,0.11885245901639344
+label_dengue,negative,Test TDR,244,0.10245901639344263
+label_dengue,negative,CRP>50 /CRP 10-50,244,0.0778688524590164
+label_dengue,negative,ALAT / ASAT élevés. / Elevated ALAT / Elevated ASAT,244,0.06967213114754098
+label_dengue,negative,Transaminases (Transaminases),244,0.04918032786885246
+label_dengue,negative,Thrombocytopénie(Thrombocytopenia),244,0.040983606557377046
+label_dengue,positive,Circonference du bras (Mua circumference),56,0.9821428571428571
+label_dengue,positive,Temps de remplissage capillaire (médiane secs IQR). / Capillary refill time (median secs IQR),56,0.9285714285714286
+label_dengue,positive,Autres maladies présentées par le patient,56,0.8571428571428571
+label_dengue,positive,Pression artérielle (moyenne mmHg ± SD). / Arterial blood pressure (mean mmHg ± SD),56,0.23214285714285715
+label_dengue,positive,Lymphocytes,56,0.7321428571428571
+label_dengue,positive,Hematocrite (Hematrocrit),56,0.5
+label_dengue,positive,Poids (Weight),56,0.39285714285714285
+label_dengue,positive,Fréquence respiratoire (médiane IQR) / Respiratory rate (median breaths/min IQR),56,0.23214285714285715
+label_dengue,positive,Créatinine élevée / Elevated Creatinine,56,0.2857142857142857
+label_dengue,positive,Neutrophiles / Neutrophils,56,0.2857142857142857
+label_dengue,positive,Nombre de globules blancs (cellules/ML) / White blood cell count / WBC count (cells/ML),56,0.26785714285714285
+label_dengue,positive,Numération plaquettaire Platelet count,56,0.21428571428571427
+label_dengue,positive,Fréquence du pouls (battements/m in ± SD)./ Pulse rate (mean beats/min ± SD) - Shock ou Myocarditis,56,0.125
+label_dengue,positive,Température axillaire (médiane IQR) (°C) /Axillary temperature (median IQR) (°C),56,0.17857142857142858
+label_dengue,positive,Goutte épaisse,56,0.017857142857142856
+label_dengue,positive,Test TDR,56,0.07142857142857142
+label_dengue,positive,CRP>50 /CRP 10-50,56,0.03571428571428571
+label_dengue,positive,ALAT / ASAT élevés. / Elevated ALAT / Elevated ASAT,56,0.017857142857142856
+label_dengue,positive,Transaminases (Transaminases),56,0.017857142857142856
+label_dengue,positive,Thrombocytopénie(Thrombocytopenia),56,0.03571428571428571
+label_typhoid,negative,Circonference du bras (Mua circumference),271,0.9077490774907749
+label_typhoid,negative,Temps de remplissage capillaire (médiane secs IQR). / Capillary refill time (median secs IQR),271,0.6789667896678967
+label_typhoid,negative,Autres maladies présentées par le patient,271,0.6605166051660517
+label_typhoid,negative,Pression artérielle (moyenne mmHg ± SD). / Arterial blood pressure (mean mmHg ± SD),271,0.5904059040590406
+label_typhoid,negative,Lymphocytes,271,0.4797047970479705
+label_typhoid,negative,Hematocrite (Hematrocrit),271,0.3284132841328413
+label_typhoid,negative,Poids (Weight),271,0.33948339483394835
+label_typhoid,negative,Fréquence respiratoire (médiane IQR) / Respiratory rate (median breaths/min IQR),271,0.30996309963099633
+label_typhoid,negative,Créatinine élevée / Elevated Creatinine,271,0.2693726937269373
+label_typhoid,negative,Neutrophiles / Neutrophils,271,0.2730627306273063
+label_typhoid,negative,Nombre de globules blancs (cellules/ML) / White blood cell count / WBC count (cells/ML),271,0.17712177121771217
+label_typhoid,negative,Numération plaquettaire Platelet count,271,0.16605166051660517
+label_typhoid,negative,Fréquence du pouls (battements/m in ± SD)./ Pulse rate (mean beats/min ± SD) - Shock ou Myocarditis,271,0.12915129151291513
+label_typhoid,negative,Température axillaire (médiane IQR) (°C) /Axillary temperature (median IQR) (°C),271,0.12546125461254612
+label_typhoid,negative,Goutte épaisse,271,0.1070110701107011
+label_typhoid,negative,Test TDR,271,0.1070110701107011
+label_typhoid,negative,CRP>50 /CRP 10-50,271,0.07380073800738007
+label_typhoid,negative,ALAT / ASAT élevés. / Elevated ALAT / Elevated ASAT,271,0.06273062730627306
+label_typhoid,negative,Transaminases (Transaminases),271,0.04428044280442804
+label_typhoid,negative,Thrombocytopénie(Thrombocytopenia),271,0.04059040590405904
+label_typhoid,positive,Circonference du bras (Mua circumference),29,1.0
+label_typhoid,positive,Temps de remplissage capillaire (médiane secs IQR). / Capillary refill time (median secs IQR),29,0.8620689655172413
+label_typhoid,positive,Autres maladies présentées par le patient,29,0.9310344827586207
+label_typhoid,positive,Pression artérielle (moyenne mmHg ± SD). / Arterial blood pressure (mean mmHg ± SD),29,0.3793103448275862
+label_typhoid,positive,Lymphocytes,29,0.7931034482758621
+label_typhoid,positive,Hematocrite (Hematrocrit),29,0.5517241379310345
+label_typhoid,positive,Poids (Weight),29,0.41379310344827586
+label_typhoid,positive,Fréquence respiratoire (médiane IQR) / Respiratory rate (median breaths/min IQR),29,0.13793103448275862
+label_typhoid,positive,Créatinine élevée / Elevated Creatinine,29,0.3103448275862069
+label_typhoid,positive,Neutrophiles / Neutrophils,29,0.2413793103448276
+label_typhoid,positive,Nombre de globules blancs (cellules/ML) / White blood cell count / WBC count (cells/ML),29,0.20689655172413793
+label_typhoid,positive,Numération plaquettaire Platelet count,29,0.1724137931034483
+label_typhoid,positive,Fréquence du pouls (battements/m in ± SD)./ Pulse rate (mean beats/min ± SD) - Shock ou Myocarditis,29,0.06896551724137931
+label_typhoid,positive,Température axillaire (médiane IQR) (°C) /Axillary temperature (median IQR) (°C),29,0.10344827586206896
+label_typhoid,positive,Goutte épaisse,29,0.034482758620689655
+label_typhoid,positive,Test TDR,29,0.0
+label_typhoid,positive,CRP>50 /CRP 10-50,29,0.034482758620689655
+label_typhoid,positive,ALAT / ASAT élevés. / Elevated ALAT / Elevated ASAT,29,0.034482758620689655
+label_typhoid,positive,Transaminases (Transaminases),29,0.034482758620689655
+label_typhoid,positive,Thrombocytopénie(Thrombocytopenia),29,0.034482758620689655
+label_yellow_fever,negative,Circonference du bras (Mua circumference),288,0.9131944444444444
+label_yellow_fever,negative,Temps de remplissage capillaire (médiane secs IQR). / Capillary refill time (median secs IQR),288,0.6944444444444444
+label_yellow_fever,negative,Autres maladies présentées par le patient,288,0.6770833333333334
+label_yellow_fever,negative,Pression artérielle (moyenne mmHg ± SD). / Arterial blood pressure (mean mmHg ± SD),288,0.5729166666666666
+label_yellow_fever,negative,Lymphocytes,288,0.5034722222222222
+label_yellow_fever,negative,Hematocrite (Hematrocrit),288,0.3402777777777778
+label_yellow_fever,negative,Poids (Weight),288,0.34375
+label_yellow_fever,negative,Fréquence respiratoire (médiane IQR) / Respiratory rate (median breaths/min IQR),288,0.2986111111111111
+label_yellow_fever,negative,Créatinine élevée / Elevated Creatinine,288,0.2708333333333333
+label_yellow_fever,negative,Neutrophiles / Neutrophils,288,0.2673611111111111
+label_yellow_fever,negative,Nombre de globules blancs (cellules/ML) / White blood cell count / WBC count (cells/ML),288,0.1701388888888889
+label_yellow_fever,negative,Numération plaquettaire Platelet count,288,0.1597222222222222
+label_yellow_fever,negative,Fréquence du pouls (battements/m in ± SD)./ Pulse rate (mean beats/min ± SD) - Shock ou Myocarditis,288,0.12152777777777778
+label_yellow_fever,negative,Température axillaire (médiane IQR) (°C) /Axillary temperature (median IQR) (°C),288,0.11458333333333333
+label_yellow_fever,negative,Goutte épaisse,288,0.10416666666666667
+label_yellow_fever,negative,Test TDR,288,0.10069444444444445
+label_yellow_fever,negative,CRP>50 /CRP 10-50,288,0.07291666666666667
+label_yellow_fever,negative,ALAT / ASAT élevés. / Elevated ALAT / Elevated ASAT,288,0.0625
+label_yellow_fever,negative,Transaminases (Transaminases),288,0.04513888888888889
+label_yellow_fever,negative,Thrombocytopénie(Thrombocytopenia),288,0.041666666666666664
+label_yellow_fever,positive,Circonference du bras (Mua circumference),12,1.0
+label_yellow_fever,positive,Temps de remplissage capillaire (médiane secs IQR). / Capillary refill time (median secs IQR),12,0.75
+label_yellow_fever,positive,Autres maladies présentées par le patient,12,0.9166666666666666
+label_yellow_fever,positive,Pression artérielle (moyenne mmHg ± SD). / Arterial blood pressure (mean mmHg ± SD),12,0.5
+label_yellow_fever,positive,Lymphocytes,12,0.6666666666666666
+label_yellow_fever,positive,Hematocrite (Hematrocrit),12,0.5833333333333334
+label_yellow_fever,positive,Poids (Weight),12,0.4166666666666667
+label_yellow_fever,positive,Fréquence respiratoire (médiane IQR) / Respiratory rate (median breaths/min IQR),12,0.16666666666666666
+label_yellow_fever,positive,Créatinine élevée / Elevated Creatinine,12,0.3333333333333333
+label_yellow_fever,positive,Neutrophiles / Neutrophils,12,0.3333333333333333
+label_yellow_fever,positive,Nombre de globules blancs (cellules/ML) / White blood cell count / WBC count (cells/ML),12,0.4166666666666667
+label_yellow_fever,positive,Numération plaquettaire Platelet count,12,0.3333333333333333
+label_yellow_fever,positive,Fréquence du pouls (battements/m in ± SD)./ Pulse rate (mean beats/min ± SD) - Shock ou Myocarditis,12,0.16666666666666666
+label_yellow_fever,positive,Température axillaire (médiane IQR) (°C) /Axillary temperature (median IQR) (°C),12,0.3333333333333333
+label_yellow_fever,positive,Goutte épaisse,12,0.0
+label_yellow_fever,positive,Test TDR,12,0.0
+label_yellow_fever,positive,CRP>50 /CRP 10-50,12,0.0
+label_yellow_fever,positive,ALAT / ASAT élevés. / Elevated ALAT / Elevated ASAT,12,0.0
+label_yellow_fever,positive,Transaminases (Transaminases),12,0.0
+label_yellow_fever,positive,Thrombocytopénie(Thrombocytopenia),12,0.0

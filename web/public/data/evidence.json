@@ -1,0 +1,1253 @@
+{
+  "model_leaderboard": [
+    {
+      "track": "FULL",
+      "model": "classifier_chain",
+      "model_track": "FULL:classifier_chain",
+      "micro_f1": 0.9283,
+      "macro_f1": 0.6844,
+      "weighted_f1": 0.9147,
+      "samples_f1": 0.9218,
+      "hamming_loss": 0.0439,
+      "subset_accuracy": 0.8027,
+      "jaccard_samples": 0.8939,
+      "macro_recall": 0.6566,
+      "macro_precision": 0.7327,
+      "macro_roc_auc": 0.8897,
+      "macro_pr_auc": 0.7153
+    },
+    {
+      "track": "FULL",
+      "model": "hist_gb",
+      "model_track": "FULL:hist_gb",
+      "micro_f1": 0.9267,
+      "macro_f1": 0.6755,
+      "weighted_f1": 0.9119,
+      "samples_f1": 0.9203,
+      "hamming_loss": 0.0448,
+      "subset_accuracy": 0.7982,
+      "jaccard_samples": 0.8916,
+      "macro_recall": 0.6475,
+      "macro_precision": 0.7282,
+      "macro_roc_auc": 0.8864,
+      "macro_pr_auc": 0.7093
+    },
+    {
+      "track": "FULL",
+      "model": "extra_trees",
+      "model_track": "FULL:extra_trees",
+      "micro_f1": 0.8784,
+      "macro_f1": 0.63,
+      "weighted_f1": 0.8794,
+      "samples_f1": 0.8851,
+      "hamming_loss": 0.0762,
+      "subset_accuracy": 0.704,
+      "jaccard_samples": 0.8404,
+      "macro_recall": 0.6195,
+      "macro_precision": 0.6508,
+      "macro_roc_auc": 0.8795,
+      "macro_pr_auc": 0.696
+    },
+    {
+      "track": "FULL",
+      "model": "logreg",
+      "model_track": "FULL:logreg",
+      "micro_f1": 0.8489,
+      "macro_f1": 0.656,
+      "weighted_f1": 0.8829,
+      "samples_f1": 0.8478,
+      "hamming_loss": 0.0987,
+      "subset_accuracy": 0.6054,
+      "jaccard_samples": 0.7922,
+      "macro_recall": 0.6986,
+      "macro_precision": 0.6393,
+      "macro_roc_auc": 0.8514,
+      "macro_pr_auc": 0.6491
+    },
+    {
+      "track": "LAB_AWARE",
+      "model": "classifier_chain",
+      "model_track": "LAB_AWARE:classifier_chain",
+      "micro_f1": 0.8589,
+      "macro_f1": 0.5309,
+      "weighted_f1": 0.8316,
+      "samples_f1": 0.8584,
+      "hamming_loss": 0.0843,
+      "subset_accuracy": 0.6682,
+      "jaccard_samples": 0.8102,
+      "macro_recall": 0.496,
+      "macro_precision": 0.5913,
+      "macro_roc_auc": 0.8329,
+      "macro_pr_auc": 0.5791
+    },
+    {
+      "track": "LAB_AWARE",
+      "model": "hist_gb",
+      "model_track": "LAB_AWARE:hist_gb",
+      "micro_f1": 0.8559,
+      "macro_f1": 0.5128,
+      "weighted_f1": 0.8285,
+      "samples_f1": 0.8553,
+      "hamming_loss": 0.0861,
+      "subset_accuracy": 0.6592,
+      "jaccard_samples": 0.8057,
+      "macro_recall": 0.4825,
+      "macro_precision": 0.5629,
+      "macro_roc_auc": 0.8229,
+      "macro_pr_auc": 0.5748
+    },
+    {
+      "track": "LAB_AWARE",
+      "model": "extra_trees",
+      "model_track": "LAB_AWARE:extra_trees",
+      "micro_f1": 0.8312,
+      "macro_f1": 0.5552,
+      "weighted_f1": 0.8381,
+      "samples_f1": 0.8451,
+      "hamming_loss": 0.1085,
+      "subset_accuracy": 0.5964,
+      "jaccard_samples": 0.7862,
+      "macro_recall": 0.574,
+      "macro_precision": 0.544,
+      "macro_roc_auc": 0.8311,
+      "macro_pr_auc": 0.5662
+    },
+    {
+      "track": "LAB_AWARE",
+      "model": "logreg",
+      "model_track": "LAB_AWARE:logreg",
+      "micro_f1": 0.7772,
+      "macro_f1": 0.5514,
+      "weighted_f1": 0.8217,
+      "samples_f1": 0.7837,
+      "hamming_loss": 0.1507,
+      "subset_accuracy": 0.4753,
+      "jaccard_samples": 0.7088,
+      "macro_recall": 0.618,
+      "macro_precision": 0.5189,
+      "macro_roc_auc": 0.8044,
+      "macro_pr_auc": 0.5463
+    },
+    {
+      "track": "PRE_LAB",
+      "model": "extra_trees",
+      "model_track": "PRE_LAB:extra_trees",
+      "micro_f1": 0.8258,
+      "macro_f1": 0.5604,
+      "weighted_f1": 0.8327,
+      "samples_f1": 0.8347,
+      "hamming_loss": 0.1139,
+      "subset_accuracy": 0.5785,
+      "jaccard_samples": 0.7732,
+      "macro_recall": 0.5954,
+      "macro_precision": 0.5365,
+      "macro_roc_auc": 0.7826,
+      "macro_pr_auc": 0.558
+    },
+    {
+      "track": "PRE_LAB",
+      "model": "classifier_chain",
+      "model_track": "PRE_LAB:classifier_chain",
+      "micro_f1": 0.8331,
+      "macro_f1": 0.4934,
+      "weighted_f1": 0.8034,
+      "samples_f1": 0.8368,
+      "hamming_loss": 0.1013,
+      "subset_accuracy": 0.6099,
+      "jaccard_samples": 0.7788,
+      "macro_recall": 0.472,
+      "macro_precision": 0.5311,
+      "macro_roc_auc": 0.7474,
+      "macro_pr_auc": 0.5371
+    },
+    {
+      "track": "PRE_LAB",
+      "model": "hist_gb",
+      "model_track": "PRE_LAB:hist_gb",
+      "micro_f1": 0.8368,
+      "macro_f1": 0.4754,
+      "weighted_f1": 0.8001,
+      "samples_f1": 0.8404,
+      "hamming_loss": 0.0987,
+      "subset_accuracy": 0.6009,
+      "jaccard_samples": 0.7803,
+      "macro_recall": 0.4558,
+      "macro_precision": 0.5235,
+      "macro_roc_auc": 0.7392,
+      "macro_pr_auc": 0.5301
+    },
+    {
+      "track": "PRE_LAB",
+      "model": "logreg",
+      "model_track": "PRE_LAB:logreg",
+      "micro_f1": 0.7313,
+      "macro_f1": 0.5233,
+      "weighted_f1": 0.7883,
+      "samples_f1": 0.7425,
+      "hamming_loss": 0.1839,
+      "subset_accuracy": 0.4126,
+      "jaccard_samples": 0.659,
+      "macro_recall": 0.5836,
+      "macro_precision": 0.4971,
+      "macro_roc_auc": 0.7259,
+      "macro_pr_auc": 0.5221
+    }
+  ],
+  "per_label_metrics": [
+    {
+      "track": "PRE_LAB",
+      "label": "malaria",
+      "support_pos": 67,
+      "precision": 0.8701,
+      "recall": 1.0,
+      "f1": 0.9306,
+      "roc_auc": 0.6612,
+      "pr_auc": 0.9377,
+      "tp": 67,
+      "fp": 10,
+      "fn": 0,
+      "tn": 0,
+      "false_negative_rate": 0.0
+    },
+    {
+      "track": "PRE_LAB",
+      "label": "other_diseases",
+      "support_pos": 25,
+      "precision": 0.96,
+      "recall": 0.96,
+      "f1": 0.96,
+      "roc_auc": 0.9938,
+      "pr_auc": 0.9903,
+      "tp": 24,
+      "fp": 1,
+      "fn": 1,
+      "tn": 51,
+      "false_negative_rate": 0.04
+    },
+    {
+      "track": "PRE_LAB",
+      "label": "dengue",
+      "support_pos": 14,
+      "precision": 0.4706,
+      "recall": 0.5714,
+      "f1": 0.5161,
+      "roc_auc": 0.7993,
+      "pr_auc": 0.4547,
+      "tp": 8,
+      "fp": 9,
+      "fn": 6,
+      "tn": 54,
+      "false_negative_rate": 0.4286
+    },
+    {
+      "track": "PRE_LAB",
+      "label": "typhoid",
+      "support_pos": 7,
+      "precision": 0.3333,
+      "recall": 0.2857,
+      "f1": 0.3077,
+      "roc_auc": 0.5939,
+      "pr_auc": 0.3067,
+      "tp": 2,
+      "fp": 4,
+      "fn": 5,
+      "tn": 66,
+      "false_negative_rate": 0.7143
+    },
+    {
+      "track": "PRE_LAB",
+      "label": "yellow_fever",
+      "support_pos": 3,
+      "precision": 0.2222,
+      "recall": 0.6667,
+      "f1": 0.3333,
+      "roc_auc": 0.8829,
+      "pr_auc": 0.34,
+      "tp": 2,
+      "fp": 7,
+      "fn": 1,
+      "tn": 67,
+      "false_negative_rate": 0.3333
+    },
+    {
+      "track": "LAB_AWARE",
+      "label": "malaria",
+      "support_pos": 67,
+      "precision": 0.9565,
+      "recall": 0.9851,
+      "f1": 0.9706,
+      "roc_auc": 0.9642,
+      "pr_auc": 0.9944,
+      "tp": 66,
+      "fp": 3,
+      "fn": 1,
+      "tn": 7,
+      "false_negative_rate": 0.0149
+    },
+    {
+      "track": "LAB_AWARE",
+      "label": "other_diseases",
+      "support_pos": 25,
+      "precision": 1.0,
+      "recall": 0.96,
+      "f1": 0.9796,
+      "roc_auc": 0.9838,
+      "pr_auc": 0.9817,
+      "tp": 24,
+      "fp": 0,
+      "fn": 1,
+      "tn": 52,
+      "false_negative_rate": 0.04
+    },
+    {
+      "track": "LAB_AWARE",
+      "label": "dengue",
+      "support_pos": 14,
+      "precision": 0.4,
+      "recall": 0.5714,
+      "f1": 0.4706,
+      "roc_auc": 0.7778,
+      "pr_auc": 0.5162,
+      "tp": 8,
+      "fp": 12,
+      "fn": 6,
+      "tn": 51,
+      "false_negative_rate": 0.4286
+    },
+    {
+      "track": "LAB_AWARE",
+      "label": "typhoid",
+      "support_pos": 7,
+      "precision": 0.3,
+      "recall": 0.4286,
+      "f1": 0.3529,
+      "roc_auc": 0.6469,
+      "pr_auc": 0.2036,
+      "tp": 3,
+      "fp": 7,
+      "fn": 4,
+      "tn": 63,
+      "false_negative_rate": 0.5714
+    },
+    {
+      "track": "LAB_AWARE",
+      "label": "yellow_fever",
+      "support_pos": 3,
+      "precision": 0.125,
+      "recall": 0.3333,
+      "f1": 0.1818,
+      "roc_auc": 0.5811,
+      "pr_auc": 0.0786,
+      "tp": 1,
+      "fp": 7,
+      "fn": 2,
+      "tn": 67,
+      "false_negative_rate": 0.6667
+    },
+    {
+      "track": "FULL",
+      "label": "malaria",
+      "support_pos": 67,
+      "precision": 0.9565,
+      "recall": 0.9851,
+      "f1": 0.9706,
+      "roc_auc": 0.9657,
+      "pr_auc": 0.9946,
+      "tp": 66,
+      "fp": 3,
+      "fn": 1,
+      "tn": 7,
+      "false_negative_rate": 0.0149
+    },
+    {
+      "track": "FULL",
+      "label": "other_diseases",
+      "support_pos": 25,
+      "precision": 1.0,
+      "recall": 0.96,
+      "f1": 0.9796,
+      "roc_auc": 0.9838,
+      "pr_auc": 0.9817,
+      "tp": 24,
+      "fp": 0,
+      "fn": 1,
+      "tn": 52,
+      "false_negative_rate": 0.04
+    },
+    {
+      "track": "FULL",
+      "label": "dengue",
+      "support_pos": 14,
+      "precision": 1.0,
+      "recall": 0.8571,
+      "f1": 0.9231,
+      "roc_auc": 0.9977,
+      "pr_auc": 0.9911,
+      "tp": 12,
+      "fp": 0,
+      "fn": 2,
+      "tn": 63,
+      "false_negative_rate": 0.1429
+    },
+    {
+      "track": "FULL",
+      "label": "typhoid",
+      "support_pos": 7,
+      "precision": 0.6,
+      "recall": 0.4286,
+      "f1": 0.5,
+      "roc_auc": 0.6286,
+      "pr_auc": 0.3652,
+      "tp": 3,
+      "fp": 2,
+      "fn": 4,
+      "tn": 68,
+      "false_negative_rate": 0.5714
+    },
+    {
+      "track": "FULL",
+      "label": "yellow_fever",
+      "support_pos": 3,
+      "precision": 0.1111,
+      "recall": 0.3333,
+      "f1": 0.1667,
+      "roc_auc": 0.5631,
+      "pr_auc": 0.0821,
+      "tp": 1,
+      "fp": 8,
+      "fn": 2,
+      "tn": 66,
+      "false_negative_rate": 0.6667
+    }
+  ],
+  "calibration_metrics": [
+    {
+      "label": "malaria",
+      "base_rate": 0.8701,
+      "brier": 0.1097,
+      "ece": 0.0826,
+      "mean_pred": 0.8287,
+      "variant": "uncalibrated"
+    },
+    {
+      "label": "other_diseases",
+      "base_rate": 0.3247,
+      "brier": 0.048,
+      "ece": 0.1599,
+      "mean_pred": 0.346,
+      "variant": "uncalibrated"
+    },
+    {
+      "label": "dengue",
+      "base_rate": 0.1818,
+      "brier": 0.1316,
+      "ece": 0.1252,
+      "mean_pred": 0.2709,
+      "variant": "uncalibrated"
+    },
+    {
+      "label": "typhoid",
+      "base_rate": 0.0909,
+      "brier": 0.1063,
+      "ece": 0.1279,
+      "mean_pred": 0.1701,
+      "variant": "uncalibrated"
+    },
+    {
+      "label": "yellow_fever",
+      "base_rate": 0.039,
+      "brier": 0.0371,
+      "ece": 0.0586,
+      "mean_pred": 0.0956,
+      "variant": "uncalibrated"
+    },
+    {
+      "label": "malaria",
+      "base_rate": 0.8701,
+      "brier": 0.1035,
+      "ece": 0.0446,
+      "mean_pred": 0.9147,
+      "variant": "calibrated"
+    },
+    {
+      "label": "other_diseases",
+      "base_rate": 0.3247,
+      "brier": 0.0198,
+      "ece": 0.0265,
+      "mean_pred": 0.3323,
+      "variant": "calibrated"
+    },
+    {
+      "label": "dengue",
+      "base_rate": 0.1818,
+      "brier": 0.1246,
+      "ece": 0.0499,
+      "mean_pred": 0.1658,
+      "variant": "calibrated"
+    },
+    {
+      "label": "typhoid",
+      "base_rate": 0.0909,
+      "brier": 0.0788,
+      "ece": 0.0587,
+      "mean_pred": 0.0818,
+      "variant": "calibrated"
+    },
+    {
+      "label": "yellow_fever",
+      "base_rate": 0.039,
+      "brier": 0.0361,
+      "ece": 0.0024,
+      "mean_pred": 0.0366,
+      "variant": "calibrated"
+    }
+  ],
+  "conformal_metrics": [
+    {
+      "label": "malaria",
+      "prob_threshold": 0.6059,
+      "test_positives": 67,
+      "covered_positives": 66,
+      "empirical_coverage": 0.9851,
+      "predicted_inclusions": 75
+    },
+    {
+      "label": "other_diseases",
+      "prob_threshold": 0.5392,
+      "test_positives": 25,
+      "covered_positives": 24,
+      "empirical_coverage": 0.96,
+      "predicted_inclusions": 24
+    },
+    {
+      "label": "dengue",
+      "prob_threshold": 0.1837,
+      "test_positives": 14,
+      "covered_positives": 13,
+      "empirical_coverage": 0.9286,
+      "predicted_inclusions": 37
+    },
+    {
+      "label": "typhoid",
+      "prob_threshold": 0.1257,
+      "test_positives": 7,
+      "covered_positives": 4,
+      "empirical_coverage": 0.5714,
+      "predicted_inclusions": 29
+    },
+    {
+      "label": "yellow_fever",
+      "prob_threshold": 0.0222,
+      "test_positives": 3,
+      "covered_positives": 3,
+      "empirical_coverage": 1.0,
+      "predicted_inclusions": 51
+    }
+  ],
+  "fairness_metrics": [
+    {
+      "axis": "gender",
+      "level": "Homme",
+      "n": 46,
+      "macro_f1": 0.6508,
+      "recall_malaria": 1.0,
+      "recall_other_diseases": 1.0,
+      "recall_dengue": 0.5556,
+      "recall_typhoid": 0.5,
+      "recall_yellow_fever": 1.0
+    },
+    {
+      "axis": "gender",
+      "level": "Femme",
+      "n": 30,
+      "macro_f1": 0.5502,
+      "recall_malaria": 1.0,
+      "recall_other_diseases": 1.0,
+      "recall_dengue": 0.6,
+      "recall_typhoid": 0.0,
+      "recall_yellow_fever": 0.5
+    },
+    {
+      "axis": "center",
+      "level": "CMA de DO",
+      "n": 37,
+      "macro_f1": 0.6544,
+      "recall_malaria": 1.0,
+      "recall_other_diseases": 1.0,
+      "recall_dengue": 0.5833,
+      "recall_typhoid": 0.5,
+      "recall_yellow_fever": 1.0
+    },
+    {
+      "axis": "center",
+      "level": "CMA de DAFRA",
+      "n": 40,
+      "macro_f1": 0.4456,
+      "recall_malaria": 1.0,
+      "recall_other_diseases": 0.9474,
+      "recall_dengue": 0.5,
+      "recall_typhoid": 0.0,
+      "recall_yellow_fever": 0.0
+    },
+    {
+      "axis": "age_group",
+      "level": "child_6_12",
+      "n": 16,
+      "macro_f1": 0.6867,
+      "recall_malaria": 1.0,
+      "recall_other_diseases": 1.0,
+      "recall_dengue": 1.0,
+      "recall_typhoid": 0.0,
+      "recall_yellow_fever": 0.5
+    },
+    {
+      "axis": "age_group",
+      "level": "adult_19_50",
+      "n": 17,
+      "macro_f1": 0.5232,
+      "recall_malaria": 1.0,
+      "recall_other_diseases": 1.0,
+      "recall_dengue": 0.6,
+      "recall_typhoid": 0.3333,
+      "recall_yellow_fever": null
+    },
+    {
+      "axis": "age_group",
+      "level": "elderly_>50",
+      "n": 13,
+      "macro_f1": 0.5328,
+      "recall_malaria": 1.0,
+      "recall_other_diseases": 1.0,
+      "recall_dengue": 1.0,
+      "recall_typhoid": null,
+      "recall_yellow_fever": null
+    },
+    {
+      "axis": "age_group",
+      "level": "adolescent_13_18",
+      "n": 7,
+      "macro_f1": 0.6388,
+      "recall_malaria": 1.0,
+      "recall_other_diseases": 0.6667,
+      "recall_dengue": 0.0,
+      "recall_typhoid": 1.0,
+      "recall_yellow_fever": 1.0
+    },
+    {
+      "axis": "age_group",
+      "level": "infant_<=5",
+      "n": 23,
+      "macro_f1": 0.3956,
+      "recall_malaria": 1.0,
+      "recall_other_diseases": 1.0,
+      "recall_dengue": 0.0,
+      "recall_typhoid": 0.0,
+      "recall_yellow_fever": null
+    }
+  ],
+  "fairness_recall_gaps": [
+    {
+      "axis": "gender",
+      "label": "malaria",
+      "max_recall": 1.0,
+      "min_recall": 1.0,
+      "recall_gap": 0.0,
+      "worst_level": "Homme"
+    },
+    {
+      "axis": "gender",
+      "label": "other_diseases",
+      "max_recall": 1.0,
+      "min_recall": 1.0,
+      "recall_gap": 0.0,
+      "worst_level": "Homme"
+    },
+    {
+      "axis": "gender",
+      "label": "dengue",
+      "max_recall": 0.6,
+      "min_recall": 0.5556,
+      "recall_gap": 0.0444,
+      "worst_level": "Homme"
+    },
+    {
+      "axis": "gender",
+      "label": "typhoid",
+      "max_recall": 0.5,
+      "min_recall": 0.0,
+      "recall_gap": 0.5,
+      "worst_level": "Femme"
+    },
+    {
+      "axis": "gender",
+      "label": "yellow_fever",
+      "max_recall": 1.0,
+      "min_recall": 0.5,
+      "recall_gap": 0.5,
+      "worst_level": "Femme"
+    },
+    {
+      "axis": "center",
+      "label": "malaria",
+      "max_recall": 1.0,
+      "min_recall": 1.0,
+      "recall_gap": 0.0,
+      "worst_level": "CMA de DO"
+    },
+    {
+      "axis": "center",
+      "label": "other_diseases",
+      "max_recall": 1.0,
+      "min_recall": 0.9474,
+      "recall_gap": 0.0526,
+      "worst_level": "CMA de DAFRA"
+    },
+    {
+      "axis": "center",
+      "label": "dengue",
+      "max_recall": 0.5833,
+      "min_recall": 0.5,
+      "recall_gap": 0.0833,
+      "worst_level": "CMA de DAFRA"
+    },
+    {
+      "axis": "center",
+      "label": "typhoid",
+      "max_recall": 0.5,
+      "min_recall": 0.0,
+      "recall_gap": 0.5,
+      "worst_level": "CMA de DAFRA"
+    },
+    {
+      "axis": "center",
+      "label": "yellow_fever",
+      "max_recall": 1.0,
+      "min_recall": 0.0,
+      "recall_gap": 1.0,
+      "worst_level": "CMA de DAFRA"
+    },
+    {
+      "axis": "age_group",
+      "label": "malaria",
+      "max_recall": 1.0,
+      "min_recall": 1.0,
+      "recall_gap": 0.0,
+      "worst_level": "child_6_12"
+    },
+    {
+      "axis": "age_group",
+      "label": "other_diseases",
+      "max_recall": 1.0,
+      "min_recall": 0.6667,
+      "recall_gap": 0.3333,
+      "worst_level": "adolescent_13_18"
+    },
+    {
+      "axis": "age_group",
+      "label": "dengue",
+      "max_recall": 1.0,
+      "min_recall": 0.0,
+      "recall_gap": 1.0,
+      "worst_level": "adolescent_13_18"
+    },
+    {
+      "axis": "age_group",
+      "label": "typhoid",
+      "max_recall": 1.0,
+      "min_recall": 0.0,
+      "recall_gap": 1.0,
+      "worst_level": "child_6_12"
+    },
+    {
+      "axis": "age_group",
+      "label": "yellow_fever",
+      "max_recall": 1.0,
+      "min_recall": 0.5,
+      "recall_gap": 0.5,
+      "worst_level": "child_6_12"
+    }
+  ],
+  "center_transfer": [
+    {
+      "train_on": "others",
+      "test_on": "CMA de DO",
+      "n_test": 147,
+      "macro_f1": 0.3555,
+      "micro_f1": 0.7632,
+      "recall_malaria": 0.9853,
+      "recall_other_diseases": 0.9697,
+      "recall_dengue": 0.0,
+      "recall_typhoid": 0.0,
+      "recall_yellow_fever": 0.0
+    },
+    {
+      "train_on": "others",
+      "test_on": "CMA de DAFRA",
+      "n_test": 153,
+      "macro_f1": 0.3652,
+      "micro_f1": 0.8503,
+      "recall_malaria": 1.0,
+      "recall_other_diseases": 0.9394,
+      "recall_dengue": 0.0,
+      "recall_typhoid": 0.0,
+      "recall_yellow_fever": 0.0
+    }
+  ],
+  "feature_importance_global": [
+    {
+      "feature": "autres_maladies_pr_sent_es_par_le_patien__present",
+      "importance_mean": 0.0886419999999999
+    },
+    {
+      "feature": "Température axillaire (médiane IQR) (°C) /Axillary temperature (median IQR) (°C)__missing",
+      "importance_mean": 0.035678
+    },
+    {
+      "feature": "Douleur articulaire (Joint pain)",
+      "importance_mean": 0.01457
+    },
+    {
+      "feature": "Diabète",
+      "importance_mean": 0.0138839999999999
+    },
+    {
+      "feature": "type_de_fi_vre__cat_1_r_currente",
+      "importance_mean": 0.012518
+    },
+    {
+      "feature": "Pâleur cutanéo muqueuse ou Anémie (Mucosal skin pallor or Anemia)",
+      "importance_mean": 0.010406
+    },
+    {
+      "feature": "Haute température.(temperature, Hyperpyrexia)",
+      "importance_mean": 0.010192
+    },
+    {
+      "feature": "Céphalée (Headache)",
+      "importance_mean": 0.008644
+    },
+    {
+      "feature": "centre_de_sant__cat_0_cma_de_dafra",
+      "importance_mean": 0.008524
+    },
+    {
+      "feature": "Vertige (Dizzy)",
+      "importance_mean": 0.00761
+    },
+    {
+      "feature": "Fièvre depuis 48 heures(Fever 48 hrs)",
+      "importance_mean": 0.006868
+    },
+    {
+      "feature": "Convulsions généralisées ou focales (Generalised or focal convulsion)",
+      "importance_mean": 0.006532
+    },
+    {
+      "feature": "centre_de_sant__cat_1_cma_de_do",
+      "importance_mean": 0.006336
+    },
+    {
+      "feature": "Convulsions multiples (Multiple convulsions)",
+      "importance_mean": 0.006218
+    },
+    {
+      "feature": "Nausée (Nausea)",
+      "importance_mean": 0.00457
+    },
+    {
+      "feature": "pression_art_rielle_arterial_blood_press__diastolic",
+      "importance_mean": 0.0036559999999999
+    },
+    {
+      "feature": "Fréquence du pouls (battements/m in ± SD)./ Pulse rate (mean beats/min ± SD) - Shock ou Myocarditis__missing",
+      "importance_mean": 0.002166
+    },
+    {
+      "feature": "Poids (Weight)__missing",
+      "importance_mean": 0.001826
+    },
+    {
+      "feature": "Détresse respiratoire (Respiratory distress)",
+      "importance_mean": 0.00181
+    },
+    {
+      "feature": "Douleur Thoracique (Chaist pain)",
+      "importance_mean": 0.000722
+    },
+    {
+      "feature": "Drépanocytose",
+      "importance_mean": 0.000606
+    },
+    {
+      "feature": "Distension abdominale (Ventre gonflé) (Abdominal Distension (Swelling Stomach)/ Ascites)",
+      "importance_mean": 0.000582
+    },
+    {
+      "feature": "Saignement/ Manifestations hémorragiques (Bleeding)",
+      "importance_mean": 0.00041
+    },
+    {
+      "feature": "type_de_fi_vre__cat_0_intermittente",
+      "importance_mean": 0.00029
+    },
+    {
+      "feature": "Mictions fréquentes.(Frequent Urination)",
+      "importance_mean": 0.000258
+    }
+  ],
+  "leakage_candidates": [
+    {
+      "feature": "Dengue (Dengua)",
+      "name_patterns_matched": "dengue;dengua",
+      "is_lab_test": false,
+      "is_vital": false,
+      "contains_disease_token": true,
+      "best_label": "dengue",
+      "max_single_feature_auc": 0.9762,
+      "mutual_info": 0.4446,
+      "stage": "T3_restate",
+      "decision": "research_only",
+      "rationale": "Disease-named feature ~ target (post-diagnosis)"
+    },
+    {
+      "feature": "Test TDR",
+      "name_patterns_matched": "test;tdr",
+      "is_lab_test": true,
+      "is_vital": false,
+      "contains_disease_token": false,
+      "best_label": "malaria",
+      "max_single_feature_auc": 0.8659,
+      "mutual_info": 0.0983,
+      "stage": "T2_lab",
+      "decision": "lab_aware",
+      "rationale": "Ordered lab / rapid diagnostic test"
+    },
+    {
+      "feature": "Goutte épaisse",
+      "name_patterns_matched": "goutte",
+      "is_lab_test": true,
+      "is_vital": false,
+      "contains_disease_token": false,
+      "best_label": "malaria",
+      "max_single_feature_auc": 0.7884,
+      "mutual_info": 0.0663,
+      "stage": "T2_lab",
+      "decision": "lab_aware",
+      "rationale": "Ordered lab / rapid diagnostic test"
+    },
+    {
+      "feature": "Neutrophiles / Neutrophils",
+      "name_patterns_matched": null,
+      "is_lab_test": true,
+      "is_vital": false,
+      "contains_disease_token": false,
+      "best_label": "typhoid",
+      "max_single_feature_auc": 0.749,
+      "mutual_info": 0.0635,
+      "stage": "T2_lab",
+      "decision": "lab_aware",
+      "rationale": "Ordered lab / rapid diagnostic test"
+    },
+    {
+      "feature": "Nombre de globules blancs (cellules/ML) / White blood cell count / WBC count (cells/ML)",
+      "name_patterns_matched": null,
+      "is_lab_test": true,
+      "is_vital": false,
+      "contains_disease_token": false,
+      "best_label": "typhoid",
+      "max_single_feature_auc": 0.695,
+      "mutual_info": 0.0359,
+      "stage": "T2_lab",
+      "decision": "lab_aware",
+      "rationale": "Ordered lab / rapid diagnostic test"
+    },
+    {
+      "feature": "Hematocrite (Hematrocrit)",
+      "name_patterns_matched": null,
+      "is_lab_test": true,
+      "is_vital": false,
+      "contains_disease_token": false,
+      "best_label": "malaria",
+      "max_single_feature_auc": 0.6933,
+      "mutual_info": 0.0253,
+      "stage": "T2_lab",
+      "decision": "lab_aware",
+      "rationale": "Ordered lab / rapid diagnostic test"
+    },
+    {
+      "feature": "Numération plaquettaire Platelet count",
+      "name_patterns_matched": null,
+      "is_lab_test": true,
+      "is_vital": false,
+      "contains_disease_token": false,
+      "best_label": "dengue",
+      "max_single_feature_auc": 0.6535,
+      "mutual_info": 0.0403,
+      "stage": "T2_lab",
+      "decision": "lab_aware",
+      "rationale": "Ordered lab / rapid diagnostic test"
+    },
+    {
+      "feature": "Créatinine élevée / Elevated Creatinine",
+      "name_patterns_matched": null,
+      "is_lab_test": true,
+      "is_vital": false,
+      "contains_disease_token": false,
+      "best_label": "dengue",
+      "max_single_feature_auc": 0.636,
+      "mutual_info": 0.0174,
+      "stage": "T2_lab",
+      "decision": "lab_aware",
+      "rationale": "Ordered lab / rapid diagnostic test"
+    },
+    {
+      "feature": "Lymphocytes",
+      "name_patterns_matched": null,
+      "is_lab_test": true,
+      "is_vital": false,
+      "contains_disease_token": false,
+      "best_label": "malaria",
+      "max_single_feature_auc": 0.6278,
+      "mutual_info": 0.0007,
+      "stage": "T2_lab",
+      "decision": "lab_aware",
+      "rationale": "Ordered lab / rapid diagnostic test"
+    },
+    {
+      "feature": "Hémoconcentration",
+      "name_patterns_matched": null,
+      "is_lab_test": true,
+      "is_vital": false,
+      "contains_disease_token": false,
+      "best_label": "typhoid",
+      "max_single_feature_auc": 0.6265,
+      "mutual_info": 0.0188,
+      "stage": "T2_lab",
+      "decision": "lab_aware",
+      "rationale": "Ordered lab / rapid diagnostic test"
+    },
+    {
+      "feature": "Thrombocytopénie(Thrombocytopenia)",
+      "name_patterns_matched": null,
+      "is_lab_test": true,
+      "is_vital": false,
+      "contains_disease_token": false,
+      "best_label": "typhoid",
+      "max_single_feature_auc": 0.5594,
+      "mutual_info": 0.0,
+      "stage": "T2_lab",
+      "decision": "lab_aware",
+      "rationale": "Ordered lab / rapid diagnostic test"
+    },
+    {
+      "feature": "ALAT / ASAT élevés. / Elevated ALAT / Elevated ASAT",
+      "name_patterns_matched": null,
+      "is_lab_test": true,
+      "is_vital": false,
+      "contains_disease_token": false,
+      "best_label": "typhoid",
+      "max_single_feature_auc": 0.5547,
+      "mutual_info": 0.0,
+      "stage": "T2_lab",
+      "decision": "lab_aware",
+      "rationale": "Ordered lab / rapid diagnostic test"
+    },
+    {
+      "feature": "Transaminases (Transaminases)",
+      "name_patterns_matched": null,
+      "is_lab_test": true,
+      "is_vital": false,
+      "contains_disease_token": false,
+      "best_label": "typhoid",
+      "max_single_feature_auc": 0.5398,
+      "mutual_info": 0.0,
+      "stage": "T2_lab",
+      "decision": "lab_aware",
+      "rationale": "Ordered lab / rapid diagnostic test"
+    },
+    {
+      "feature": "CRP>50 /CRP 10-50",
+      "name_patterns_matched": null,
+      "is_lab_test": true,
+      "is_vital": false,
+      "contains_disease_token": false,
+      "best_label": "malaria",
+      "max_single_feature_auc": 0.5278,
+      "mutual_info": 0.0,
+      "stage": "T2_lab",
+      "decision": "lab_aware",
+      "rationale": "Ordered lab / rapid diagnostic test"
+    },
+    {
+      "feature": "Lymphocytopénie (Lymphocytopenia)",
+      "name_patterns_matched": null,
+      "is_lab_test": true,
+      "is_vital": false,
+      "contains_disease_token": false,
+      "best_label": "typhoid",
+      "max_single_feature_auc": 0.5249,
+      "mutual_info": 0.0,
+      "stage": "T2_lab",
+      "decision": "lab_aware",
+      "rationale": "Ordered lab / rapid diagnostic test"
+    },
+    {
+      "feature": "Neutropénie (Neutropenia)",
+      "name_patterns_matched": null,
+      "is_lab_test": true,
+      "is_vital": false,
+      "contains_disease_token": false,
+      "best_label": "malaria",
+      "max_single_feature_auc": 0.5201,
+      "mutual_info": 0.0,
+      "stage": "T2_lab",
+      "decision": "lab_aware",
+      "rationale": "Ordered lab / rapid diagnostic test"
+    },
+    {
+      "feature": "Carences en leucocytes (Leucopenia)",
+      "name_patterns_matched": null,
+      "is_lab_test": true,
+      "is_vital": false,
+      "contains_disease_token": false,
+      "best_label": "malaria",
+      "max_single_feature_auc": null,
+      "mutual_info": 0.0,
+      "stage": "T2_lab",
+      "decision": "lab_aware",
+      "rationale": "Ordered lab / rapid diagnostic test"
+    }
+  ],
+  "confidence_intervals": [
+    {
+      "metric": "macro_f1",
+      "estimate": 0.6095,
+      "ci_low": 0.5021,
+      "ci_high": 0.7013,
+      "n_bootstrap": 1000
+    },
+    {
+      "metric": "micro_f1",
+      "estimate": 0.824,
+      "ci_low": 0.7619,
+      "ci_high": 0.8797,
+      "n_bootstrap": 1000
+    },
+    {
+      "metric": "macro_recall",
+      "estimate": 0.6968,
+      "ci_low": 0.5269,
+      "ci_high": 0.845,
+      "n_bootstrap": 1000
+    },
+    {
+      "metric": "macro_precision",
+      "estimate": 0.5713,
+      "ci_low": 0.4739,
+      "ci_high": 0.6967,
+      "n_bootstrap": 1000
+    },
+    {
+      "metric": "macro_pr_auc",
+      "estimate": 0.6059,
+      "ci_low": 0.5318,
+      "ci_high": 0.7721,
+      "n_bootstrap": 1000
+    },
+    {
+      "metric": "macro_roc_auc",
+      "estimate": 0.7862,
+      "ci_low": 0.6918,
+      "ci_high": 0.8764,
+      "n_bootstrap": 1000
+    },
+    {
+      "metric": "hamming_loss",
+      "estimate": 0.1143,
+      "ci_low": 0.0753,
+      "ci_high": 0.1558,
+      "n_bootstrap": 1000
+    },
+    {
+      "metric": "jaccard_samples",
+      "estimate": 0.7868,
+      "ci_low": 0.7132,
+      "ci_high": 0.8539,
+      "n_bootstrap": 1000
+    }
+  ],
+  "label_prevalence_intervals": [
+    {
+      "label": "malaria",
+      "positives": 270,
+      "total": 300,
+      "prevalence": 0.9,
+      "ci_low": 0.8608327216490343,
+      "ci_high": 0.9290525343527772
+    },
+    {
+      "label": "other_diseases",
+      "positives": 99,
+      "total": 300,
+      "prevalence": 0.33,
+      "ci_low": 0.2792335799760843,
+      "ci_high": 0.3850651862231458
+    },
+    {
+      "label": "dengue",
+      "positives": 56,
+      "total": 300,
+      "prevalence": 0.1866666666666666,
+      "ci_low": 0.1466368212758944,
+      "ci_high": 0.2346197281893532
+    },
+    {
+      "label": "typhoid",
+      "positives": 29,
+      "total": 300,
+      "prevalence": 0.0966666666666666,
+      "ci_low": 0.0681498559239371,
+      "ci_high": 0.1353825109409029
+    },
+    {
+      "label": "yellow_fever",
+      "positives": 12,
+      "total": 300,
+      "prevalence": 0.04,
+      "ci_low": 0.0230270921379387,
+      "ci_high": 0.068604863459978
+    }
+  ],
+  "threshold_policy_tradeoff": [
+    {
+      "policy": "performance",
+      "flagged_malaria": 300,
+      "flagged_other_diseases": 97,
+      "flagged_dengue": 65,
+      "flagged_typhoid": 38,
+      "flagged_yellow_fever": 47,
+      "total_flags": 547,
+      "avg_flags_per_patient": 1.823
+    },
+    {
+      "policy": "safety",
+      "flagged_malaria": 300,
+      "flagged_other_diseases": 97,
+      "flagged_dengue": 158,
+      "flagged_typhoid": 54,
+      "flagged_yellow_fever": 177,
+      "total_flags": 786,
+      "avg_flags_per_patient": 2.62
+    },
+    {
+      "policy": "operational",
+      "flagged_malaria": 300,
+      "flagged_other_diseases": 97,
+      "flagged_dengue": 65,
+      "flagged_typhoid": 38,
+      "flagged_yellow_fever": 125,
+      "total_flags": 625,
+      "avg_flags_per_patient": 2.083
+    }
+  ]
+}

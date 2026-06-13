@@ -1,15 +1,14 @@
 {
-  "$schema": "https://openapi.vercel.sh/vercel.json",
-  "cleanUrls": true,
-  "trailingSlash": false,
+  "framework": "nextjs",
   "headers": [
     {
-      "source": "/figures/(.*)",
-      "headers": [{ "key": "Cache-Control", "value": "public, max-age=86400, immutable" }]
-    },
-    {
       "source": "/data/(.*)",
-      "headers": [{ "key": "Cache-Control", "value": "public, max-age=3600" }]
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=0, must-revalidate"
+        }
+      ]
     }
   ]
 }

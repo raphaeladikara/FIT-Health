@@ -4,29 +4,29 @@
   "random_state": 42,
   "primary_model": "extra_trees",
   "pre_lab_metrics": {
-    "micro_f1": 0.84,
-    "macro_f1": 0.6467,
-    "weighted_f1": 0.8476,
-    "samples_f1": 0.8446,
-    "hamming_loss": 0.1039,
-    "subset_accuracy": 0.6234,
-    "jaccard_samples": 0.7911,
-    "macro_recall": 0.7253,
-    "macro_precision": 0.6026,
-    "macro_roc_auc": 0.7944,
-    "macro_pr_auc": 0.6078
+    "micro_f1": 0.824,
+    "macro_f1": 0.6095,
+    "weighted_f1": 0.8339,
+    "samples_f1": 0.8355,
+    "hamming_loss": 0.1143,
+    "subset_accuracy": 0.6364,
+    "jaccard_samples": 0.7868,
+    "macro_recall": 0.6968,
+    "macro_precision": 0.5713,
+    "macro_roc_auc": 0.7862,
+    "macro_pr_auc": 0.6059
   },
   "conformal": {
-    "avg_set_size": 2.8961,
+    "avg_set_size": 2.8052,
     "pct_empty_sets": 0.0,
-    "pct_singletons": 5.19,
-    "pct_ambiguous_multi": 94.81,
+    "pct_singletons": 7.79,
+    "pct_ambiguous_multi": 92.21,
     "overall_coverage": 0.9483
   },
   "coinfection": {
-    "best_model": "extra_trees",
-    "roc_auc": 0.8628,
-    "pr_auc": 0.8714,
-    "recall": 0.8354
+    "best_model": "logreg",
+    "roc_auc": 0.8654,
+    "pr_auc": 0.8779,
+    "recall": 0.8038
   }
 }

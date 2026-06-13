@@ -21,13 +21,10 @@ lightgbm>=4.0        # tested 4.6.0
 # --- visualisation ---
 matplotlib>=3.7      # tested 3.11.0
 seaborn>=0.13        # tested 0.13.2
-plotly>=6.0          # interactive notebook and Streamlit charts
+plotly>=6.0          # interactive notebook charts
 
 # --- explainability (optional; permutation importance is the always-on fallback) ---
 shap>=0.44           # tested 0.52.0
-
-# --- dashboard ---
-streamlit>=1.30      # tested 1.58.0
 
 # --- final competition notebook ---
 nbformat>=5.10

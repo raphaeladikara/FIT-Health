@@ -1,0 +1,9 @@
+﻿metric,estimate,ci_low,ci_high,n_bootstrap
+macro_f1,0.6095,0.5021,0.7013,1000
+micro_f1,0.824,0.7619,0.8797,1000
+macro_recall,0.6968,0.5269,0.845,1000
+macro_precision,0.5713,0.4739,0.6967,1000
+macro_pr_auc,0.6059,0.5318,0.7721,1000
+macro_roc_auc,0.7862,0.6918,0.8764,1000
+hamming_loss,0.1143,0.0753,0.1558,1000
+jaccard_samples,0.7868,0.7132,0.8539,1000

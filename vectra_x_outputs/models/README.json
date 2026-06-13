@@ -1,0 +1,19 @@
+{
+  "status": "not serialized from the submission notebook",
+  "reason": "The official deliverable is a self-contained executed notebook. Fresh tables and the execution manifest are exported, but no saved model is required or read by the notebook.",
+  "selected_model": "Extra Trees",
+  "labels": [
+    "malaria",
+    "dengue",
+    "yellow_fever",
+    "typhoid",
+    "other_diseases"
+  ],
+  "thresholds": {
+    "malaria": 0.05,
+    "dengue": 0.39999999999999997,
+    "yellow_fever": 0.1,
+    "typhoid": 0.44999999999999996,
+    "other_diseases": 0.49999999999999994
+  }
+}

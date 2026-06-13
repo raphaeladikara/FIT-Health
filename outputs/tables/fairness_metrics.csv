@@ -1,10 +1,10 @@
 ﻿axis,level,n,macro_f1,recall_malaria,recall_other_diseases,recall_dengue,recall_typhoid,recall_yellow_fever
-gender,Homme,46,0.72,1.0,1.0,0.6667,0.5,1.0
-gender,Femme,30,0.5741,1.0,1.0,0.8,0.0,0.5
-center,CMA de DO,37,0.71,1.0,1.0,0.75,0.5,1.0
-center,CMA de DAFRA,40,0.4341,1.0,0.9474,0.5,0.0,0.0
+gender,Homme,46,0.6508,1.0,1.0,0.5556,0.5,1.0
+gender,Femme,30,0.5502,1.0,1.0,0.6,0.0,0.5
+center,CMA de DO,37,0.6544,1.0,1.0,0.5833,0.5,1.0
+center,CMA de DAFRA,40,0.4456,1.0,0.9474,0.5,0.0,0.0
 age_group,child_6_12,16,0.6867,1.0,1.0,1.0,0.0,0.5
-age_group,adult_19_50,17,0.5551,1.0,1.0,1.0,0.3333,
-age_group,elderly_>50,13,0.5433,1.0,1.0,1.0,,
-age_group,adolescent_13_18,7,0.7055,1.0,0.6667,0.0,1.0,1.0
+age_group,adult_19_50,17,0.5232,1.0,1.0,0.6,0.3333,
+age_group,elderly_>50,13,0.5328,1.0,1.0,1.0,,
+age_group,adolescent_13_18,7,0.6388,1.0,0.6667,0.0,1.0,1.0
 age_group,infant_<=5,23,0.3956,1.0,1.0,0.0,0.0,

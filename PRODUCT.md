@@ -14,13 +14,17 @@ resource demand before or after confirmatory testing.
 
 ## Product Purpose
 
-VECTRA-X is a leakage-aware, multi-label clinical decision-support system for
+VECTRA-X is a leakage-aware, multi-label triage decision-support system for
 vector-borne disease response. It converts model probabilities into transparent
 patient triage outputs, uncertainty-aware prediction sets, and population-level
 resource planning views. Success means that judges can understand the methodological
 contribution quickly, while operational users can identify which patients need
 clinical review, confirmatory testing, or urgent escalation without mistaking the
 system for a diagnostic authority.
+
+The primary product surface is a static-first Next.js Outbreak Triage Command Center
+deployed on Vercel. The Python pipeline remains the analytical source of truth and
+exports privacy-safe public artifacts for the web application.
 
 ## Brand Personality
 
@@ -53,4 +57,3 @@ Target WCAG 2.1 AA contrast, keyboard-friendly controls, color-blind-safe chart
 palettes, redundant text labels for semantic colors, readable data tables, and
 reduced-motion-compatible interactions. Avoid relying on color alone to communicate
 triage or uncertainty.
-

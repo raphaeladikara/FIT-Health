@@ -1,0 +1,4 @@
+resource,demand,capacity,unserved
+rapid_tests,33,50,0
+beds,7,12,0
+staff_review_slots,49,80,0

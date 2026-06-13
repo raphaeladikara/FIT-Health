@@ -1,0 +1,3 @@
+test_center,n_test,macro_f1,recall_malaria,recall_dengue,recall_yellow_fever,recall_typhoid,recall_other_diseases
+CMA de DO,147,0.3495140530601524,0.9926470588235294,0.0,0.0,0.0,0.9696969696969697
+CMA de DAFRA,153,0.36805454591031006,1.0,0.0,0.0,0.0,0.9545454545454546

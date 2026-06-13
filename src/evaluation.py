@@ -127,3 +127,56 @@ def apply_thresholds(y_proba: np.ndarray, thresholds: dict[str, float],
     for j, lab in enumerate(labels):
         out[:, j] = (y_proba[:, j] >= thresholds.get(lab, 0.5)).astype(int)
     return out
+
+
+def bootstrap_multilabel_metrics(
+    y_true: pd.DataFrame,
+    y_pred: np.ndarray,
+    y_proba: np.ndarray,
+    n_bootstrap: int = 2000,
+    random_state: int = 42,
+) -> pd.DataFrame:
+    """Patient-level bootstrap 95% CIs for headline multi-label metrics."""
+    yt = y_true.reset_index(drop=True)
+    pred = np.asarray(y_pred)
+    proba = np.asarray(y_proba)
+    point = multilabel_summary(yt, pred, proba)
+    metric_names = [
+        "macro_f1", "micro_f1", "macro_recall", "macro_precision",
+        "macro_pr_auc", "macro_roc_auc", "hamming_loss", "jaccard_samples",
+    ]
+    draws = {name: [] for name in metric_names}
+    rng = np.random.default_rng(random_state)
+    n = len(yt)
+    for _ in range(n_bootstrap):
+        indices = rng.integers(0, n, size=n)
+        sample = multilabel_summary(
+            yt.iloc[indices].reset_index(drop=True),
+            pred[indices],
+            proba[indices],
+        )
+        for name in metric_names:
+            value = sample.get(name, np.nan)
+            if np.isfinite(value):
+                draws[name].append(value)
+
+    rows = []
+    for name in metric_names:
+        values = np.asarray(draws[name], dtype=float)
+        estimate = float(point[name])
+        if values.size:
+            low, high = np.quantile(values, [0.025, 0.975])
+            low = min(float(low), estimate)
+            high = max(float(high), estimate)
+        else:
+            low = high = estimate
+        rows.append(
+            {
+                "metric": name,
+                "estimate": round(estimate, 4),
+                "ci_low": round(low, 4),
+                "ci_high": round(high, 4),
+                "n_bootstrap": n_bootstrap,
+            }
+        )
+    return pd.DataFrame(rows)

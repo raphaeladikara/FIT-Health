@@ -1,26 +1,26 @@
 ﻿feature,importance_mean
-autres_maladies_pr_sent_es_par_le_patien__present,0.093634
-Température axillaire (médiane IQR) (°C) /Axillary temperature (median IQR) (°C)__missing,0.032292
-Douleur abdominale (stomac pain),0.017098000000000002
-Diabète,0.013947999999999999
-Douleur articulaire (Joint pain),0.012182
-Vertige (Dizzy),0.010592
-"Haute température.(temperature, Hyperpyrexia)",0.009479999999999999
-Convulsions multiples (Multiple convulsions),0.007741999999999999
-Convulsions généralisées ou focales (Generalised or focal convulsion),0.007417999999999999
-Céphalée (Headache),0.006509999999999999
-Fièvre depuis 48 heures(Fever 48 hrs),0.0054280000000000005
-Pâleur cutanéo muqueuse ou Anémie (Mucosal skin pallor or Anemia),0.0054080000000000005
-center_code,0.002304
-Fréquence du pouls (battements/m in ± SD)./ Pulse rate (mean beats/min ± SD) - Shock ou Myocarditis__missing,0.0018520000000000001
-Distension abdominale (Ventre gonflé) (Abdominal Distension (Swelling Stomach)/ Ascites),0.00086
-Détresse respiratoire (Respiratory distress),0.00078
-Toux (Cough),0.0007679999999999993
-Saignement/ Manifestations hémorragiques (Bleeding),0.00045
-Température axillaire (médiane IQR) (°C) /Axillary temperature (median IQR) (°C),0.000288
-Mictions fréquentes.(Frequent Urination),0.00022
-Drépanocytose,0.00019
-Mictions fréquentes. (Frequent Urination),3.4e-05
-Mal de gorge (throat pain),6e-06
-Gonflement des articulations (Joint Swelling),4.000000000000001e-06
-Hémoglobinurie (Hemoglobinuria),0.0
+autres_maladies_pr_sent_es_par_le_patien__present,0.08864199999999998
+Température axillaire (médiane IQR) (°C) /Axillary temperature (median IQR) (°C)__missing,0.035678
+Douleur articulaire (Joint pain),0.01457
+Diabète,0.013883999999999999
+type_de_fi_vre__cat_1_r_currente,0.012518000000000001
+Pâleur cutanéo muqueuse ou Anémie (Mucosal skin pallor or Anemia),0.010406
+"Haute température.(temperature, Hyperpyrexia)",0.010192
+Céphalée (Headache),0.008644
+centre_de_sant__cat_0_cma_de_dafra,0.008524
+Vertige (Dizzy),0.0076100000000000004
+Fièvre depuis 48 heures(Fever 48 hrs),0.006868000000000001
+Convulsions généralisées ou focales (Generalised or focal convulsion),0.006532000000000001
+centre_de_sant__cat_1_cma_de_do,0.006336000000000001
+Convulsions multiples (Multiple convulsions),0.006218
+Nausée (Nausea),0.00457
+pression_art_rielle_arterial_blood_press__diastolic,0.0036559999999999995
+Fréquence du pouls (battements/m in ± SD)./ Pulse rate (mean beats/min ± SD) - Shock ou Myocarditis__missing,0.002166
+Poids (Weight)__missing,0.001826
+Détresse respiratoire (Respiratory distress),0.0018100000000000002
+Douleur Thoracique (Chaist pain),0.000722
+Drépanocytose,0.000606
+Distension abdominale (Ventre gonflé) (Abdominal Distension (Swelling Stomach)/ Ascites),0.000582
+Saignement/ Manifestations hémorragiques (Bleeding),0.00041000000000000005
+type_de_fi_vre__cat_0_intermittente,0.0002900000000000003
+Mictions fréquentes.(Frequent Urination),0.000258

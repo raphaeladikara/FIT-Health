@@ -1,0 +1,4 @@
+policy,total_flags,true_positive_flags,number_needed_to_review,avg_flags_per_patient
+performance,119,100,1.19,1.5454545454545454
+safety,122,100,1.22,1.5844155844155845
+operational,106,93,1.1397849462365592,1.3766233766233766
