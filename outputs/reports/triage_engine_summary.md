@@ -2,7 +2,7 @@
 
 *VECTRA-X decision support*
 
-_Generated: 2026-06-13 02:43 — VECTRA-X pipeline_
+_Generated: 2026-06-13 12:31 — VECTRA-X pipeline_
 
 Triage score = 0.45·risk + 0.25·severe + 0.15·uncertainty + 0.15·co-infection (all bounded to [0,1]). Tiers assigned by transparent rules on severe-disease probability, uncertainty, co-infection and conformal set.
 

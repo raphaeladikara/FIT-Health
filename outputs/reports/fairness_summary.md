@@ -2,7 +2,7 @@
 
 *Subgroup + center shift*
 
-_Generated: 2026-06-13 02:43 — VECTRA-X pipeline_
+_Generated: 2026-06-13 12:31 — VECTRA-X pipeline_
 
 Audited axes: health center, gender, age group. Goal: no systematic under-detection for any subgroup.
 

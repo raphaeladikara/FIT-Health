@@ -2,7 +2,7 @@
 
 *Leaderboard & pre-lab vs lab-aware*
 
-_Generated: 2026-06-13 02:43 — VECTRA-X pipeline_
+_Generated: 2026-06-13 12:31 — VECTRA-X pipeline_
 
 Best model per track (by OOF macro-PR-AUC): **{'PRE_LAB': 'extra_trees', 'LAB_AWARE': 'xgboost', 'FULL': 'hist_gb'}**.
 

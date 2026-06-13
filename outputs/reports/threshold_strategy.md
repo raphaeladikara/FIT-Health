@@ -2,7 +2,7 @@
 
 *Three clinical policies*
 
-_Generated: 2026-06-13 02:43 — VECTRA-X pipeline_
+_Generated: 2026-06-13 12:31 — VECTRA-X pipeline_
 
 Default 0.5 is rarely optimal under imbalance. Thresholds tuned per label on out-of-fold train predictions.
 

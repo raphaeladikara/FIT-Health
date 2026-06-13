@@ -2,7 +2,7 @@
 
 *Entropy, margin, set size*
 
-_Generated: 2026-06-13 02:43 — VECTRA-X pipeline_
+_Generated: 2026-06-13 12:31 — VECTRA-X pipeline_
 
 Per-patient uncertainty from predictive entropy, top-2 margin, #labels above threshold, and conformal set size.
 

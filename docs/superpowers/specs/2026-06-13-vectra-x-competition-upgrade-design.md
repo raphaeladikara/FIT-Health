@@ -25,6 +25,15 @@ silently replace metrics or claim new performance without fresh verification.
 
 ## Selected Approach
 
+### Utility-first delivery
+
+Functional correctness is the primary acceptance gate. Saved-model inference,
+threshold switching, upload validation, patient selection, resource simulation,
+downloads, notebook execution, and reproducibility must work before any optional
+visual redesign. Styling changes are limited to clear hierarchy, readable status
+semantics, and usable interactive charts. A separate visual-polish pass may follow
+after all functional verification succeeds.
+
 ### Hybrid reproducibility
 
 The final notebook will support two explicit execution paths:
@@ -121,9 +130,10 @@ explained rather than crashing.
   comparisons immediately.
 - Downloads are generated from the currently filtered or simulated state.
 
-## Visual Direction
+## Visual Direction (Secondary)
 
-Use the approved presentation-forward hybrid:
+After functional acceptance criteria pass, use the approved presentation-forward
+hybrid where it improves clarity:
 
 - Dark navy application shell.
 - High-contrast content surfaces.
@@ -134,8 +144,8 @@ Use the approved presentation-forward hybrid:
 - Consistent Plotly templates and disease colors.
 - Strong judge-facing hierarchy without resembling a consumer diagnostic product.
 
-The interface must meet WCAG AA contrast, use color-blind-safe chart palettes, and
-never rely on color alone.
+The interface must remain readable, use color-blind-safe chart palettes, and never
+rely on color alone. Visual novelty is not a completion criterion.
 
 ## Data and Error Handling
 
@@ -231,4 +241,3 @@ The upgrade is complete only when:
 - The competitiveness audit and judge pitch exist and contain all requested sections.
 - README instructions are accurate.
 - Existing notebooks, scripts, outputs, and reports remain preserved.
-

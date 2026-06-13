@@ -2,7 +2,7 @@
 
 *Recall-oriented prediction sets*
 
-_Generated: 2026-06-13 02:43 — VECTRA-X pipeline_
+_Generated: 2026-06-13 12:31 — VECTRA-X pipeline_
 
 Target coverage = 90% (alpha=0.1). Avg set size = 2.8961, empty sets 0.0%, ambiguous (≥2) 94.81%.
 

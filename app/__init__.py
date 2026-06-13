@@ -1,0 +1,1 @@
+"""VECTRA-X dashboard package."""

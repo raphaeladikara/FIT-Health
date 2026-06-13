@@ -2,7 +2,7 @@
 
 *Stage-gated feature sets*
 
-_Generated: 2026-06-13 02:43 — VECTRA-X pipeline_
+_Generated: 2026-06-13 12:31 — VECTRA-X pipeline_
 
 Features were screened by **name pattern** AND **statistics** (mutual information + single-feature ROC-AUC vs each active label). Decisions:
 

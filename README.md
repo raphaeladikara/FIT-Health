@@ -115,12 +115,55 @@ streamlit run app/streamlit_app.py
 Streamlit needs a long-running Python server and **cannot** run on Vercel — the
 `web/` static site is the Vercel-deployable counterpart.
 
+### Interactive dashboard capabilities
+
+The Streamlit dashboard supports saved-model CSV inference, model-mode and
+threshold-policy switching, patient case shortcuts, downloadable patient reports,
+population filters, and interactive rapid-test, bed, monitoring, and staff-capacity
+simulation. Uploaded files should use the original `data.csv` schema. Missing
+required columns are reported explicitly. Full-feature mode is research-only and
+cannot be used for uploaded patient inference.
+
+### Final competition notebook
+
+Generate or refresh the notebook source:
+
+```powershell
+python scripts/build_final_notebook.py
+```
+
+Execute the verified artifact-backed notebook from the project root:
+
+```powershell
+jupyter nbconvert --to notebook --execute --inplace notebooks/VECTRA_X_Final_Competition_Notebook.ipynb --ExecutePreprocessor.timeout=900
+```
+
+Run a deterministic full pipeline rebuild before rendering:
+
+```powershell
+$env:VECTRA_X_RECOMPUTE="1"
+jupyter nbconvert --to notebook --execute --inplace notebooks/VECTRA_X_Final_Competition_Notebook.ipynb --ExecutePreprocessor.timeout=1800
+Remove-Item Env:VECTRA_X_RECOMPUTE
+```
+
+Notebook-specific exports are written to `outputs/final_notebook/`.
+
+If `python` or `py` is unavailable but Python 3.12 is installed in the standard
+Windows user location:
+
+```powershell
+& "$env:LOCALAPPDATA\Programs\Python\Python312\python.exe" scripts/build_final_notebook.py
+& "$env:LOCALAPPDATA\Programs\Python\Python312\python.exe" -m jupyter nbconvert --to notebook --execute --inplace notebooks/VECTRA_X_Final_Competition_Notebook.ipynb
+& "$env:APPDATA\Python\Python312\Scripts\streamlit.exe" run app/streamlit_app.py
+```
+
 ## 7. Outputs generated
 
 - **Reports** (`outputs/reports/`): blueprint execution summary, data audit, leakage
   audit, EDA insights, modeling summary, threshold strategy, calibration, uncertainty,
   conformal, explainability, fairness, triage, resource, **final technical report
-  draft**, presentation outline, jury Q&A bank, limitations & ethics.
+  draft**, presentation outline, jury Q&A bank, limitations & ethics,
+  **project competitiveness audit**, and **final judge pitch**.
 - **Tables** (`outputs/tables/`, ~27 CSVs): leaderboard, per-label metrics, threshold
   optimisation & policies, calibration, conformal, fairness, feature importance,
   patient-level predictions, triage dashboard data, resource simulation, etc.

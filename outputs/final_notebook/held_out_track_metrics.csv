@@ -1,0 +1,4 @@
+,micro_f1,macro_f1,weighted_f1,samples_f1,hamming_loss,subset_accuracy,jaccard_samples,macro_recall,macro_precision,macro_roc_auc,macro_pr_auc
+PRE_LAB,0.84,0.6467,0.8476,0.8446,0.1039,0.6234,0.7911,0.7253,0.6026,0.7944,0.6078
+LAB_AWARE,0.8145,0.5551,0.843,0.8234,0.1195,0.5325,0.7554,0.6116,0.5251,0.7934,0.5678
+FULL,0.8927,0.7049,0.9087,0.8843,0.0649,0.7273,0.8474,0.7069,0.7333,0.8203,0.6818
