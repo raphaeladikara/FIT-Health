@@ -15,7 +15,7 @@ def _write_csv(path: Path, rows: list[dict]) -> None:
     pd.DataFrame(rows).to_csv(path, index=False)
 
 
-def _fixture_outputs(root: Path) -> tuple[Path, Path]:
+def _fixture_outputs(root: Path, execution_profile: str = "full") -> tuple[Path, Path]:
     outputs = root / "outputs"
     tables = outputs / "tables"
     dashboard = outputs / "dashboard_data"
@@ -26,6 +26,8 @@ def _fixture_outputs(root: Path) -> tuple[Path, Path]:
                 "project": "VECTRA-X",
                 "shape": [2, 10],
                 "active_labels": ["malaria", "dengue"],
+                "execution_profile": execution_profile,
+                "best_model_per_track": {"PRE_LAB": "extra_trees", "LAB_AWARE": "hist_gb"},
                 "test_metrics": {"PRE_LAB": {"macro_f1": 0.61}},
                 "triage_distribution": {"Clinical Review": 1, "Routine Monitoring": 1},
             }
@@ -68,6 +70,46 @@ def _fixture_outputs(root: Path) -> tuple[Path, Path]:
 
 
 class WebExportTests(unittest.TestCase):
+    def test_export_manifest_contains_canonical_provenance(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            outputs, destination = _fixture_outputs(Path(directory), execution_profile="full")
+
+            manifest = export_web_data.export_dashboard_data(
+                outputs, destination, require_canonical=True
+            )
+
+            self.assertEqual(manifest["schema_version"], 2)
+            self.assertTrue(manifest["canonical"])
+            self.assertTrue(manifest["run_id"])
+            self.assertTrue(manifest["data_checksum"])
+            self.assertTrue(manifest["config_checksum"])
+            self.assertEqual(manifest["evaluation_mode"], "held_out")
+            self.assertEqual(manifest["model_versions"]["PRE_LAB"], "extra_trees")
+
+    def test_official_export_rejects_quick_smoke(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            outputs, destination = _fixture_outputs(
+                Path(directory), execution_profile="quick_smoke"
+            )
+
+            with self.assertRaisesRegex(ValueError, "canonical"):
+                export_web_data.export_dashboard_data(
+                    outputs, destination, require_canonical=True
+                )
+
+    def test_development_export_flags_non_canonical_warning(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            outputs, destination = _fixture_outputs(
+                Path(directory), execution_profile="quick_smoke"
+            )
+
+            manifest = export_web_data.export_dashboard_data(outputs, destination)
+
+            self.assertFalse(manifest["canonical"])
+            self.assertTrue(
+                any("Development artifact" in warning for warning in manifest["warnings"])
+            )
+
     def test_export_removes_private_patient_fields_and_generates_case_ids(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             outputs, destination = _fixture_outputs(Path(directory))

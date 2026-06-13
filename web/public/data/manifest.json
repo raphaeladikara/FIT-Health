@@ -1,7 +1,19 @@
 {
-  "schema_version": 1,
-  "generated_at": "2026-06-13T15:07:01.096469+00:00",
+  "schema_version": 2,
+  "run_id": "20260613-f79a69db-b95fdfac-cff858e2",
+  "git_commit": "f79a69db2c1c57fc275887108738fd099f40ca5b",
+  "data_checksum": "b95fdfac59f1df84dfc2abaaff1d66f8ee6dd097d3b7e2a1b7ea8b5c1f22fb05",
+  "config_checksum": "cff858e2a5814e27c52dc7eea57d835c65db53af0744c528e8df6c124f24b8d1",
+  "generated_at": "2026-06-13T19:27:33.800063+00:00",
   "execution_profile": "quick_smoke",
+  "canonical": false,
+  "evaluation_mode": "held_out",
+  "threshold_policy": "operational",
+  "model_versions": {
+    "PRE_LAB": "extra_trees",
+    "LAB_AWARE": "hist_gb",
+    "FULL": "hist_gb"
+  },
   "patient_count": 300,
   "active_labels": [
     "malaria",
@@ -24,5 +36,7 @@
     "label_prevalence_confidence_intervals.csv",
     "threshold_policy_resource_tradeoff.csv"
   ],
-  "warnings": []
+  "warnings": [
+    "Development artifact: execution_profile='quick_smoke' is not the canonical competition run."
+  ]
 }

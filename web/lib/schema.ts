@@ -2,9 +2,17 @@ import { z } from "zod";
 
 export const manifestSchema = z
   .object({
-    schema_version: z.literal(1),
+    schema_version: z.literal(2),
+    run_id: z.string(),
+    git_commit: z.string(),
+    data_checksum: z.string(),
+    config_checksum: z.string(),
     generated_at: z.string(),
     execution_profile: z.string(),
+    canonical: z.boolean(),
+    evaluation_mode: z.enum(["held_out", "oof", "simulated"]),
+    threshold_policy: z.string(),
+    model_versions: z.record(z.string(), z.string()),
     patient_count: z.number().int().nonnegative(),
     active_labels: z.array(z.string()),
     available_evidence: z.array(z.string()),

@@ -18,10 +18,20 @@ export type Patient = {
   [key: `calprob_${string}`]: number;
 };
 
+export type EvaluationMode = "held_out" | "oof" | "simulated";
+
 export type Manifest = {
-  schema_version: 1;
+  schema_version: 2;
+  run_id: string;
+  git_commit: string;
+  data_checksum: string;
+  config_checksum: string;
   generated_at: string;
   execution_profile: string;
+  canonical: boolean;
+  evaluation_mode: EvaluationMode;
+  threshold_policy: string;
+  model_versions: Record<string, string>;
   patient_count: number;
   active_labels: string[];
   available_evidence: string[];
