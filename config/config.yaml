@@ -54,6 +54,15 @@ labels:
 # Leakage audit — name patterns + statistical screens
 # ---------------------------------------------------------------------
 leakage:
+  research_only_features:
+    - "Autres maladies presentees par le patient"
+    - "Autres maladies présentées par le patient"
+  target_aliases:
+    malaria: ["malaria", "paludisme", "palu"]
+    dengue: ["dengue", "dengua"]
+    yellow_fever: ["yellow", "jaune", "fievre jaune", "fièvre jaune"]
+    typhoid: ["typhoid", "thyphoid", "typhoide", "typhoïde"]
+    other_diseases: ["other", "others", "autres", "autre maladie"]
   name_patterns:
     - dengue
     - dengua

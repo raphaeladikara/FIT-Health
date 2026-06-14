@@ -42,6 +42,7 @@ class FeatureMeta:
     indicator_cols: list[str] = field(default_factory=list)
     dropped_constant: list[str] = field(default_factory=list)
     notes: list[str] = field(default_factory=list)
+    source_map: dict[str, str] = field(default_factory=dict)
 
     @property
     def all_cols(self) -> list[str]:
@@ -118,10 +119,12 @@ def make_feature_frame(df: pd.DataFrame, feature_cols: list[str],
         if ("pression art" in name) or ("blood pressure" in name):
             bp = parse_blood_pressure(s)
             for c in ["bp_systolic", "bp_diastolic"]:
-                out[c] = bp[c]; meta.numeric_cols.append(c)
+                out[c] = bp[c]; meta.numeric_cols.append(c); meta.source_map[c] = col
             out["bp_parse_failed"] = bp["bp_parse_failed"]; meta.binary_cols.append("bp_parse_failed")
+            meta.source_map["bp_parse_failed"] = col
             if missing_rate > missing_indicator_threshold:
                 out["bp__missing"] = s.isna().astype(float); meta.indicator_cols.append("bp__missing")
+                meta.source_map["bp__missing"] = col
             continue
 
         # --- gender ---------------------------------------------------- #
@@ -130,6 +133,7 @@ def make_feature_frame(df: pd.DataFrame, feature_cols: list[str],
             out["gender_female"] = g.map(lambda v: 1.0 if isinstance(v, str) and v.startswith("f")
                                          else (0.0 if isinstance(v, str) and v.startswith("h") else np.nan))
             meta.binary_cols.append("gender_female")
+            meta.source_map["gender_female"] = col
             continue
 
         # --- health center -------------------------------------------- #
@@ -137,13 +141,16 @@ def make_feature_frame(df: pd.DataFrame, feature_cols: list[str],
             codes, uniques = pd.factorize(s.astype("string").str.strip())
             out["center_code"] = pd.Series(codes, index=s.index).replace(-1, np.nan).astype(float)
             meta.numeric_cols.append("center_code")
+            meta.source_map["center_code"] = col
             meta.notes.append(f"center_code factorised: {list(uniques)}")
             continue
 
         # --- high-cardinality free text -> presence flag -------------- #
         if non_null.nunique() > 15 and (non_null.astype(str).str.len().mean() > 8):
-            out[f"{_alias(col)}__present"] = s.notna().astype(float)
-            meta.binary_cols.append(f"{_alias(col)}__present")
+            derived = f"{_alias(col)}__present"
+            out[derived] = s.notna().astype(float)
+            meta.binary_cols.append(derived)
+            meta.source_map[derived] = col
             meta.notes.append(f"high-cardinality text '{col}' -> presence flag (raw text dropped from model)")
             continue
 
@@ -151,9 +158,11 @@ def make_feature_frame(df: pd.DataFrame, feature_cols: list[str],
         if _is_binary_col(s):
             out[col] = _encode_binary(s)
             meta.binary_cols.append(col)
+            meta.source_map[col] = col
             if missing_rate > missing_indicator_threshold:
                 out[f"{col}__missing"] = s.isna().astype(float)
                 meta.indicator_cols.append(f"{col}__missing")
+                meta.source_map[f"{col}__missing"] = col
             continue
 
         # --- numeric (incl. age, weight, vitals, labs) ---------------- #
@@ -161,15 +170,18 @@ def make_feature_frame(df: pd.DataFrame, feature_cols: list[str],
         if num.notna().mean() >= 0.5:
             out[col] = num
             meta.numeric_cols.append(col)
+            meta.source_map[col] = col
             if missing_rate > missing_indicator_threshold:
                 out[f"{col}__missing"] = s.isna().astype(float)
                 meta.indicator_cols.append(f"{col}__missing")
+                meta.source_map[f"{col}__missing"] = col
             continue
 
         # --- fallback: low-cardinality categorical -> factorise -------- #
         codes, uniques = pd.factorize(s.astype("string").str.strip())
         out[col] = pd.Series(codes, index=s.index).replace(-1, np.nan).astype(float)
         meta.numeric_cols.append(col)
+        meta.source_map[col] = col
         meta.notes.append(f"categorical '{col}' factorised: {list(uniques)[:6]}")
 
     logger.info(
@@ -181,6 +193,24 @@ def make_feature_frame(df: pd.DataFrame, feature_cols: list[str],
     if meta.dropped_constant:
         logger.info("Dropped constant columns: %s", meta.dropped_constant)
     return out, meta
+
+
+def assert_no_research_features(
+    model_columns: list[str],
+    source_map: dict[str, str],
+    research_only: set[str],
+) -> None:
+    """Reject deployable columns derived from a research-only raw feature."""
+    violations = [
+        f"{column} <- {source_map.get(column, column)}"
+        for column in model_columns
+        if source_map.get(column, column) in research_only
+    ]
+    if violations:
+        raise ValueError(
+            "Deployable design frame contains research-only derived features: "
+            + "; ".join(violations)
+        )
 
 
 def _alias(col: str) -> str:

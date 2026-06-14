@@ -93,6 +93,26 @@ def _single_feature_auc(x: pd.Series, y: pd.Series) -> float:
         return float("nan")
 
 
+def _screen_representations(
+    series: pd.Series,
+    force_presence: bool = False,
+) -> dict[str, pd.Series]:
+    """Return each deterministic representation that may reach a model."""
+    representations: dict[str, pd.Series] = {}
+    if force_presence:
+        representations["presence"] = series.notna().astype(float)
+    representations["model_encoding"] = _encode_for_screen(series)
+    representations["missing_indicator"] = series.isna().astype(float)
+    if not force_presence:
+        non_null = series.dropna()
+        if len(non_null) and (
+            non_null.nunique() > 15
+            and non_null.astype(str).str.len().mean() > 8
+        ):
+            representations["presence"] = series.notna().astype(float)
+    return representations
+
+
 def audit_leakage(df: pd.DataFrame, y: pd.DataFrame, feature_cols: list[str],
                   dictionary_categories: dict[str, str] | None = None,
                   cfg: dict[str, Any] | None = None) -> dict[str, Any]:
@@ -101,6 +121,8 @@ def audit_leakage(df: pd.DataFrame, y: pd.DataFrame, feature_cols: list[str],
     lk = cfg["leakage"]
     name_patterns = [p.lower() for p in lk["name_patterns"]]
     known_lab = set(lk.get("known_lab_confirmation", []))
+    forced_research = set(lk.get("research_only_features", []))
+    target_aliases = lk.get("target_aliases", {})
     auc_flag = lk["single_feature_auc_flag"]
     mi_flag = lk["mi_flag_threshold"]
     dictionary_categories = dictionary_categories or {}
@@ -123,16 +145,30 @@ def audit_leakage(df: pd.DataFrame, y: pd.DataFrame, feature_cols: list[str],
         )
         is_vital = any(p in name for p in _VITAL_PATTERNS)
         contains_disease = any(tok in name for tok in _DISEASE_TOKENS)
+        semantic_labels = [
+            label
+            for label, aliases in target_aliases.items()
+            if any(str(alias).lower() in name for alias in aliases)
+        ]
 
-        # statistical association vs each active label
-        aucs, mis = {}, {}
-        for lab in y.columns:
-            aucs[lab] = _single_feature_auc(enc[c], y[lab])
-        best_label = max(aucs, key=lambda k: (aucs[k] if not np.isnan(aucs[k]) else -1))
-        max_auc = aucs[best_label]
+        representations = _screen_representations(
+            df[c], force_presence=c in forced_research
+        )
+        candidates = [
+            (rep_name, lab, _single_feature_auc(values, y[lab]))
+            for rep_name, values in representations.items()
+            for lab in y.columns
+        ]
+        derived_representation, best_label, max_auc = max(
+            candidates,
+            key=lambda item: item[2] if not np.isnan(item[2]) else -1,
+        )
+        best_values = representations[derived_representation]
         try:
             mi_vals = mutual_info_classif(
-                enc[[c]].values, y[best_label].values, random_state=cfg["project"]["random_state"]
+                best_values.to_numpy().reshape(-1, 1),
+                y[best_label].values,
+                random_state=cfg["project"]["random_state"],
             )
             mi = float(mi_vals[0])
         except Exception:
@@ -144,6 +180,9 @@ def audit_leakage(df: pd.DataFrame, y: pd.DataFrame, feature_cols: list[str],
             "is_lab_test": is_lab_test,
             "is_vital": is_vital,
             "contains_disease_token": contains_disease,
+            "semantic_target_labels": ";".join(semantic_labels),
+            "forced_research_only": c in forced_research,
+            "derived_representation": derived_representation,
             "best_label": best_label,
             "max_single_feature_auc": round(max_auc, 4) if not np.isnan(max_auc) else np.nan,
             "mutual_info": round(mi, 4) if not np.isnan(mi) else np.nan,
@@ -155,10 +194,16 @@ def audit_leakage(df: pd.DataFrame, y: pd.DataFrame, feature_cols: list[str],
     def decide(r) -> tuple[str, str, str]:
         auc = r["max_single_feature_auc"]
         auc = -1 if pd.isna(auc) else auc
+        if r["forced_research_only"]:
+            return (
+                "T3_restate",
+                "research_only",
+                "Explicitly governed target-restatement / post-diagnosis field",
+            )
         if r["is_lab_test"]:
             return "T2_lab", "lab_aware", "Ordered lab / rapid diagnostic test"
         # target-restatement: encodes a disease name AND near-perfectly predicts it
-        if r["contains_disease_token"] and auc >= auc_flag:
+        if (r["contains_disease_token"] or r["semantic_target_labels"]) and auc >= auc_flag:
             return "T3_restate", "research_only", "Disease-named feature ~ target (post-diagnosis)"
         # generic statistical leak: extremely high single-feature AUC, non-lab
         if auc >= 0.97:
