@@ -116,6 +116,14 @@ export type CapacityRow = {
 
 export type TestAllocation = "Allocated" | "Waitlisted" | "Not eligible";
 
+export type ScenarioImpact = {
+  allocatedTests: number;
+  waitlistedTests: number;
+  urgentBedShortfall: number;
+  monitoringShortfall: number;
+  reviewShortfall: number;
+};
+
 export type AllocatedPatient = Patient & {
   test_allocation: TestAllocation;
 };

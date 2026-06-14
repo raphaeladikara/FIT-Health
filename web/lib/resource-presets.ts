@@ -57,3 +57,9 @@ export function resolveResourcePreset(value: string | null | undefined): Resourc
   }
   return RESOURCE_PRESETS.current;
 }
+
+/** Clamp a capacity value into [0, max], coercing NaN to 0. */
+export function clampCapacity(value: number, max: number): number {
+  if (Number.isNaN(value)) return 0;
+  return Math.min(Math.max(Math.round(value), 0), max);
+}

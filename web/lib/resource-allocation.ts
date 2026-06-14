@@ -4,6 +4,7 @@ import type {
   CapacityRow,
   Patient,
   ResourceName,
+  ScenarioImpact,
 } from "@/lib/types";
 
 /** Categories eligible for a confirmatory rapid test under the simulator's rule. */
@@ -89,4 +90,22 @@ export function allocateRapidTests(
           : "Waitlisted";
       return { ...patient, test_allocation };
     });
+}
+
+/** Summarise the operational consequence of one capacity scenario. */
+export function scenarioImpact(
+  patients: Patient[],
+  capacity: CapacityInput,
+): ScenarioImpact {
+  const queue = allocateRapidTests(patients, capacity.rapidTests);
+  const rows = calculateCapacity(patients, capacity);
+  const shortfall = (resource: ResourceName) =>
+    rows.find((row) => row.resource === resource)?.shortfall ?? 0;
+  return {
+    allocatedTests: queue.filter((p) => p.test_allocation === "Allocated").length,
+    waitlistedTests: queue.filter((p) => p.test_allocation === "Waitlisted").length,
+    urgentBedShortfall: shortfall("Beds"),
+    monitoringShortfall: shortfall("Monitoring slots"),
+    reviewShortfall: shortfall("Staff review slots"),
+  };
 }
