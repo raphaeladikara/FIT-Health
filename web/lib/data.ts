@@ -7,11 +7,15 @@ import {
   patientsSchema,
   summarySchema,
 } from "@/lib/schema";
-import type { DashboardData } from "@/lib/types";
+import type { DashboardData, Manifest } from "@/lib/types";
 
 async function readJson(filename: string): Promise<unknown> {
   const file = path.join(process.cwd(), "public", "data", filename);
   return JSON.parse(await readFile(file, "utf-8"));
+}
+
+export async function loadManifest(): Promise<Manifest> {
+  return manifestSchema.parse(await readJson("manifest.json"));
 }
 
 export async function loadDashboardData(): Promise<DashboardData> {

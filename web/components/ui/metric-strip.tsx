@@ -6,19 +6,28 @@ export type MetricItem = {
   detail: string;
   tone: string;
   icon: LucideIcon;
+  /** Optional share of cohort (0–1) rendered as an honest proportion chip. */
+  share?: number;
 };
 
 export function MetricStrip({ items }: { items: MetricItem[] }) {
   return (
-    <section className="metric-strip" aria-label="Operational summary">
-      {items.map(({ label, value, detail, tone, icon: Icon }) => (
-        <article className="metric-item" data-tone={tone} key={label}>
-          <div className="metric-label">
-            <Icon aria-hidden="true" size={18} />
-            {label}
+    <section className="kpi-grid" aria-label="Operational summary">
+      {items.map(({ label, value, detail, tone, icon: Icon, share }) => (
+        <article className="kpi-card" data-tone={tone} key={label}>
+          <div className="kpi-head">
+            <span className="kpi-id">
+              <span className="kpi-icon">
+                <Icon aria-hidden="true" size={19} strokeWidth={2} />
+              </span>
+              <span className="kpi-label">{label}</span>
+            </span>
+            {typeof share === "number" ? (
+              <span className="kpi-share">{Math.round(share * 100)}%</span>
+            ) : null}
           </div>
-          <strong>{value}</strong>
-          <small>{detail}</small>
+          <strong className="kpi-value">{value}</strong>
+          <small className="kpi-detail">{detail}</small>
         </article>
       ))}
     </section>
