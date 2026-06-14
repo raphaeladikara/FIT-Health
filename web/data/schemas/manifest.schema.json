@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "run_id",
+    "generated_at",
+    "canonical",
+    "model_track",
+    "model_name",
+    "evaluation_split",
+    "cohort_size",
+    "active_labels",
+    "source_commit"
+  ],
+  "properties": {
+    "canonical": { "const": true },
+    "model_track": { "const": "PRE_LAB" },
+    "cohort_size": { "type": "integer", "minimum": 1 }
+  }
+}

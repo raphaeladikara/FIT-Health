@@ -1,0 +1,47 @@
+/* ============================================================================
+   Dashboard + demo responsive behaviour
+   ========================================================================== */
+@media (max-width: 960px) {
+  .dashboard-shell { grid-template-columns: 1fr; }
+  .sidebar {
+    position: fixed; left: 0; top: 0; transform: translateX(-105%);
+    width: min(330px, 88vw); transition: transform 220ms cubic-bezier(.2,.8,.3,1);
+    box-shadow: var(--shadow);
+  }
+  .sidebar.open { transform: none; }
+  .sidebar .sidebar-close, .dashboard-header .menu-button { display: grid; }
+  .drawer-backdrop { position: fixed; inset: 0; z-index: 20; background: rgba(4, 10, 14, .66); backdrop-filter: blur(2px); }
+  .drawer-backdrop.open { display: block; }
+  body.menu-open { overflow: hidden; }
+  .dashboard-main { padding: 0 20px 56px; }
+  .dashboard-header { min-height: 80px; justify-content: flex-start; gap: 14px; }
+  .dashboard-header > div:nth-child(2) { flex: 1; min-width: 0; }
+  .run-summary { display: none; }
+  .metrics, .grid-3 { grid-template-columns: 1fr; }
+  .grid-2, .case-layout, .resource-layout, .demo-shell { grid-template-columns: 1fr; }
+  .filters { grid-template-columns: 1fr 1fr; }
+  .workflow { grid-template-columns: 1fr 1fr; }
+  .workflow div::after { display: none; }
+  .demo-progress { display: none; }
+  .demo-shell { margin-top: 20px; }
+}
+
+@media (max-width: 600px) {
+  .dashboard-header h1 { font-size: var(--fs-xl); }
+  .insight-hero { padding: 24px 22px; }
+  .insight-hero h2 { font-size: 1.4rem; }
+  .model-strip { align-items: stretch; flex-direction: column; gap: 10px; padding: 14px 0; }
+  .model-strip select { width: 100%; }
+  #evaluation-source { margin-left: 0; align-self: flex-start; }
+  .filters, .scenario-grid, .resource-output { grid-template-columns: 1fr; }
+  .workflow { grid-template-columns: 1fr; }
+  .data-bar { grid-template-columns: 110px 1fr 52px; gap: 10px; }
+  .probability-row { grid-template-columns: 110px 1fr; }
+  .probability-value { grid-column: 2; text-align: left; padding-left: 0; }
+  .inline-stats { gap: 10px; }
+  .inline-stats span { flex: 1 1 130px; }
+  .demo-header { padding: 0 18px; }
+  .demo-workspace { padding: 22px; min-height: 0; }
+  #demo-content h1 { font-size: 1.7rem; }
+  .section-heading { font-size: var(--fs-lg); }
+}

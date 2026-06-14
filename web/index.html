@@ -1,67 +1,108 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>VECTRA-X · Clinical Triage Intelligence</title>
-  <meta name="description" content="VECTRA-X — a multi-label, explainable, uncertainty-aware clinical triage intelligence system for vector-borne disease response. FIT Competition 2026, Track IV." />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="assets/styles.css" />
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%232dd4bf'/%3E%3Ctext x='16' y='23' font-size='20' font-family='Georgia' font-weight='600' text-anchor='middle' fill='%23042'%3EV%3C/text%3E%3C/svg%3E" />
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="VECTRA-X turns pre-lab signals into uncertainty-aware, resource-conscious triage recommendations.">
+  <title>VECTRA-X | Clinical decision support</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="assets/base.css">
+  <link rel="stylesheet" href="assets/landing.css">
 </head>
-<body>
-  <div id="loader"><div class="ring"></div></div>
+<body class="landing-page">
+  <a class="skip-link" href="#main">Skip to main content</a>
+  <header class="site-header">
+    <a class="brand" href="index.html" aria-label="VECTRA-X home">
+      <span class="brand-mark" aria-hidden="true">VX</span>
+      <span><strong>VECTRA-X</strong><small>Clinical triage intelligence</small></span>
+    </a>
+    <nav aria-label="Primary">
+      <a href="#evidence">Evidence</a>
+      <a href="#limitations">Limitations</a>
+      <a class="button button-quiet" href="dashboard.html">Open analytics</a>
+    </nav>
+  </header>
 
-  <div class="app" hidden>
-    <!-- ====================== sidebar ====================== -->
-    <aside class="rail">
-      <div class="brand">
-        <div class="mark">V</div>
-        <div>
-          <div class="name"><b>VECTRA</b>-X</div>
-          <div class="sub">Triage Intelligence</div>
+  <main id="main">
+    <section class="hero">
+      <div class="hero-copy">
+        <p class="status-badge"><span></span> Decision support, not diagnosis</p>
+        <h1>From uncertain signals to <em>safer triage</em> decisions.</h1>
+        <p class="hero-lede">VECTRA-X turns pre-lab patient signals into multi-label triage recommendations, calibrated uncertainty, and resource-aware actions.</p>
+        <div class="hero-actions">
+          <a class="button button-primary" href="demo.html">Start guided demo</a>
+          <a class="button button-secondary" href="dashboard.html">Explore full evidence</a>
         </div>
+        <p class="hero-note">A focused 3-5 minute walkthrough using curated, anonymized scenarios.</p>
       </div>
-
-      <nav class="nav" id="nav">
-        <div class="nav-label">Sections</div>
-        <!-- nav links injected by app.js -->
-      </nav>
-
-      <div class="rail-foot">
-        <b>FIT Competition 2026</b><br />
-        Track IV · Vector-Borne Disease Prediction<br /><br />
-        Decision support — <b>not</b> a diagnostic authority. Features are
-        anonymised model signals, not medical causes.
-      </div>
-    </aside>
-
-    <!-- ====================== main ====================== -->
-    <main class="main">
-      <div class="topbar">
-        <div>
-          <div class="eyebrow" id="crumb">Overview</div>
-          <h1 id="title">Executive Overview</h1>
+      <div class="decision-map" aria-label="VECTRA-X decision workflow">
+        <div class="decision-map-head">
+          <span>PRE_LAB · DEPLOYABLE EVIDENCE</span>
+          <strong>Human review remains in control</strong>
         </div>
-        <div class="chip" id="chip">Pre-lab model · <b>—</b></div>
+        <ol>
+          <li><b>01</b><span><strong>Signals</strong>Symptoms, demographics, vitals</span></li>
+          <li><b>02</b><span><strong>Prediction</strong>Multiple plausible disease labels</span></li>
+          <li><b>03</b><span><strong>Uncertainty</strong>Calibrated probabilities and conformal set</span></li>
+          <li><b>04</b><span><strong>Action</strong>Priority tier and resource implication</span></li>
+        </ol>
       </div>
+    </section>
 
-      <section class="view active" id="view-overview"></section>
-      <section class="view" id="view-eda"></section>
-      <section class="view" id="view-models"></section>
-      <section class="view" id="view-explorer"></section>
-      <section class="view" id="view-triage"></section>
-      <section class="view" id="view-uncertainty"></section>
-      <section class="view" id="view-explain"></section>
-      <section class="view" id="view-fairness"></section>
-      <section class="view" id="view-resource"></section>
-      <section class="view" id="view-method"></section>
-    </main>
-  </div>
+    <section class="problem-band" aria-labelledby="problem-title">
+      <div>
+        <p class="section-kicker">The operating problem</p>
+        <h2 id="problem-title">Symptoms overlap. Co-infections are common. Tests and staff are limited.</h2>
+      </div>
+      <p>A single-label answer hides the real workflow. VECTRA-X keeps multiple plausible labels visible, shows when evidence is weak, and translates model output into a review or testing priority.</p>
+    </section>
 
-  <script src="assets/app.js"></script>
+    <section class="difference" aria-labelledby="difference-title">
+      <div class="section-intro">
+        <p class="section-kicker">Built for clinical humility</p>
+        <h2 id="difference-title">The useful result is not just a score. It is a decision with boundaries.</h2>
+      </div>
+      <div class="difference-list">
+        <article><span>01</span><div><h3>Leakage-aware stage gating</h3><p>Deployable pre-lab evidence is separated from lab-aware comparison and research-only features.</p></div></article>
+        <article><span>02</span><div><h3>Uncertainty-aware abstention</h3><p>Conformal sets make ambiguity explicit and indicate when confirmatory testing or clinician review is warranted.</p></div></article>
+        <article><span>03</span><div><h3>Operational translation</h3><p>Predictions connect to priority tiers, confirmatory-test demand, and urgent-review capacity.</p></div></article>
+        <article><span>04</span><div><h3>Trust evidence</h3><p>Fairness, rare-label support, and center-shift findings stay close to the metrics they qualify.</p></div></article>
+      </div>
+    </section>
+
+    <section class="evidence" id="evidence" aria-labelledby="evidence-title">
+      <div class="section-intro">
+        <p class="section-kicker">Canonical held-out evidence</p>
+        <h2 id="evidence-title">Strong enough to guide a demo. Limited enough to require caution.</h2>
+      </div>
+      <div class="metric-row" id="landing-metrics" aria-live="polite">
+        <p class="loading-copy">Loading canonical metrics...</p>
+      </div>
+      <p class="evidence-source" id="landing-source"></p>
+    </section>
+
+    <section class="limitations" id="limitations" aria-labelledby="limitations-title">
+      <div>
+        <p class="section-kicker">Known limits</p>
+        <h2 id="limitations-title">Evidence must travel with its caveats.</h2>
+      </div>
+      <ul>
+        <li><strong>n=300</strong><span>Small cohort with high metric variance.</span></li>
+        <li><strong>4%</strong><span>Yellow fever prevalence, making rare-label estimates fragile.</span></li>
+        <li><strong>~0.38</strong><span>LOCO macro-F1, showing substantial center shift.</span></li>
+        <li><strong>Human review</strong><span>Required for escalation, ambiguity, and abstention.</span></li>
+      </ul>
+    </section>
+
+    <section class="final-cta">
+      <div><p class="section-kicker">See the system make a decision</p><h2>Follow one case from signal to action.</h2></div>
+      <div class="hero-actions"><a class="button button-primary" href="demo.html">Start 5-step demo</a><a class="text-link" href="dashboard.html#methodology">Review methodology</a></div>
+    </section>
+  </main>
+
+  <footer class="site-footer"><span>VECTRA-X · FIT Competition 2026</span><span>Public static prototype · no live inference</span></footer>
+  <script type="module" src="assets/landing.js"></script>
 </body>
 </html>

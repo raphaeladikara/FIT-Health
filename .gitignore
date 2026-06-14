@@ -1,2 +1,18 @@
 .superpowers/
 
+# Python caches
+__pycache__/
+*.py[cod]
+
+# Node and Next.js build artifacts
+node_modules/
+.next/
+
+# Local editor and design-tool state
+.vscode/
+.impeccable/
+
+# Generated browser screenshots and temporary Office files
+web/tools/out/
+~$*.docx
+

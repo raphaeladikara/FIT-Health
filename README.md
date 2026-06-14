@@ -25,7 +25,9 @@ triage system**. Instead of a single black-box classifier, it provides:
 - a **fairness / center-robustness** audit (incl. leave-one-center-out);
 - a **triage priority engine** (4 tiers + decision-support actions) and a **resource
   simulation**;
-- a **Streamlit dashboard** (10 pages).
+- a **public static experience** with a landing page, guided demo, analytics
+  dashboard, and deterministic resource simulator;
+- a **local Streamlit analytical tool** for restricted workflows.
 
 ## 2. Project objective
 
@@ -93,10 +95,10 @@ deterministic.
 
 There are **two** dashboards — both load precomputed artifacts (no retraining):
 
-**A. Static web dashboard (Vercel-ready) — recommended for sharing**
-A zero-backend single-page app under `web/` (clinical dark/teal theme, Chart.js,
-interactive patient lookup). `run_pipeline.py` auto-builds its data bundle via
-`export_web_data.py`.
+**A. Public static experience (Vercel-ready) — recommended for sharing**
+A zero-backend landing page, guided demo, and analytics dashboard under `web/`.
+It publishes aggregate evidence and at most 12 curated `CASE-###` examples. It does
+not publish UUIDs, patient ground truth, or live inference.
 ```bash
 # one-click on Windows (starts a local server + opens the browser):
 open_dashboard.bat
@@ -108,12 +110,14 @@ Deploy to **Vercel**: set the project **Root Directory** to `vectra_x_project/we
 (framework = Other, no build step) — see `web/README.md`. A local server is needed
 because browsers block `fetch()` over `file://`.
 
-**B. Streamlit app (local interactive)**
+**B. Streamlit app (local analytical tool)**
 ```bash
 streamlit run app/streamlit_app.py
 ```
 Streamlit needs a long-running Python server and **cannot** run on Vercel — the
 `web/` static site is the Vercel-deployable counterpart.
+
+See `docs/dashboard-capabilities.md` for the explicit public/local capability matrix.
 
 ## 7. Outputs generated
 

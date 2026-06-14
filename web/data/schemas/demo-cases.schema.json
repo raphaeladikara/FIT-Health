@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "array",
+  "maxItems": 12,
+  "items": {
+    "type": "object",
+    "required": [
+      "case_id",
+      "scenario",
+      "triage_category",
+      "triage_score",
+      "uncertainty_category",
+      "predicted_labels",
+      "conformal_set"
+    ],
+    "properties": {
+      "case_id": { "pattern": "^CASE-[0-9]{3}$" }
+    }
+  }
+}

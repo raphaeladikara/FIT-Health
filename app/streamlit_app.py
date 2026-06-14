@@ -35,6 +35,19 @@ def load_summary() -> dict:
     return json.loads(p.read_text(encoding="utf-8")) if p.exists() else {}
 
 
+def with_public_case_ids(frame: pd.DataFrame) -> pd.DataFrame:
+    public = frame.copy().reset_index(drop=True)
+    public.insert(0, "case_id", [f"CASE-{index:03d}" for index in range(1, len(public) + 1)])
+    return public
+
+
+def operational_thresholds() -> dict[str, float]:
+    policies = load_table("threshold_policies.csv")
+    if policies.empty:
+        return {}
+    return dict(zip(policies["label"], policies["operational"]))
+
+
 def show_fig(name: str, caption: str = "") -> None:
     p = FIGURES / name
     if p.exists():
@@ -59,6 +72,7 @@ if not summary:
 # --------------------------------------------------------------------------- #
 st.sidebar.title("🦟 VECTRA-X")
 st.sidebar.caption("Clinical Triage Intelligence — FIT 2026, Track IV")
+st.sidebar.info("Local analytical tool. The public static dashboard does not run live inference.")
 PAGES = [
     "1 · Executive Overview",
     "2 · Dataset & EDA",
@@ -148,7 +162,7 @@ elif page.startswith("3"):
 
 elif page.startswith("4"):
     st.title("Disease Prediction Explorer")
-    pt = load_table("vectra_patient_level_predictions.csv")
+    pt = with_public_case_ids(load_table("vectra_patient_level_predictions.csv"))
     if pt.empty:
         st.stop()
     labels = summary.get("active_labels", [])
@@ -159,17 +173,17 @@ elif page.startswith("4"):
     sel = st.selectbox("Disease", labels)
     mask = pt["predicted_labels"].str.contains(sel, na=False)
     st.metric(f"Patients predicted {sel}", int(mask.sum()))
-    st.dataframe(pt.loc[mask, ["uuid", "predicted_labels", "conformal_set",
+    st.dataframe(pt.loc[mask, ["case_id", "predicted_labels", "conformal_set",
                                "triage_category"]].head(50), width="stretch")
 
 elif page.startswith("5"):
     st.title("Patient-level Triage Card")
-    pt = load_table("vectra_patient_level_predictions.csv")
+    pt = with_public_case_ids(load_table("vectra_patient_level_predictions.csv"))
     if pt.empty:
         st.stop()
     labels = summary.get("active_labels", [])
-    uid = st.selectbox("Select patient (UUID)", pt["uuid"].astype(str).tolist())
-    row = pt[pt["uuid"].astype(str) == uid].iloc[0]
+    case_id = st.selectbox("Select curated case", pt["case_id"].tolist())
+    row = pt[pt["case_id"] == case_id].iloc[0]
     tier = row["triage_category"]
     color = {"Routine Monitoring": "🟢", "Clinical Review": "🟡",
              "Confirmatory Test Priority": "🟠", "Urgent Response Priority": "🔴"}.get(tier, "⚪")
@@ -179,12 +193,29 @@ elif page.startswith("5"):
     c[2].metric("Uncertainty", row.get("uncertainty_level", "—"))
     st.markdown(f"**Recommended action:** {row.get('recommended_action', '—')}")
     st.markdown(f"**Predicted labels:** {row.get('predicted_labels','')} &nbsp; "
-                f"**Conformal set:** {row.get('conformal_set','')} &nbsp; "
-                f"**True labels:** {row.get('true_labels','(hidden)')}")
+                f"**Conformal set:** {row.get('conformal_set','')}")
+    evaluation_mode = st.toggle("Retrospective evaluation mode", value=False)
+    if evaluation_mode:
+        st.warning("Ground truth is shown only for restricted retrospective evaluation.")
+        st.markdown(f"**Recorded labels:** {row.get('true_labels','(unavailable)')}")
     st.subheader("Calibrated disease probabilities")
     cal_cols = [f"calprob_{l}" for l in labels if f"calprob_{l}" in pt.columns]
     if cal_cols:
-        st.bar_chart(row[cal_cols].rename(lambda s: s.replace("calprob_", "")))
+        thresholds = operational_thresholds()
+        decisions = pd.DataFrame({
+            "label": [column.replace("calprob_", "") for column in cal_cols],
+            "probability": [row[column] for column in cal_cols],
+        })
+        decisions["operational_threshold"] = decisions["label"].map(thresholds)
+        decisions["decision"] = decisions.apply(
+            lambda item: (
+                "Above decision threshold"
+                if item["probability"] >= item["operational_threshold"]
+                else "Below decision threshold"
+            ),
+            axis=1,
+        )
+        st.dataframe(decisions, width="stretch", hide_index=True)
     st.caption("Decision support only — confirm clinically. Conformal set with ≥2 "
                "labels indicates ambiguity → confirmatory testing recommended.")
 

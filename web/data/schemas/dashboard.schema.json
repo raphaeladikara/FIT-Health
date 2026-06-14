@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "required": ["summary", "thresholds", "per_label", "resource"],
+  "properties": {
+    "thresholds": {
+      "type": "object",
+      "required": ["policy", "values"],
+      "properties": {
+        "policy": { "const": "operational" },
+        "values": { "type": "object", "minProperties": 5 }
+      }
+    }
+  }
+}

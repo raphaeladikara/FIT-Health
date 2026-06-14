@@ -1,10 +1,9 @@
 # VECTRA-X — Static Web Dashboard (Vercel-ready)
 
-A **zero-backend** static dashboard for the VECTRA-X clinical triage system. It
-fetches the precomputed pipeline artifacts (`data/dashboard.json`,
-`data/patients.json`) and renders 10 interactive sections with Chart.js + the
-generated figures. Because there is no server, it deploys to **Vercel** (or any
-static host) as-is.
+A **zero-backend** public decision-support prototype for VECTRA-X. It separates the
+experience into a product landing page, a five-step guided demo, and a deeper
+analytics dashboard. Public case data is curated and anonymized; UUIDs and recorded
+ground-truth labels are not published.
 
 > The Streamlit app (`../app/streamlit_app.py`) is the *local* interactive
 > version. Streamlit needs a long-running Python/WebSocket server and **cannot**
@@ -14,13 +13,14 @@ static host) as-is.
 
 ```
 web/
-├── index.html          # shell (sidebar + section containers)
-├── assets/
-│   ├── styles.css      # design system (clinical dark/teal theme)
-│   └── app.js          # data load, navigation, tables, Chart.js charts
+├── index.html          # product landing page
+├── demo.html           # guided five-step walkthrough
+├── dashboard.html      # analytical dashboard
+├── assets/             # local CSS and JavaScript modules
 ├── data/
-│   ├── dashboard.json  # metrics + all summary tables
-│   └── patients.json   # 300 patient-level predictions (explorer/triage)
+│   ├── dashboard.json  # aggregate metrics and evidence
+│   ├── demo-cases.json # maximum 12 curated public cases
+│   └── manifest.json   # canonical run provenance
 ├── figures/            # PNGs copied from outputs/figures
 └── vercel.json         # static caching + cleanUrls config
 ```
@@ -31,7 +31,8 @@ From the project root, after training:
 
 ```bash
 py run_pipeline.py        # produces outputs/*
-py export_web_data.py     # builds web/data/*.json and copies web/figures/*
+py export_web_data.py
+py scripts/validate_web_bundle.py
 ```
 
 ## Run locally

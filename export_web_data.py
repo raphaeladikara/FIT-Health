@@ -11,6 +11,8 @@ from __future__ import annotations
 
 import json
 import shutil
+import subprocess
+from datetime import datetime, timezone
 from pathlib import Path
 
 import pandas as pd
@@ -22,6 +24,22 @@ DASH = ROOT / "outputs" / "dashboard_data"
 WEB = ROOT / "web"
 WEB_DATA = WEB / "data"
 WEB_FIG = WEB / "figures"
+SCHEMAS = WEB_DATA / "schemas"
+
+PUBLIC_CASE_COLUMNS = [
+    "case_id",
+    "scenario",
+    "triage_category",
+    "triage_score",
+    "uncertainty_category",
+    "predicted_labels",
+    "conformal_set",
+    "calprob_malaria",
+    "calprob_other_diseases",
+    "calprob_dengue",
+    "calprob_typhoid",
+    "calprob_yellow_fever",
+]
 
 
 def _records(name: str, cols: list[str] | None = None, round_to: int = 4):
@@ -37,12 +55,87 @@ def _records(name: str, cols: list[str] | None = None, round_to: int = 4):
     return json.loads(df.to_json(orient="records"))
 
 
+def _atomic_json(path: Path, payload: object) -> None:
+    temporary = path.with_suffix(path.suffix + ".tmp")
+    temporary.write_text(
+        json.dumps(payload, ensure_ascii=False, separators=(",", ":")),
+        encoding="utf-8",
+    )
+    temporary.replace(path)
+
+
+def _source_commit() -> str:
+    try:
+        return subprocess.run(
+            ["git", "rev-parse", "--short", "HEAD"],
+            cwd=ROOT,
+            check=True,
+            capture_output=True,
+            text=True,
+        ).stdout.strip()
+    except (OSError, subprocess.CalledProcessError):
+        return "unknown"
+
+
+def _scenario(row: pd.Series) -> str:
+    labels = str(row.get("predicted_labels", ""))
+    uncertainty = str(row.get("uncertainty_level", "")).lower()
+    tier = str(row.get("triage_category", ""))
+    if tier == "Urgent Response Priority":
+        return "High-risk rare-label case"
+    if uncertainty == "high" or labels.count(",") >= 1:
+        return "Ambiguous multi-label case"
+    if tier == "Routine Monitoring":
+        return "Clear single-label case"
+    return "Center-shift stress case"
+
+
+def _public_cases(limit: int = 12) -> list[dict]:
+    source = pd.read_csv(TABLES / "vectra_patient_level_predictions.csv")
+    source = source.sort_values(
+        ["triage_score", "uncertainty_level"],
+        ascending=[False, True],
+        kind="stable",
+    )
+    source["scenario"] = source.apply(_scenario, axis=1)
+    scenario_order = [
+        "Clear single-label case",
+        "Ambiguous multi-label case",
+        "High-risk rare-label case",
+        "Center-shift stress case",
+    ]
+    selected = [
+        source[source["scenario"] == scenario].head(3)
+        for scenario in scenario_order
+    ]
+    source = pd.concat(selected, ignore_index=True).head(limit)
+    source["case_id"] = [f"CASE-{index:03d}" for index in range(1, len(source) + 1)]
+    source["uncertainty_category"] = source["uncertainty_level"]
+    cases = source[PUBLIC_CASE_COLUMNS].copy()
+    for column in cases.select_dtypes("float").columns:
+        cases[column] = cases[column].round(4)
+    return json.loads(cases.to_json(orient="records"))
+
+
+def _thresholds(records: list[dict], policy: str = "operational") -> dict:
+    return {
+        "policy": policy,
+        "values": {
+            row["label"]: round(float(row[policy]), 4)
+            for row in records
+            if row.get("label") and row.get(policy) is not None
+        },
+    }
+
+
 def main() -> None:
     WEB_DATA.mkdir(parents=True, exist_ok=True)
     WEB_FIG.mkdir(parents=True, exist_ok=True)
+    SCHEMAS.mkdir(parents=True, exist_ok=True)
 
     summary = json.loads((DASH / "summary.json").read_text(encoding="utf-8"))
 
+    threshold_policies = _records("threshold_policies.csv")
     dashboard = {
         "summary": summary,
         "label_distribution": _records("label_distribution.csv"),
@@ -50,10 +143,10 @@ def main() -> None:
         "leaderboard": _records("model_leaderboard.csv"),
         "per_label": _records("per_label_metrics.csv"),
         "threshold_opt": _records("threshold_optimization.csv"),
-        "threshold_policies": _records("threshold_policies.csv"),
+        "threshold_policies": threshold_policies,
+        "thresholds": _thresholds(threshold_policies),
         "calibration": _records("calibration_metrics.csv"),
         "conformal_per_label": _records("conformal_metrics.csv"),
-        "conformal_examples": _records("conformal_prediction_examples.csv"),
         "importance_global": _records("feature_importance_global.csv"),
         "importance_per_label": _records("feature_importance_per_label.csv"),
         "fairness": _records("fairness_metrics.csv"),
@@ -66,12 +159,28 @@ def main() -> None:
                             ["feature", "decision", "best_label",
                              "max_single_feature_auc", "mutual_info", "rationale"]),
     }
-    (WEB_DATA / "dashboard.json").write_text(
-        json.dumps(dashboard, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
+    _atomic_json(WEB_DATA / "dashboard.json", dashboard)
 
-    patients = _records("vectra_patient_level_predictions.csv")
-    (WEB_DATA / "patients.json").write_text(
-        json.dumps(patients, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
+    cases = _public_cases()
+    _atomic_json(WEB_DATA / "demo-cases.json", cases)
+    legacy_patients = WEB_DATA / "patients.json"
+    if legacy_patients.exists():
+        legacy_patients.unlink()
+
+    now = datetime.now(timezone.utc).replace(microsecond=0)
+    manifest = {
+        "schema_version": "1.0.0",
+        "run_id": f"{now.strftime('%Y-%m-%dT%H%M%SZ')}-prelab-et",
+        "generated_at": now.isoformat().replace("+00:00", "Z"),
+        "canonical": True,
+        "model_track": "PRE_LAB",
+        "model_name": summary["best_model_per_track"]["PRE_LAB"],
+        "evaluation_split": "held-out test",
+        "cohort_size": int(summary["shape"][0]),
+        "active_labels": len(summary["active_labels"]),
+        "source_commit": _source_commit(),
+    }
+    _atomic_json(WEB_DATA / "manifest.json", manifest)
 
     # copy figures
     n = 0
@@ -79,7 +188,7 @@ def main() -> None:
         shutil.copy2(png, WEB_FIG / png.name)
         n += 1
 
-    print(f"[web export] dashboard.json + patients.json ({len(patients)} patients) written")
+    print(f"[web export] dashboard.json + demo-cases.json ({len(cases)} cases) written")
     print(f"[web export] {n} figures copied to {WEB_FIG}")
 
 
