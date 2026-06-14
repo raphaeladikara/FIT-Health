@@ -66,6 +66,18 @@ export type Summary = {
 
 export type EvidenceRecord = Record<string, string | number | boolean | null>;
 
+export type InsightSeverity = "neutral" | "warning" | "critical";
+
+export type EvidenceInsight = {
+  title: string;
+  summary: string;
+  implication: string;
+  cannotClaim: string;
+  severity: InsightSeverity;
+  source: string;
+  limitations?: string[];
+};
+
 export type Evidence = {
   model_leaderboard: EvidenceRecord[];
   per_label_metrics: EvidenceRecord[];
