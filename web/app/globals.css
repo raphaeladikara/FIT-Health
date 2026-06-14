@@ -711,6 +711,28 @@ a { color: inherit; }
 }
 
 /* ============================================================
+   Methodology + glossary + term help
+   ============================================================ */
+.methodology-header { margin-bottom: 28px; max-width: 72ch; }
+.methodology-header h1 { margin: 0 0 10px; font-size: clamp(28px, 4vw, 38px); letter-spacing: -.03em; }
+.methodology-header p { margin: 0; color: var(--ink-muted); font-size: 16px; line-height: 1.55; }
+.prose-section p { line-height: 1.6; font-size: 14.5px; }
+.term-help {
+  display: inline-flex; align-items: center; gap: 3px; color: var(--primary-strong);
+  text-decoration: none; border-bottom: 1px dashed color-mix(in srgb, var(--primary) 45%, white);
+  font-weight: 550;
+}
+.term-help:hover { border-bottom-style: solid; }
+.term-help svg { opacity: .7; }
+
+.glossary-list { display: grid; gap: 0; margin: 0; }
+.glossary-item { padding: 14px 0; border-top: 1px solid var(--line); scroll-margin-top: 92px; }
+.glossary-item:first-child { border-top: 0; padding-top: 0; }
+.glossary-item:target { background: var(--primary-softer); border-radius: var(--radius-sm); padding-inline: 12px; margin-inline: -12px; }
+.glossary-item dt { font-weight: 700; font-size: 14.5px; color: var(--ink); }
+.glossary-item dd { margin: 5px 0 0; color: var(--ink-muted); font-size: 13.5px; line-height: 1.55; }
+
+/* ============================================================
    Page header
    ============================================================ */
 .page-header {
