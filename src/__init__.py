@@ -3,8 +3,8 @@
 FIT Competition 2026, Track IV: AI-based Vector-Borne Disease Prediction.
 
 The package is organised as a sequence of single-responsibility modules that
-are orchestrated by ``run_pipeline.py`` and re-used by the notebooks and the
-Streamlit dashboard:
+are orchestrated by ``run_pipeline.py`` and reused by the canonical notebook
+and static dashboard:
 
     data_loader      raw CSV ingestion (sep=';', decimal=',') + cleaning
     schema_audit     dtype / missingness / cardinality audit

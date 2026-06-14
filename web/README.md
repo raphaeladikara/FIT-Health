@@ -1,69 +1,65 @@
-# VECTRA-X — Static Web Dashboard (Vercel-ready)
+# VECTRA-X Static Dashboard
 
-A **zero-backend** public decision-support prototype for VECTRA-X. It separates the
-experience into a product landing page, a five-step guided demo, and a deeper
-analytics dashboard. Public case data is curated and anonymized; UUIDs and recorded
-ground-truth labels are not published.
+The `web/` directory is the maintained public dashboard for VECTRA-X. It preserves
+the existing landing page, guided demo, analytics views, and deterministic resource
+simulator while sourcing scientific claims from the final competition notebook.
 
-> The Streamlit app (`../app/streamlit_app.py`) is the *local* interactive
-> version. Streamlit needs a long-running Python/WebSocket server and **cannot**
-> run on Vercel — this static site is the Vercel-deployable counterpart.
+The application is fully static: it runs no model, stores no patient data, and
+requires no backend.
 
-## Folder
+## Data Contract
 
-```
-web/
-├── index.html          # product landing page
-├── demo.html           # guided five-step walkthrough
-├── dashboard.html      # analytical dashboard
-├── assets/             # local CSS and JavaScript modules
-├── data/
-│   ├── dashboard.json  # aggregate metrics and evidence
-│   ├── demo-cases.json # maximum 12 curated public cases
-│   └── manifest.json   # canonical run provenance
-├── figures/            # PNGs copied from outputs/figures
-└── vercel.json         # static caching + cleanUrls config
+```text
+web/data/dashboard.json   Aggregate final evidence and scenario inputs
+web/data/demo-cases.json  At most 12 curated anonymous demonstrations
+web/data/manifest.json    Canonical run and source provenance
+web/figures/              Static explanatory figures
 ```
 
-## Regenerate the data
+The public bundle contains no UUID, ground truth, or FULL target-restating model
+results. PRE_LAB and LAB_AWARE frozen-test results are reported separately. Exact
+and pragmatic empirical inclusion-set policies are also separated.
 
-From the project root, after training:
+## Regenerate and Validate
+
+Execute the final notebook or full canonical pipeline first, then:
 
 ```bash
-py run_pipeline.py        # produces outputs/*
-py export_web_data.py
-py scripts/validate_web_bundle.py
+python export_web_data.py
+python scripts/validate_web_bundle.py
 ```
 
-## Run locally
+The exporter reads corrected `outputs/tables/final_*.csv` evidence and retains the
+curated anonymous case fixture.
 
-Browsers block `fetch()` over `file://`, so serve over HTTP:
+## Run Locally
 
-- **Easiest:** double-click `../open_dashboard.bat` (starts a local server + opens the browser).
-- **Manual:**
-  ```bash
-  cd web
-  py -m http.server 8765
-  # open http://localhost:8765
-  ```
+Browsers block JSON loading over `file://`, so serve the folder over HTTP:
+
+```bash
+cd web
+python -m http.server 8765
+```
+
+Open `http://localhost:8765`. On Windows, `open_dashboard.bat` provides the same
+workflow.
+
+## Test
+
+```bash
+npm test
+npm run check
+```
+
+The optional browser smoke test requires its browser automation dependency.
 
 ## Deploy to Vercel
 
-The `web/` folder is the deployable root (pure static — no build step).
+Use `web/` as the Vercel project root:
 
-**Option A — CLI**
-```bash
-npm i -g vercel
-cd web
-vercel            # preview
-vercel --prod     # production
-```
+- Framework preset: Other
+- Build command: none
+- Output directory: `.`
 
-**Option B — Git import (vercel.com)**
-1. Import the repository.
-2. Set **Root Directory** = `vectra_x_project/web`.
-3. Framework preset = **Other**; Build command = *(none)*; Output dir = *(leave default / `.`)*.
-4. Deploy.
-
-Commit `web/data/*.json` and `web/figures/*.png` so Vercel has the artifacts
-(they are produced by `export_web_data.py`).
+Commit `web/data/*.json` and `web/figures/*.png`; the deployment has no server-side
+generation step.

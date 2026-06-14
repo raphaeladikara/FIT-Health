@@ -12,7 +12,7 @@ async function init() {
   const values = [
     ["Macro-F1", metrics.macro_f1.toFixed(2), "Held-out test · balanced across labels"],
     ["Macro-recall", metrics.macro_recall.toFixed(2), "Held-out test · sensitivity focus"],
-    ["Conformal coverage", percent(conformal.overall_coverage), "Target 90% · rare-label caveat"],
+    ["Empirical set coverage", percent(conformal.overall_coverage), "Exact uncapped policy · rare-label caveat"],
     ["Co-infection AUC", coinfection.roc_auc.toFixed(2), "Cohort-level detector"],
   ];
   document.querySelector("#landing-metrics").innerHTML = values.map(([label, value, source]) =>

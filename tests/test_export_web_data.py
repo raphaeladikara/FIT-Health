@@ -17,6 +17,7 @@ class ExportContractTest(unittest.TestCase):
         self.assertTrue(required.issubset(manifest))
         self.assertTrue(manifest["canonical"])
         self.assertEqual(manifest["model_track"], "PRE_LAB")
+        self.assertEqual(manifest["cohort_size"], 299)
 
     def test_demo_cases_are_curated_and_anonymous(self):
         cases = json.loads((WEB_DATA / "demo-cases.json").read_text(encoding="utf-8"))
@@ -28,6 +29,31 @@ class ExportContractTest(unittest.TestCase):
     def test_operational_thresholds_are_complete(self):
         dashboard = json.loads((WEB_DATA / "dashboard.json").read_text(encoding="utf-8"))
         self.assertEqual(set(dashboard["thresholds"]["values"]), set(dashboard["summary"]["active_labels"]))
+
+    def test_dashboard_uses_final_frozen_test_evidence(self):
+        dashboard = json.loads((WEB_DATA / "dashboard.json").read_text(encoding="utf-8"))
+        summary = dashboard["summary"]
+
+        self.assertEqual(summary["shape"][0], 299)
+        self.assertEqual(set(summary["test_metrics"]), {"PRE_LAB", "LAB_AWARE"})
+        self.assertAlmostEqual(summary["test_metrics"]["PRE_LAB"]["macro_f1"], 0.4823)
+        self.assertAlmostEqual(summary["test_metrics"]["PRE_LAB"]["macro_pr_auc"], 0.5247)
+        self.assertFalse(any(row.get("track") == "FULL" for row in dashboard["leaderboard"]))
+        self.assertFalse(any(row.get("track") == "FULL" for row in dashboard["per_label"]))
+
+    def test_prediction_set_policies_are_reported_separately(self):
+        dashboard = json.loads((WEB_DATA / "dashboard.json").read_text(encoding="utf-8"))
+
+        self.assertIn("conformal_exact", dashboard)
+        self.assertIn("conformal_pragmatic", dashboard)
+        self.assertEqual(
+            {row["label"] for row in dashboard["conformal_exact"]},
+            set(dashboard["summary"]["active_labels"]),
+        )
+        self.assertEqual(
+            {row["label"] for row in dashboard["conformal_pragmatic"]},
+            set(dashboard["summary"]["active_labels"]),
+        )
 
 
 if __name__ == "__main__":

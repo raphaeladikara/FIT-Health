@@ -1,7 +1,14 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "type": "object",
-  "required": ["summary", "thresholds", "per_label", "resource"],
+  "required": [
+    "summary",
+    "thresholds",
+    "per_label",
+    "resource",
+    "conformal_exact",
+    "conformal_pragmatic"
+  ],
   "properties": {
     "thresholds": {
       "type": "object",

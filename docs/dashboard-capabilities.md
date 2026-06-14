@@ -1,14 +1,16 @@
 # Dashboard Capability Boundaries
 
-| Capability | Public static | Local Streamlit |
-|---|---:|---:|
-| Landing and guided demo | Yes | No |
-| Aggregate model evidence | Yes | Yes |
-| Curated anonymized cases | Yes | Yes |
-| Upload patient file | No | Local workflow only |
-| Run model inference | No | Local workflow only |
-| Ground-truth evaluation | Aggregate only | Restricted evaluation mode |
-| Resource scenario projection | Yes | Yes |
+| Capability | Public static dashboard |
+|---|---:|
+| Landing page and guided demo | Yes |
+| Final aggregate model evidence | Yes |
+| Curated anonymous cases | Yes |
+| Exact and pragmatic inclusion-set evidence | Yes |
+| Deterministic resource scenario projection | Yes |
+| Upload patient files | No |
+| Run live model inference | No |
+| Publish UUIDs or patient ground truth | No |
+| Present target-restating FULL model evidence | No |
 
-The public dashboard is a static decision-support prototype. It does not store patient
-data, authenticate users, or run live clinical inference.
+The static dashboard is the only maintained application surface. It does not store
+patient data, authenticate users, perform diagnosis, or run clinical inference.

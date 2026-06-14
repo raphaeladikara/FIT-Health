@@ -40,8 +40,8 @@ remain explicit.
    implication.
 2. Earn trust through transparency: show leakage controls, uncertainty, calibration,
    fairness limitations, and model mode clearly.
-3. Lead with the deployable system: treat pre-lab triage as the primary model and
-   distinguish confirmation and research-only modes.
+3. Lead with the primary research prototype: treat pre-lab triage as the principal
+   evidence and distinguish the post-test comparison from excluded leakage fields.
 4. Support rapid scanning and deeper inspection: provide concise summaries with
    expandable technical evidence.
 5. Preserve clinical humility: use plain language and consistently state that

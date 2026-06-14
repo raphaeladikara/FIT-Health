@@ -16,6 +16,6 @@
   "properties": {
     "canonical": { "const": true },
     "model_track": { "const": "PRE_LAB" },
-    "cohort_size": { "type": "integer", "minimum": 1 }
+    "cohort_size": { "const": 299 }
   }
 }

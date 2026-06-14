@@ -15,7 +15,8 @@ This guarantees marginal coverage >= 1-alpha for truly-positive cases per label
 can be empty (=> "no confident disease, escalate for review") or multi-label
 (=> "ambiguous, request confirmatory testing").
 
-Limitation (documented): with n=300 and rare labels (yellow fever has ~3 test
+Limitation (documented): with 300 raw rows, 299 supervised patients, and rare labels
+(yellow fever has ~3 test
 positives), per-label coverage is a small-sample estimate; we report it with
 that caveat rather than claiming a strict guarantee.
 """

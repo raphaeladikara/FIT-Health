@@ -1,6 +1,7 @@
 """modeling — multi-label tracks, co-infection, and rare-label models.
 
-Design choices driven by the data reality (n=300, 90% malaria prevalence,
+Design choices driven by the data reality (300 raw rows, 299 supervised patients,
+approximately 90% malaria prevalence,
 yellow fever with only 12 positives):
 
 * **Binary Relevance** is implemented manually (one calibratable pipeline per

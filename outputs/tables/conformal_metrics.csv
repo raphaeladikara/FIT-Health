@@ -1,6 +1,0 @@
-﻿label,prob_threshold,test_positives,covered_positives,empirical_coverage,predicted_inclusions
-malaria,0.6573,68,64,0.9412,72
-other_diseases,0.2266,25,24,0.96,47
-dengue,0.1177,14,13,0.9286,45
-typhoid,0.0088,7,7,1.0,73
-yellow_fever,0.0,3,3,1.0,78

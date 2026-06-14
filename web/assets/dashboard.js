@@ -61,10 +61,10 @@ function renderNav() {
 function overview() {
   const summary = bundle.dashboard.summary;
   const metrics = summary.test_metrics.PRE_LAB;
-  return `<div class="insight-hero"><span>WHAT THE SYSTEM CAN DO</span><h2>Prioritize multi-label disease risk before lab confirmation, while showing when evidence is too uncertain to act alone.</h2><p>The deployable story is PRE_LAB. Lab-aware results provide workflow comparison; FULL demonstrates why leakage control matters.</p></div>
-  <div class="metrics">${metric("Macro-F1", metrics.macro_f1.toFixed(2), "held-out test · 5 labels")}${metric("Macro-recall", metrics.macro_recall.toFixed(2), "held-out test · sensitivity")}${metric("Conformal coverage", percent(summary.conformal.overall_coverage), "target 90% · rare-label caveat")}</div>
+  return `<div class="insight-hero"><span>WHAT THE SYSTEM CAN DO</span><h2>Prioritize multi-label disease risk before lab confirmation, while showing when evidence is too uncertain to act alone.</h2><p>PRE_LAB is the primary research prototype. LAB_AWARE is a post-test comparison and did not improve aggregate frozen-test macro-F1 or macro-PR-AUC.</p></div>
+  <div class="metrics">${metric("Macro-F1", metrics.macro_f1.toFixed(2), "frozen test · 5 labels")}${metric("Macro-recall", metrics.macro_recall.toFixed(2), "frozen test · sensitivity")}${metric("Empirical set coverage", percent(summary.conformal.overall_coverage), "exact uncapped policy")}</div>
   <div class="inline-stats"><span><strong>${summary.n_multilabel_patients}/${summary.shape[0]}</strong> multi-label cases</span><span><strong>${summary.coinfection.roc_auc.toFixed(2)}</strong> co-infection ROC-AUC</span><span><strong>${summary.loco_macro_f1.map((value) => value.toFixed(2)).join(" / ")}</strong> LOCO macro-F1</span></div>
-  <aside class="callout callout-risk"><strong>Safety boundary:</strong> Yellow fever has only 3 positives in the held-out split, and center-transfer macro-F1 falls near 0.38. These are decision-support estimates, not clinical validation.</aside>
+  <aside class="callout callout-risk"><strong>Safety boundary:</strong> Yellow fever has only 3 positives in the frozen test, and center-transfer macro-F1 falls to 0.26–0.31. These are research estimates, not clinical validation.</aside>
   <div class="workflow"><div><b>01</b><strong>Signal</strong><span>Pre-lab features</span></div><div><b>02</b><strong>Prediction</strong><span>Multi-label probabilities</span></div><div><b>03</b><strong>Uncertainty</strong><span>Conformal set</span></div><div><b>04</b><strong>Action</strong><span>Triage and capacity</span></div></div>
   <div class="grid grid-3"><a class="panel panel-border text-link" href="demo.html">Start guided demo</a><a class="panel panel-border text-link" href="#models">Inspect model evidence</a><a class="panel panel-border text-link" href="#methodology">Read limitations</a></div>`;
 }
@@ -72,7 +72,7 @@ function overview() {
 function dataView() {
   const labels = bundle.dashboard.label_distribution;
   return `<p class="view-lede">The cohort is small, imbalanced, multi-label, and split across two centers. Those properties determine which metrics are credible and where human oversight is essential.</p>
-  <div class="grid grid-3"><article class="panel"><h2>300 patients</h2><p>109 source variables, 82 retained in the deployable pre-lab track.</p></article><article class="panel"><h2>158 multi-label</h2><p>More than half the cohort carries multiple recorded diagnoses.</p></article><article class="panel"><h2>2 health centers</h2><p>Enough to expose transfer risk, not enough to establish broad generalization.</p></article></div>
+  <div class="grid grid-3"><article class="panel"><h2>299 patients</h2><p>Verified supervised cohort from 300 raw rows; one unknown-target row is excluded.</p></article><article class="panel"><h2>158 multi-label</h2><p>More than half the cohort carries multiple recorded diagnoses.</p></article><article class="panel"><h2>2 health centers</h2><p>Enough to expose transfer risk, not enough to establish broad generalization.</p></article></div>
   <h2 class="section-heading">Label prevalence</h2><div class="panel">${dataBars(labels.filter((row) => row.status === "active"), "prevalence_pct", "label", { max: 100 })}</div>
   <aside class="callout callout-warn"><strong>Modeling implication:</strong> Malaria prevalence is 90%, while yellow fever is 4%. Accuracy and micro metrics alone would hide rare-label failure.</aside>
   <div class="grid grid-2">${figure("label_cooccurrence_heatmap.png", "Heatmap showing disease label co-occurrence", "Malaria frequently co-occurs with other recorded labels.")}${figure("missingness_by_disease.png", "Missingness patterns by disease", "Missingness is retained as workflow availability information, not treated as a negative.")}</div>`;
@@ -83,8 +83,7 @@ function modelView() {
   const summary = bundle.dashboard.summary;
   const metrics = summary.test_metrics[mode];
   const rows = bundle.dashboard.per_label.filter((row) => row.track === mode).sort((a, b) => a.recall - b.recall);
-  const warning = mode === "FULL" ? `<aside class="callout callout-risk"><strong>Research-only leakage comparison.</strong> FULL includes post-diagnosis or target-restating information and must not be presented as deployable.</aside>` : "";
-  return `${warning}<p class="view-lede">${mode === "PRE_LAB" ? "Default deployable evidence using demographics, symptoms, vitals, and availability signals." : mode === "LAB_AWARE" ? "Comparison after ordered tests become available. This is not the early-triage surface." : "A methodological demonstration of how leakage can inflate apparent performance."}</p>
+  return `<p class="view-lede">${mode === "PRE_LAB" ? "Primary research evidence using demographics, symptoms, vitals, and availability signals." : "Comparison after ordered tests become available. It did not improve aggregate frozen-test macro-F1 or macro-PR-AUC."}</p>
   <div class="metrics">${metric("Macro-F1", metrics.macro_f1.toFixed(2), "held-out test")}${metric("Macro-recall", metrics.macro_recall.toFixed(2), "held-out test")}${metric("Macro PR-AUC", metrics.macro_pr_auc.toFixed(2), "held-out test")}</div>
   <h2 class="section-heading">Per-label risk, lowest recall first</h2>${table(rows, [
     { key: "label", label: "Label", render: titleCase },
@@ -98,11 +97,11 @@ function modelView() {
 
 function uncertaintyView() {
   const summary = bundle.dashboard.summary.conformal;
-  const rows = bundle.dashboard.conformal_per_label;
+  const rows = bundle.dashboard.conformal_exact;
   const typhoid = rows.find((row) => row.label === "typhoid");
   return `<p class="view-lede">A conformal set is a set of plausible model labels at a target coverage level. It is not a diagnostic list and it can deliberately remain broad when evidence is ambiguous.</p>
-  <div class="metrics">${metric("Coverage", percent(summary.overall_coverage), "target 90%")}${metric("Average set size", number(summary.avg_set_size), `of ${bundle.dashboard.summary.active_labels.length} labels`)}${metric("Ambiguous sets", percent(summary.pct_ambiguous_multi / 100), "set size ≥2")}</div>
-  <aside class="callout callout-risk"><strong>Undercoverage risk:</strong> Typhoid coverage is ${typhoid ? percent(typhoid.empirical_coverage) : "not available"} with limited positive support. Yellow fever values must also be read beside its very small support.</aside>
+  <div class="metrics">${metric("Empirical coverage", percent(summary.overall_coverage), "exact uncapped policy")}${metric("Average set size", number(summary.avg_set_size), `of ${bundle.dashboard.summary.active_labels.length} labels`)}${metric("Macro label coverage", percent(summary.macro_label_coverage), "descriptive frozen-test estimate")}</div>
+  <aside class="callout callout-risk"><strong>Efficiency warning:</strong> Exact empirical inclusion retains nearly every label for rare outcomes. Typhoid coverage is ${typhoid ? percent(typhoid.empirical_coverage) : "not available"} with limited positive support. The pragmatic policy is reported separately and carries no formal guarantee.</aside>
   ${table(rows, [
     { key: "label", label: "Label", render: titleCase },
     { key: "test_positives", label: "Positive support" },
@@ -161,7 +160,7 @@ function triageView() {
 }
 
 function resourceView() {
-  return `<p class="view-lede">Project daily triage demand against confirmatory-test and urgent-review capacity. Results are deterministic scenario projections, not staffing prescriptions.</p><div class="resource-layout"><form class="panel" id="resource-form"><div class="field"><label for="policy">Threshold policy</label><select id="policy"><option value="operational">Operational</option><option value="safety">Safety</option><option value="performance">Performance</option></select></div><div class="field"><label for="cohort-range">Daily cohort size</label><div class="range-pair"><input id="cohort-range" type="range" min="0" max="1000" value="300"><input id="cohort-number" type="number" min="0" max="1000" value="300"></div></div><div class="field"><label for="test-capacity">Confirmatory test capacity</label><input id="test-capacity" type="number" min="0" value="70"></div><div class="field"><label for="urgent-capacity">Urgent review capacity</label><input id="urgent-capacity" type="number" min="0" value="40"></div><button class="button button-quiet" id="reset-resource" type="button">Reset baseline</button></form><div><div class="resource-output" id="resource-output"></div><div class="panel"><h2>Projected tier distribution</h2><div id="tier-output"></div></div></div></div>`;
+  return `<p class="view-lede">Project daily triage demand against confirmatory-test and urgent-review capacity. Results are deterministic scenario projections, not staffing prescriptions or measured clinical impact.</p><div class="resource-layout"><form class="panel" id="resource-form"><div class="field"><label for="policy">Threshold policy</label><select id="policy"><option value="operational">Operational</option><option value="safety">Safety</option><option value="performance">Performance</option></select></div><div class="field"><label for="cohort-range">Daily cohort size</label><div class="range-pair"><input id="cohort-range" type="range" min="0" max="1000" value="299"><input id="cohort-number" type="number" min="0" max="1000" value="299"></div></div><div class="field"><label for="test-capacity">Confirmatory test capacity</label><input id="test-capacity" type="number" min="0" value="70"></div><div class="field"><label for="urgent-capacity">Urgent review capacity</label><input id="urgent-capacity" type="number" min="0" value="40"></div><button class="button button-quiet" id="reset-resource" type="button">Reset baseline</button></form><div><div class="resource-output" id="resource-output"></div><div class="panel"><h2>Projected tier distribution</h2><div id="tier-output"></div></div></div></div>`;
 }
 
 function updateResources() {
@@ -216,9 +215,9 @@ function trustView() {
 
 function methodologyView() {
   return `<p class="view-lede">The public static dashboard presents precomputed evidence and curated cases. It does not run live inference or store patient data.</p>
-  <div class="grid grid-3"><article class="panel"><h2>PRE_LAB</h2><p>Deployable evidence from demographics, symptoms, vitals, and signal availability.</p></article><article class="panel"><h2>LAB_AWARE</h2><p>Workflow comparison after ordered tests become available.</p></article><article class="panel"><h2>FULL</h2><p>Research-only leakage demonstration. Never a deployment recommendation.</p></article></div>
+  <div class="grid grid-3"><article class="panel"><h2>PRE_LAB</h2><p>Primary research evidence from demographics, symptoms, vitals, and signal availability.</p></article><article class="panel"><h2>LAB_AWARE</h2><p>Post-test comparison that did not improve aggregate macro-F1 or macro-PR-AUC.</p></article><article class="panel"><h2>Leakage governance</h2><p>Target-restating fields are audited and excluded from all public model evidence.</p></article></div>
   <h2 class="section-heading">Evaluation and threshold policy</h2><div class="grid grid-2"><article class="panel"><h3>Split and sources</h3><p>Primary model metrics come from a held-out test split. Cohort views use honest out-of-fold predictions where specified. Sources are not mixed without labels.</p></article><article class="panel"><h3>Operational thresholds</h3>${table(bundle.dashboard.threshold_policies, [{ key: "label", label: "Label", render: titleCase }, { key: "operational", label: "Operational", render: number }, { key: "safety", label: "Safety", render: number }])}</article></div>
-  <h2 class="section-heading">Known limitations</h2><div class="callout callout-risk"><strong>Small and imbalanced cohort:</strong> n=300, yellow fever prevalence 4%, three inactive labels, structured missingness, and only two facilities.</div>
+  <h2 class="section-heading">Known limitations</h2><div class="callout callout-risk"><strong>Small and imbalanced cohort:</strong> supervised n=299, yellow fever prevalence near 4%, three inactive labels, structured missingness, and only two facilities.</div>
   <h2 class="section-heading">Glossary</h2>${table([
     ["Macro-F1", "Average F1 across labels, giving rare labels equal weight."],
     ["Macro-recall", "Average sensitivity across labels."],
@@ -272,7 +271,7 @@ function bindView() {
     ["policy", "test-capacity", "urgent-capacity"].forEach((id) => document.querySelector(`#${id}`).addEventListener("input", updateResources));
     document.querySelector("#reset-resource").addEventListener("click", () => {
       document.querySelector("#policy").value = "operational";
-      range.value = numberInput.value = 300;
+      range.value = numberInput.value = 299;
       document.querySelector("#test-capacity").value = 70;
       document.querySelector("#urgent-capacity").value = 40;
       updateResources();

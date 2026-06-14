@@ -1,7 +1,7 @@
 """explainability — global + local model interpretation (leakage-aware).
 
 Primary, always-available method: **permutation importance** (model-agnostic,
-robust at n=300). Optional **SHAP** is attempted for a tree model and degrades
+robust with 299 supervised patients). Optional **SHAP** is attempted for a tree model and degrades
 gracefully if the bleeding-edge numpy/pandas stack breaks it.
 
 Local explanations use a transparent **logistic surrogate** per label: the

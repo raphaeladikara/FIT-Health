@@ -28,7 +28,7 @@ conventional and highly readable.
 
 ## Layout
 
-- Wide Streamlit layout with persistent sidebar navigation.
+- Wide static web layout with persistent sidebar navigation.
 - Executive overview opens with a concise system statement, metric strip, and three
   high-value interactive charts.
 - Detailed pages use a summary-first structure followed by evidence and expandable
@@ -44,12 +44,11 @@ conventional and highly readable.
 - Metric cards with restrained surfaces and semantic deltas.
 - Plotly charts with consistent disease and triage color mappings.
 - Model-mode selector with explicit labels:
-  Pre-lab Triage, Lab-aware Confirmation, Full-feature Research-only.
+  Pre-lab Triage and Lab-aware Confirmation.
 - Patient case cards for high confidence, co-infection, high uncertainty, urgent
   priority, and false-negative risk examples.
 - Plain-language interpretation panels and technical expanders.
-- Download controls for predictions, triage reports, leaderboard data, and resource
-  scenarios.
+- Static evidence tables, curated anonymous cases, and resource scenarios.
 - Clear empty, unavailable, schema-error, and optional-artifact fallback states.
 
 ## Motion
@@ -63,5 +62,6 @@ loads or chart content gratuitously. Respect reduced-motion preferences.
 - Never label a prediction as a confirmed diagnosis.
 - Explain uncertainty and conformal sets in plain language.
 - Keep the anonymized-feature causality warning visible in explainability views.
-- Clearly distinguish deployable, confirmation-support, and research-only models.
+- Clearly distinguish the pre-lab prototype, post-test comparison, and excluded
+  target-restating information.
 

@@ -41,9 +41,16 @@ def main() -> None:
     thresholds = dashboard["thresholds"]["values"]
 
     require(manifest["canonical"] is True, "manifest must be canonical")
+    require(manifest["cohort_size"] == 299, "canonical cohort must be 299")
     require(manifest["model_track"] != "FULL", "FULL cannot be deployable")
     require(set(labels) == set(thresholds), "threshold labels are incomplete")
     require(dashboard["summary"]["test_metrics"]["PRE_LAB"], "canonical metrics are empty")
+    require(
+        set(dashboard["summary"]["test_metrics"]) == {"PRE_LAB", "LAB_AWARE"},
+        "public metrics must exclude FULL",
+    )
+    require(dashboard["conformal_exact"], "exact conformal evidence is missing")
+    require(dashboard["conformal_pragmatic"], "pragmatic conformal evidence is missing")
     require(0 < len(cases) <= 12, "public case count must be between 1 and 12")
 
     for case in cases:

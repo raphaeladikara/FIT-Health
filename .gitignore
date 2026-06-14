@@ -1,4 +1,7 @@
 .superpowers/
+.pytest_cache/
+.streamlit/
+vectra_x_outputs/
 
 # Python caches
 __pycache__/
