@@ -12,7 +12,7 @@ def test_retired_streamlit_runtime_is_absent():
 
 def test_final_notebook_is_the_only_tracked_notebook():
     notebooks = sorted(path.name for path in (ROOT / "notebooks").glob("*.ipynb"))
-    assert notebooks == ["VECTRA_X_Final_Competition_Notebook.ipynb"]
+    assert notebooks == ["VECTRA_X_Final.ipynb"]
 
 
 def test_markdown_improvement_history_is_retained():
@@ -29,7 +29,7 @@ def test_markdown_improvement_history_is_retained():
         ROOT / "outputs" / "reports" / "README.md"
     ).read_text(encoding="utf-8")
     assert "Historical Generated Reports" in report_index
-    assert "VECTRA_X_Final_Competition_Notebook.ipynb" in report_index
+    assert "VECTRA_X_Final" in report_index
 
 
 def test_pipeline_is_a_canonical_notebook_workflow_runner():
@@ -38,10 +38,10 @@ def test_pipeline_is_a_canonical_notebook_workflow_runner():
     assert "FULL_RESEARCH_ONLY" not in source
     assert "dashboard_data" not in source
     assert "outputs/models" not in source
-    assert source.index("if args.quick:") < source.index(
+    assert source.index("if args.quick and not args.write_release:") < source.index(
         "written = export_final_tables(result)"
     )
     assert "return" in source[
-        source.index("if args.quick:"):
+        source.index("if args.quick and not args.write_release:"):
         source.index("written = export_final_tables(result)")
     ]

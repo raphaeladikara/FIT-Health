@@ -1,60 +1,41 @@
 import json
-import unittest
 from pathlib import Path
+
+import export_web_data as exporter
 
 
 ROOT = Path(__file__).resolve().parents[1]
 WEB_DATA = ROOT / "web" / "data"
 
 
-class ExportContractTest(unittest.TestCase):
-    def test_manifest_has_canonical_provenance(self):
-        manifest = json.loads((WEB_DATA / "manifest.json").read_text(encoding="utf-8"))
-        required = {
-            "schema_version", "run_id", "generated_at", "canonical", "model_track",
-            "model_name", "evaluation_split", "cohort_size", "active_labels", "source_commit",
-        }
-        self.assertTrue(required.issubset(manifest))
-        self.assertTrue(manifest["canonical"])
-        self.assertEqual(manifest["model_track"], "PRE_LAB")
-        self.assertEqual(manifest["cohort_size"], 299)
+def test_exporter_reads_locked_release_and_writes_versioned_contracts():
+    exporter.main()
+    manifest = json.loads((WEB_DATA / "manifest.json").read_text(encoding="utf-8"))
+    evidence = json.loads((WEB_DATA / "evidence.json").read_text(encoding="utf-8"))
+    input_schema = json.loads((WEB_DATA / "input-schema.json").read_text(encoding="utf-8"))
 
-    def test_demo_cases_are_curated_and_anonymous(self):
-        cases = json.loads((WEB_DATA / "demo-cases.json").read_text(encoding="utf-8"))
-        self.assertLessEqual(len(cases), 12)
-        self.assertGreater(len(cases), 0)
-        self.assertTrue(all(case["case_id"].startswith("CASE-") for case in cases))
-        self.assertGreaterEqual(len({case["scenario"] for case in cases}), 3)
-
-    def test_operational_thresholds_are_complete(self):
-        dashboard = json.loads((WEB_DATA / "dashboard.json").read_text(encoding="utf-8"))
-        self.assertEqual(set(dashboard["thresholds"]["values"]), set(dashboard["summary"]["active_labels"]))
-
-    def test_dashboard_uses_final_frozen_test_evidence(self):
-        dashboard = json.loads((WEB_DATA / "dashboard.json").read_text(encoding="utf-8"))
-        summary = dashboard["summary"]
-
-        self.assertEqual(summary["shape"][0], 299)
-        self.assertEqual(set(summary["test_metrics"]), {"PRE_LAB", "LAB_AWARE"})
-        self.assertAlmostEqual(summary["test_metrics"]["PRE_LAB"]["macro_f1"], 0.4823)
-        self.assertAlmostEqual(summary["test_metrics"]["PRE_LAB"]["macro_pr_auc"], 0.5247)
-        self.assertFalse(any(row.get("track") == "FULL" for row in dashboard["leaderboard"]))
-        self.assertFalse(any(row.get("track") == "FULL" for row in dashboard["per_label"]))
-
-    def test_prediction_set_policies_are_reported_separately(self):
-        dashboard = json.loads((WEB_DATA / "dashboard.json").read_text(encoding="utf-8"))
-
-        self.assertIn("conformal_exact", dashboard)
-        self.assertIn("conformal_pragmatic", dashboard)
-        self.assertEqual(
-            {row["label"] for row in dashboard["conformal_exact"]},
-            set(dashboard["summary"]["active_labels"]),
-        )
-        self.assertEqual(
-            {row["label"] for row in dashboard["conformal_pragmatic"]},
-            set(dashboard["summary"]["active_labels"]),
-        )
+    assert manifest["schema_version"] == "3.0.0"
+    assert manifest["notebook_run_id"] == evidence["run_id"] == input_schema["run_id"]
+    assert set(manifest["policy_ids"]) == {"PRE_LAB", "LAB_AWARE"}
+    assert "FULL" not in json.dumps(evidence)
 
 
-if __name__ == "__main__":
-    unittest.main()
+def test_demo_cases_are_explicitly_synthetic():
+    exporter.main()
+    cases = json.loads((WEB_DATA / "demo-cases.json").read_text(encoding="utf-8"))
+    assert 3 <= len(cases) <= 5
+    assert all(case["provenance"] == "illustrative_synthetic" for case in cases)
+    assert all("expected_output" not in case for case in cases)
+
+
+def test_historical_csv_cannot_change_public_evidence(tmp_path):
+    exporter.main()
+    before = (WEB_DATA / "evidence.json").read_bytes()
+    stale = ROOT / "outputs" / "tables" / "final_test_metrics.csv"
+    original = stale.read_bytes()
+    try:
+        stale.write_text("conflicting,legacy\n1,2\n", encoding="utf-8")
+        exporter.main()
+        assert (WEB_DATA / "evidence.json").read_bytes() == before
+    finally:
+        stale.write_bytes(original)

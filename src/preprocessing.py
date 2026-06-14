@@ -25,7 +25,7 @@ import pandas as pd
 from sklearn.compose import ColumnTransformer
 from sklearn.impute import SimpleImputer
 from sklearn.pipeline import Pipeline
-from sklearn.preprocessing import StandardScaler
+from sklearn.preprocessing import OneHotEncoder, StandardScaler
 
 from . import report_utils as ru
 
@@ -39,14 +39,22 @@ _NO = {"non", "négatif", "negatif", "negative", "no", "false", "absent", "0", "
 class FeatureMeta:
     numeric_cols: list[str] = field(default_factory=list)
     binary_cols: list[str] = field(default_factory=list)
+    categorical_cols: list[str] = field(default_factory=list)
     indicator_cols: list[str] = field(default_factory=list)
     dropped_constant: list[str] = field(default_factory=list)
     notes: list[str] = field(default_factory=list)
     source_map: dict[str, str] = field(default_factory=dict)
+    availability_stage: dict[str, str] = field(default_factory=dict)
+    missingness_indicators: dict[str, str] = field(default_factory=dict)
 
     @property
     def all_cols(self) -> list[str]:
-        return self.numeric_cols + self.binary_cols + self.indicator_cols
+        return (
+            self.numeric_cols
+            + self.binary_cols
+            + self.categorical_cols
+            + self.indicator_cols
+        )
 
 
 def _parse_numeric(series: pd.Series) -> pd.Series:
@@ -138,11 +146,10 @@ def make_feature_frame(df: pd.DataFrame, feature_cols: list[str],
 
         # --- health center -------------------------------------------- #
         if center_frag.lower() in name:
-            codes, uniques = pd.factorize(s.astype("string").str.strip())
-            out["center_code"] = pd.Series(codes, index=s.index).replace(-1, np.nan).astype(float)
-            meta.numeric_cols.append("center_code")
-            meta.source_map["center_code"] = col
-            meta.notes.append(f"center_code factorised: {list(uniques)}")
+            category = s.astype("string").str.strip()
+            out[col] = category.astype(object).where(category.notna(), np.nan)
+            meta.categorical_cols.append(col)
+            meta.source_map[col] = col
             continue
 
         # --- high-cardinality free text -> presence flag -------------- #
@@ -177,18 +184,19 @@ def make_feature_frame(df: pd.DataFrame, feature_cols: list[str],
                 meta.source_map[f"{col}__missing"] = col
             continue
 
-        # --- fallback: low-cardinality categorical -> factorise -------- #
-        codes, uniques = pd.factorize(s.astype("string").str.strip())
-        out[col] = pd.Series(codes, index=s.index).replace(-1, np.nan).astype(float)
-        meta.numeric_cols.append(col)
+        # --- fallback: preserve categories for fold-local one-hot encoding #
+        category = s.astype("string").str.strip()
+        out[col] = category.astype(object).where(category.notna(), np.nan)
+        meta.categorical_cols.append(col)
         meta.source_map[col] = col
-        meta.notes.append(f"categorical '{col}' factorised: {list(uniques)[:6]}")
+        meta.notes.append(f"categorical '{col}' preserved for fold-local encoding")
 
     logger.info(
-        "Feature frame: %d cols (%d numeric, %d binary, %d indicators); "
+        "Feature frame: %d cols (%d numeric, %d binary, %d categorical, %d indicators); "
         "dropped %d constant columns.",
         out.shape[1], len(meta.numeric_cols), len(meta.binary_cols),
-        len(meta.indicator_cols), len(meta.dropped_constant),
+        len(meta.categorical_cols), len(meta.indicator_cols),
+        len(meta.dropped_constant),
     )
     if meta.dropped_constant:
         logger.info("Dropped constant columns: %s", meta.dropped_constant)
@@ -239,10 +247,32 @@ def build_preprocessor(meta: FeatureMeta, scale_numeric: bool = False) -> Column
             ),
         )
     ])
+    categorical_pipe = Pipeline(
+        [
+            (
+                "impute",
+                SimpleImputer(
+                    strategy="constant",
+                    fill_value="__MISSING__",
+                    keep_empty_features=True,
+                ),
+            ),
+            (
+                "encode",
+                OneHotEncoder(
+                    handle_unknown="ignore",
+                    sparse_output=False,
+                    dtype=float,
+                ),
+            ),
+        ]
+    )
 
     transformers = []
     if meta.numeric_cols:
         transformers.append(("num", numeric_pipe, meta.numeric_cols))
+    if meta.categorical_cols:
+        transformers.append(("cat", categorical_pipe, meta.categorical_cols))
     bin_all = meta.binary_cols + meta.indicator_cols
     if bin_all:
         transformers.append(("bin", binary_pipe, bin_all))

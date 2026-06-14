@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <title>Live Clinical Decision-Support Assessment | VECTRA-X</title>
+  <link rel="stylesheet" href="assets/base.css">
+  <link rel="stylesheet" href="assets/dashboard.css">
+  <link rel="stylesheet" href="assets/assessment.css">
+  <link rel="stylesheet" href="assets/responsive.css">
+</head>
+<body class="assessment-page">
+  <a class="skip-link" href="#main">Skip to assessment</a>
+  <header class="assessment-header">
+    <a class="brand" href="index.html"><span class="brand-mark">VX</span><span><strong>VECTRA-X</strong><small>Live assessment</small></span></a>
+    <a class="button button-secondary" href="dashboard.html">Review evidence</a>
+  </header>
+  <main id="main" class="assessment-shell">
+    <section class="assessment-intro">
+      <span class="tag">Research prototype</span>
+      <h1>Live Clinical Decision-Support Assessment</h1>
+      <p>Shows modeled differential risk, uncertainty, and mandatory review states. It does not diagnose disease, recommend treatment, or establish that discharge is safe.</p>
+    </section>
+    <div class="assessment-layout">
+      <form id="assessment-form" class="assessment-form" novalidate>
+        <div class="grid grid-2">
+          <div class="field"><label for="assessment-mode">Assessment mode</label><select id="assessment-mode"><option value="PRE_LAB">PRE_LAB, primary mode</option><option value="LAB_AWARE">LAB_AWARE, intentionally enable laboratory inputs</option></select></div>
+          <div class="field"><label for="case-select">Synthetic example</label><select id="case-select"></select></div>
+        </div>
+        <div id="assessment-fields" class="assessment-fields"></div>
+        <div class="assessment-actions"><button class="button button-primary" type="submit">Run assessment</button><button class="button button-quiet" id="clear-assessment" type="button">Clear assessment</button></div>
+      </form>
+      <section id="assessment-result" class="assessment-result" tabindex="-1" aria-live="polite" aria-label="Assessment result"></section>
+    </div>
+  </main>
+  <script type="module" src="assets/assessment.js"></script>
+</body>
+</html>

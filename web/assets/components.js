@@ -29,3 +29,27 @@ export function dataBars(rows, valueKey, labelKey, { risk = false, max = 1 } = {
 export function figure(file, alt, takeaway) {
   return `<figure class="figure"><img loading="lazy" src="figures/${file}" alt="${alt}"><figcaption>${takeaway}</figcaption></figure>`;
 }
+
+export function EvidenceScopeBadge(scope) {
+  return `<span class="tag evidence-scope">${scope}</span>`;
+}
+
+export function ProvenanceStrip(manifest) {
+  return `<div class="provenance-strip"><strong>Locked run ${manifest.notebook_run_id}</strong><span>Scientific schema ${manifest.scientific_schema_version}</span><span>Source ${manifest.source_commit.slice(0, 12)}</span></div>`;
+}
+
+export function SupportStatus(support, minimum = 5) {
+  return `<span class="tag ${support < minimum ? "tag-risk" : ""}">${support < minimum ? "Insufficient evidence" : `${support} positives`}</span>`;
+}
+
+export function IntervalMetric(row) {
+  return `<article class="metric-block"><span>${row.metric}</span><strong>${number(row.estimate, 2)}</strong><small>${number(row.lower, 2)} to ${number(row.upper, 2)} · n=${row.n_patients} · positives=${row.positive_support}</small></article>`;
+}
+
+export function DeploymentGate(gate) {
+  return `<li class="deployment-gate"><span aria-hidden="true">Pending</span><strong>${gate}</strong></li>`;
+}
+
+export function ScientificCaveat(text) {
+  return `<aside class="callout callout-warn"><strong>Scientific caveat:</strong> ${text}</aside>`;
+}

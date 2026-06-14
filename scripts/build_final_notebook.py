@@ -7,7 +7,7 @@ import nbformat as nbf
 
 
 ROOT = Path(__file__).resolve().parents[1]
-OUTPUT = ROOT / "notebooks" / "VECTRA_X_Final_Competition_Notebook.ipynb"
+OUTPUT = ROOT / "notebooks" / "VECTRA_X_Final.ipynb"
 
 
 def md(text: str):
@@ -19,7 +19,13 @@ def code(text: str):
 
 
 def interpretation(text: str, limitation: str | None = None) -> str:
-    block = f"**Interpretation.** {text}"
+    block = (
+        f"**Finding.** {text}\n\n"
+        "**Interpretation.** This result is interpreted within the displayed "
+        "partition and positive-label support.\n\n"
+        "**Operational Meaning.** Use this evidence to prioritize human review "
+        "or confirmatory testing, never as an autonomous diagnosis."
+    )
     if limitation:
         block += f"\n\n**Limitation.** {limitation}"
     return block
@@ -86,6 +92,18 @@ performance value is stated here before computation.
         ),
         md(
             """
+## FIT Notebook Scoring Map
+
+| FIT notebook criterion | Evidence location |
+|---|---|
+| Data understanding and preparation | Integrity, EDA, feature governance, fold-local preprocessing |
+| Modeling and scientific rigor | Baselines, ablations, repeated nested validation, locked frozen test |
+| Evaluation and interpretation | Support-aware intervals, calibration, prediction sets, safe deferral |
+| Communication and humanitarian relevance | Operational meaning, deployment gates, limitations |
+"""
+        ),
+        md(
+            """
 # 1. Reproducibility, Environment, and Provenance
 
 The first executable cell resolves the repository root without assuming the
@@ -126,6 +144,7 @@ import sklearn
 from IPython.display import Markdown, display
 
 from src.notebook_workflow import run_research_workflow
+from src.release_bundle import export_release_bundle
 
 warnings.filterwarnings("ignore", category=FutureWarning)
 warnings.filterwarnings("ignore", category=PendingDeprecationWarning)
@@ -173,6 +192,13 @@ display(pd.DataFrame([result.cohort_audit]))
         ),
         code(
             """
+release_path = export_release_bundle(result, ROOT)
+release = json.loads(release_path.read_text(encoding="utf-8"))
+print(f"Locked scientific release: {release['run_id']} -> {release_path}")
+"""
+        ),
+        code(
+            """
 executive = result.final_test_metrics[
     ["track", "model", "macro_f1", "macro_pr_auc", "macro_recall", "micro_f1"]
 ].copy()
@@ -189,7 +215,7 @@ display(result.safe_claims)
         ),
         md(
             """
-# 2. Data Integrity and Target Audit
+# 2. Data and Target Integrity
 
 ## Research Question 1
 
@@ -279,7 +305,7 @@ plt.show()
         ),
         md(
             """
-# 4. Leakage Discovery and Clinical-Stage Governance
+# 4. Leakage and Staged Feature Governance
 
 ## Research Question 2
 
@@ -362,7 +388,7 @@ display(result.feature_contract.head(20))
         ),
         md(
             """
-# 5. Leakage-Safe Preprocessing
+# 5. Fold-Local Preprocessing
 
 The preprocessing contract includes decimal-comma parsing, binary token
 normalization, blood-pressure decomposition, categorical encoding, and
@@ -395,7 +421,7 @@ display(frame_summary)
         ),
         md(
             """
-# 6. Experimental Protocol
+# 6. Repeated Nested Validation Protocol
 
 ## Frozen-test discipline
 
@@ -694,7 +720,7 @@ plt.show()
         ),
         md(
             """
-# 12. Selective Prediction and Uncertainty
+# 12. Selective Prediction and Decision Utility
 
 ## Research Question 5
 
@@ -726,7 +752,7 @@ plt.show()
         ),
         md(
             """
-# 13. Explainability of the Selected Model
+# 13. Explanations of the Locked Model
 
 Global permutation importance is measured against held-out labels. Local
 explanations target the selected deployed estimator: TreeSHAP is used when
@@ -752,7 +778,7 @@ display(local["contributions"].head())
         ),
         md(
             """
-# 14. Fairness and Center-Shift Validation
+# 14. Fairness and Center Transfer
 
 Subgroup tables report patient count, positive support, true positives, false
 negatives, recall intervals, and an evidence status. Cells with fewer than five
@@ -858,7 +884,7 @@ plt.show()
         ),
         md(
             """
-# 16. Limitations, Ethics, and Conclusion
+# 16. Deployment Gates, Limitations, and Conclusion
 
 ## Principal limitations
 

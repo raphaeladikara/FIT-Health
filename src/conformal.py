@@ -36,7 +36,14 @@ def fit_conformal(y_cal: pd.DataFrame, proba_cal: np.ndarray, labels: list[str],
         pos_mask = yt[:, j] == 1
         n_pos = int(pos_mask.sum())
         if n_pos == 0:
-            info[lab] = {"prob_threshold": 0.5, "q": 0.5, "n_calibration_pos": 0}
+            info[lab] = {
+                "prob_threshold": 0.5,
+                "q": 0.5,
+                "n_calibration_pos": 0,
+                "quantile_level_finite_sample": np.nan,
+                "quantile_level_used": np.nan,
+                "mode": mode,
+            }
             continue
         scores = 1.0 - proba_cal[pos_mask, j]            # nonconformity on positives
         level = min(1.0, np.ceil((n_pos + 1) * (1 - alpha)) / n_pos)
@@ -96,6 +103,7 @@ def conformal_metrics(y_true: pd.DataFrame, proba: np.ndarray,
         "avg_set_size": round(float(set_sizes.mean()), 4),
         "pct_empty_sets": round(float((set_sizes == 0).mean()) * 100, 2),
         "pct_singletons": round(float((set_sizes == 1).mean()) * 100, 2),
+        "singleton_rate": round(float((set_sizes == 1).mean()), 4),
         "pct_ambiguous_multi": round(float((set_sizes > 1).mean()) * 100, 2),
         "overall_coverage": round(
             float(set_label_matrix[yt == 1].mean()) if (yt == 1).any() else np.nan, 4),
@@ -106,6 +114,11 @@ def conformal_metrics(y_true: pd.DataFrame, proba: np.ndarray,
             float(1.0 - set_label_matrix[yt == 1].mean())
             if (yt == 1).any() else np.nan,
             4,
+        ),
+        "policy_name": (
+            "exact_uncapped_empirical_policy"
+            if next(iter(conformal_info.values())).get("mode") == "exact"
+            else "pragmatic_efficiency_policy"
         ),
     }
     return per_label, summary

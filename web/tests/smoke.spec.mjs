@@ -14,19 +14,21 @@ page.on("console", (message) => {
 });
 page.on("pageerror", (error) => errors.push(error.message));
 
-await page.goto("http://localhost:3000/", { waitUntil: "networkidle0" });
+const baseUrl = process.env.BASE_URL || "http://localhost:4173";
+
+await page.goto(`${baseUrl}/`, { waitUntil: "networkidle0" });
 if (!(await page.$eval("h1", (node) => node.textContent)).includes("safer triage")) {
   throw new Error("Landing heading did not load");
 }
 
-await page.goto("http://localhost:3000/demo.html", { waitUntil: "networkidle0" });
-await page.click("#demo-next");
-if (!(await page.$eval("#demo-counter", (node) => node.textContent)).includes("2 of 5")) {
-  throw new Error("Guided demo did not advance");
-}
-await page.click("#demo-back");
+await page.goto(`${baseUrl}/assessment.html`, { waitUntil: "networkidle0" });
+await page.select("#case-select", "SYNTH-LOW-UNCERTAINTY");
+await page.click('button[type="submit"]');
+await page.waitForFunction(
+  () => document.querySelector("#assessment-result")?.textContent?.trim().length > 0
+);
 
-await page.goto("http://localhost:3000/dashboard.html#overview", { waitUntil: "networkidle0" });
+await page.goto(`${baseUrl}/dashboard.html#executive`, { waitUntil: "networkidle0" });
 const routeKeys = await page.$$eval("[data-route]", (nodes) => nodes.map((node) => node.dataset.route));
 for (const route of routeKeys) {
   await page.click(`[data-route="${route}"]`);

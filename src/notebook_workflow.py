@@ -3,6 +3,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from functools import lru_cache
+import json
 from pathlib import Path
 from typing import Any
 
@@ -24,6 +25,184 @@ from . import report_utils as ru
 from . import research_evaluation as reval
 from . import schema_audit as sa
 from . import triage_engine as te
+
+
+ROOT = Path(__file__).resolve().parents[1]
+EXPERIMENT_CONFIG_PATH = ROOT / "config" / "notebook_experiment.json"
+
+
+@dataclass(frozen=True)
+class FrozenTestConfig:
+    size: float
+    seed: int
+
+
+@dataclass(frozen=True)
+class ValidationConfig:
+    outer_folds: int
+    inner_folds: int
+    repeated_seeds: tuple[int, ...]
+
+
+@dataclass(frozen=True)
+class ThresholdConfig:
+    grid: tuple[float, ...]
+    objective: str
+    tie_break: str
+
+
+@dataclass(frozen=True)
+class BootstrapConfig:
+    repetitions: int
+    confidence_level: float
+
+
+@dataclass(frozen=True)
+class ExperimentConfig:
+    dataset_path: str
+    target_policy: str
+    frozen_test: FrozenTestConfig
+    validation: ValidationConfig
+    candidates: tuple[dict[str, Any], ...]
+    threshold: ThresholdConfig
+    calibration_methods: tuple[str, ...]
+    bootstrap: BootstrapConfig
+    minimum_subgroup_support: int
+    release_schema_version: str
+    source_path: Path
+
+
+class ScientificWorkflowState:
+    """Enforce policy locking and one-shot frozen-test evaluation."""
+
+    def __init__(self) -> None:
+        self.phase = "initialized"
+        self.split_hash: str | None = None
+        self.nested_evidence: Any = None
+        self.lock_manifest: dict[str, Any] | None = None
+        self.fitted_policy: Any = None
+        self.frozen_result: Any = None
+
+    def prepare_training_pool(self, split_hash: str) -> None:
+        if self.phase != "initialized":
+            raise RuntimeError("training pool can only be prepared once")
+        if not split_hash:
+            raise ValueError("split hash is required")
+        self.split_hash = split_hash
+        self.phase = "training_pool_prepared"
+
+    def run_nested_validation(self, evidence: Any) -> None:
+        if self.phase != "training_pool_prepared":
+            raise RuntimeError("prepare the training pool first")
+        self.nested_evidence = evidence
+        self.phase = "nested_validation_complete"
+
+    def select_and_lock_policy(
+        self, policy_manifest: dict[str, Any]
+    ) -> dict[str, Any]:
+        if self.lock_manifest is not None:
+            raise RuntimeError("policy is already locked")
+        if self.phase != "nested_validation_complete":
+            raise RuntimeError("nested validation must complete before policy lock")
+        required = {
+            "feature_contract_hash",
+            "selected_config",
+            "thresholds",
+            "calibration_method",
+            "seeds",
+            "source_commit",
+        }
+        missing = required - set(policy_manifest)
+        if missing:
+            raise ValueError(f"lock manifest is missing: {sorted(missing)}")
+        self.lock_manifest = {
+            **policy_manifest,
+            "split_hash": self.split_hash,
+        }
+        self.phase = "policy_locked"
+        return dict(self.lock_manifest)
+
+    def fit_locked_policy(self, fitted_policy: Any) -> None:
+        if self.phase != "policy_locked" or self.lock_manifest is None:
+            raise RuntimeError("policy must be locked before final fitting")
+        self.fitted_policy = fitted_policy
+        self.phase = "policy_fitted"
+
+    def evaluate_frozen_test_once(self, evaluator) -> Any:
+        if self.frozen_result is not None:
+            raise RuntimeError("frozen test was already evaluated")
+        if self.phase != "policy_fitted" or self.lock_manifest is None:
+            raise RuntimeError("a fitted locked policy is required")
+        self.frozen_result = evaluator(dict(self.lock_manifest))
+        self.phase = "frozen_test_evaluated"
+        return self.frozen_result
+
+    def build_release(self, builder) -> Any:
+        if self.phase != "frozen_test_evaluated":
+            raise RuntimeError("frozen test must be evaluated before release")
+        self.phase = "release_built"
+        return builder(self.frozen_result, dict(self.lock_manifest or {}))
+
+
+def load_experiment_config(
+    path: str | Path = EXPERIMENT_CONFIG_PATH,
+) -> ExperimentConfig:
+    source = Path(path)
+    raw = json.loads(source.read_text(encoding="utf-8"))
+    expected = {
+        "dataset_path",
+        "target_policy",
+        "frozen_test",
+        "validation",
+        "candidates",
+        "threshold",
+        "calibration_methods",
+        "bootstrap",
+        "minimum_subgroup_support",
+        "release_schema_version",
+    }
+    unknown = set(raw) - expected
+    missing = expected - set(raw)
+    if unknown:
+        raise ValueError(f"Unknown experiment keys: {sorted(unknown)}")
+    if missing:
+        raise ValueError(f"Missing experiment keys: {sorted(missing)}")
+    seeds = tuple(int(seed) for seed in raw["validation"]["repeated_seeds"])
+    if len(seeds) != len(set(seeds)):
+        raise ValueError("repeated_seeds contains duplicate values")
+    outer = int(raw["validation"]["outer_folds"])
+    inner = int(raw["validation"]["inner_folds"])
+    if outer < 2 or inner < 2:
+        raise ValueError("outer_folds and inner_folds must be at least 2")
+    candidates = tuple(c for c in raw["candidates"] if c.get("enabled", True))
+    if not candidates:
+        raise ValueError("candidate set must not be empty")
+    grid = tuple(float(value) for value in raw["threshold"]["grid"])
+    if not grid or any(value <= 0 or value >= 1 for value in grid):
+        raise ValueError("threshold grid values must be between 0 and 1")
+    size = float(raw["frozen_test"]["size"])
+    if not 0 < size < 1:
+        raise ValueError("frozen test size must be between 0 and 1")
+    return ExperimentConfig(
+        dataset_path=str(raw["dataset_path"]),
+        target_policy=str(raw["target_policy"]),
+        frozen_test=FrozenTestConfig(size, int(raw["frozen_test"]["seed"])),
+        validation=ValidationConfig(outer, inner, seeds),
+        candidates=candidates,
+        threshold=ThresholdConfig(
+            grid,
+            str(raw["threshold"]["objective"]),
+            str(raw["threshold"]["tie_break"]),
+        ),
+        calibration_methods=tuple(raw["calibration_methods"]),
+        bootstrap=BootstrapConfig(
+            int(raw["bootstrap"]["repetitions"]),
+            float(raw["bootstrap"]["confidence_level"]),
+        ),
+        minimum_subgroup_support=int(raw["minimum_subgroup_support"]),
+        release_schema_version=str(raw["release_schema_version"]),
+        source_path=source.resolve(),
+    )
 
 
 @dataclass
@@ -71,6 +250,7 @@ class ResearchWorkflowResult:
     safe_claims: pd.DataFrame
     artifact_manifest: pd.DataFrame
     fitted_models: dict[str, Any]
+    calibrators: dict[str, Any]
     thresholds: dict[str, dict[str, float]]
     active_labels: list[str]
 
@@ -80,10 +260,17 @@ def _subset_meta(meta: pp.FeatureMeta, columns: list[str]) -> pp.FeatureMeta:
     return pp.FeatureMeta(
         numeric_cols=[c for c in meta.numeric_cols if c in keep],
         binary_cols=[c for c in meta.binary_cols if c in keep],
+        categorical_cols=[c for c in meta.categorical_cols if c in keep],
         indicator_cols=[c for c in meta.indicator_cols if c in keep],
         dropped_constant=list(meta.dropped_constant),
         notes=list(meta.notes),
         source_map={c: s for c, s in meta.source_map.items() if c in keep},
+        availability_stage={
+            c: s for c, s in meta.availability_stage.items() if c in keep
+        },
+        missingness_indicators={
+            c: s for c, s in meta.missingness_indicators.items() if c in keep
+        },
     )
 
 
@@ -156,11 +343,16 @@ def _evaluate_track(
 @lru_cache(maxsize=2)
 def run_research_workflow(quick: bool = False) -> ResearchWorkflowResult:
     """Run the complete competition analysis from raw files."""
+    experiment = load_experiment_config()
     cfg = ru.load_config()
-    rs = int(cfg["project"]["random_state"])
-    n_folds = 3 if quick else int(cfg["modeling"]["cv_folds"])
-    repeated_seeds = [rs, rs + 1] if quick else list(range(rs, rs + 10))
-    n_boot = 100 if quick else 2000
+    rs = experiment.frozen_test.seed
+    n_folds = 3 if quick else experiment.validation.outer_folds
+    repeated_seeds = (
+        list(experiment.validation.repeated_seeds[:2])
+        if quick
+        else list(experiment.validation.repeated_seeds)
+    )
+    n_boot = 100 if quick else experiment.bootstrap.repetitions
     candidate_models = (
         ["logreg", "extra_trees"]
         if quick
@@ -184,7 +376,7 @@ def run_research_workflow(quick: bool = False) -> ResearchWorkflowResult:
     y = label_info["y"].reset_index(drop=True)
     uuid = data[cfg["io"]["uuid_col"]].reset_index(drop=True)
     train_idx, test_idx = M.train_test_indices(
-        y, cfg["modeling"]["test_size"], rs
+        y, experiment.frozen_test.size, rs
     )
 
     feature_cols = ld.feature_columns(data, label_info["label_columns_raw"], cfg)
@@ -255,7 +447,12 @@ def run_research_workflow(quick: bool = False) -> ResearchWorkflowResult:
                 model_name, meta, X.iloc[train_idx], y_train, splits, rs
             )
             oof_store[(track, model_name)] = oof
-            metrics = ev.multilabel_summary(y_train, (oof >= 0.5).astype(int), oof)
+            candidate_thresholds = _thresholds(y_train, oof)
+            metrics = ev.multilabel_summary(
+                y_train,
+                ev.apply_thresholds(oof, candidate_thresholds, list(y.columns)),
+                oof,
+            )
             comparison_rows.append(
                 {
                     "track": track,
@@ -293,12 +490,18 @@ def run_research_workflow(quick: bool = False) -> ResearchWorkflowResult:
             oof = M.cross_val_proba(
                 selected[track], meta, X.iloc[train_idx], y_train, splits, seed
             )
+            selected_thresholds = _thresholds(y_train, oof)
             repeated_rows.append(
                 {
                     "track": track,
                     "seed": seed,
+                    "thresholds": selected_thresholds,
                     **ev.multilabel_summary(
-                        y_train, (oof >= 0.5).astype(int), oof
+                        y_train,
+                        ev.apply_thresholds(
+                            oof, selected_thresholds, list(y.columns)
+                        ),
+                        oof,
                     ),
                 }
             )
@@ -386,8 +589,13 @@ def run_research_workflow(quick: bool = False) -> ResearchWorkflowResult:
             {
                 "ablation": name,
                 "n_features": len(columns),
+                "thresholds": _thresholds(y_train, oof),
                 **ev.multilabel_summary(
-                    y_train, (oof >= 0.5).astype(int), oof
+                    y_train,
+                    ev.apply_thresholds(
+                        oof, _thresholds(y_train, oof), list(y.columns)
+                    ),
+                    oof,
                 ),
             }
         )
@@ -397,7 +605,7 @@ def run_research_workflow(quick: bool = False) -> ResearchWorkflowResult:
     calibrated_oof, calibration_audit = cal.cross_fitted_calibration(
         y_train, pre_oof, n_splits=n_folds, random_state=rs
     )
-    calibrated_test, _ = cal.calibrate_matrix(
+    calibrated_test, pre_lab_calibrators = cal.calibrate_matrix(
         y_train, pre_oof, test_proba["PRE_LAB"], list(y.columns)
     )
     cal_raw = cal.calibration_metrics(y_test, test_proba["PRE_LAB"], list(y.columns))
@@ -624,6 +832,10 @@ def run_research_workflow(quick: bool = False) -> ResearchWorkflowResult:
         safe_claims=safe_claims,
         artifact_manifest=artifact_manifest,
         fitted_models=fitted_models,
+        calibrators={
+            "PRE_LAB": pre_lab_calibrators,
+            "LAB_AWARE": {},
+        },
         thresholds=track_thresholds,
         active_labels=list(y.columns),
     )

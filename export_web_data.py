@@ -1,290 +1,297 @@
-"""Build the static VECTRA-X dashboard from canonical notebook evidence.
-
-Run after executing ``notebooks/VECTRA_X_Final_Competition_Notebook.ipynb``.
-The exporter reads the corrected ``outputs/tables/final_*.csv`` tables, adds
-only the supporting aggregate scenario artifacts required by the existing
-dashboard, and publishes no identifiers or patient ground truth.
-"""
+"""Publish a verified web bundle from one locked scientific release only."""
 from __future__ import annotations
 
+import hashlib
 import json
-import subprocess
-from datetime import datetime, timezone
 from pathlib import Path
+import shutil
+from typing import Any
 
-import pandas as pd
+from src.release_bundle import canonical_json_bytes, content_hash
+
 
 ROOT = Path(__file__).resolve().parent
-TABLES = ROOT / "outputs" / "tables"
+LATEST = ROOT / "outputs" / "releases" / "latest.json"
 WEB = ROOT / "web"
 WEB_DATA = WEB / "data"
-WEB_FIG = WEB / "figures"
-SCHEMAS = WEB_DATA / "schemas"
-
-ACTIVE_LABELS = [
-    "malaria",
-    "other_diseases",
-    "dengue",
-    "typhoid",
-    "yellow_fever",
-]
-PUBLIC_CASE_COLUMNS = [
-    "case_id",
-    "scenario",
-    "triage_category",
-    "triage_score",
-    "uncertainty_category",
-    "predicted_labels",
-    "conformal_set",
-    *[f"calprob_{label}" for label in ACTIVE_LABELS],
-]
+WEB_MODEL = WEB / "model"
+WEB_FIGURES = WEB / "figures"
+PUBLIC_SCHEMA_VERSION = "3.0.0"
 
 
-def _frame(name: str) -> pd.DataFrame:
-    path = TABLES / name
-    if not path.exists():
-        raise FileNotFoundError(f"Required dashboard source is missing: {path}")
-    return pd.read_csv(path)
+def _read_json(path: Path) -> dict[str, Any]:
+    return json.loads(path.read_text(encoding="utf-8"))
 
 
-def _records(
-    name: str,
-    cols: list[str] | None = None,
-    round_to: int = 4,
-) -> list[dict]:
-    frame = _frame(name)
-    if cols:
-        missing = set(cols) - set(frame.columns)
-        if missing:
-            raise ValueError(f"{name} is missing columns: {sorted(missing)}")
-        frame = frame[cols]
-    for column in frame.select_dtypes("float").columns:
-        frame[column] = frame[column].round(round_to)
-    return json.loads(frame.to_json(orient="records"))
-
-
-def _atomic_json(path: Path, payload: object) -> None:
+def _write_json(path: Path, payload: Any) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
     temporary = path.with_suffix(path.suffix + ".tmp")
-    temporary.write_text(
-        json.dumps(payload, ensure_ascii=False, separators=(",", ":")),
-        encoding="utf-8",
-    )
+    temporary.write_bytes(canonical_json_bytes(payload))
     temporary.replace(path)
 
 
-def _source_commit() -> str:
-    try:
-        return subprocess.run(
-            ["git", "rev-parse", "--short", "HEAD"],
-            cwd=ROOT,
-            check=True,
-            capture_output=True,
-            text=True,
-        ).stdout.strip()
-    except (OSError, subprocess.CalledProcessError):
-        return "unknown"
+def _json_hash(payload: Any) -> str:
+    return hashlib.sha256(canonical_json_bytes(payload)).hexdigest()
 
 
-def _public_cases(limit: int = 12) -> list[dict]:
-    path = WEB_DATA / "demo-cases.json"
-    if not path.exists():
-        raise FileNotFoundError(
-            "The curated anonymous demo case fixture is missing: "
-            f"{path}"
-        )
-    cases = json.loads(path.read_text(encoding="utf-8"))
-    if not 0 < len(cases) <= limit:
-        raise ValueError(f"Expected 1-{limit} curated public cases")
-    missing = [
-        (case.get("case_id", f"row-{index}"), sorted(set(PUBLIC_CASE_COLUMNS) - set(case)))
-        for index, case in enumerate(cases)
-        if set(PUBLIC_CASE_COLUMNS) - set(case)
+def load_locked_release(
+    latest_path: str | Path = LATEST,
+) -> tuple[dict[str, Any], Path]:
+    latest_file = Path(latest_path)
+    latest = _read_json(latest_file)
+    release_path = ROOT / latest["release_path"]
+    release = _read_json(release_path)
+    if content_hash(release_path) != latest["content_hash"]:
+        raise ValueError("latest.json scientific release hash mismatch")
+    return release, release_path
+
+
+def verify_release_provenance(
+    release: dict[str, Any], release_path: Path
+) -> None:
+    lock = release["lock_manifest"]
+    if release["source_commit"] != lock["source_commit"]:
+        raise ValueError("source commit mismatch")
+    if release["dataset"]["split_hash"] != lock["split_hash"]:
+        raise ValueError("frozen split hash mismatch")
+    if release["feature_contract"]["version"] != lock["feature_contract_hash"]:
+        raise ValueError("feature contract hash mismatch")
+    for track, artifact in release["artifacts"]["models"].items():
+        source = release_path.parent / artifact["path"]
+        if content_hash(source) != artifact["sha256"]:
+            raise ValueError(f"{track} model hash mismatch")
+        policy = release["policies"][track]
+        if policy["model_hash"] != artifact["sha256"]:
+            raise ValueError(f"{track} policy/model mismatch")
+        if policy["stage"] in {"FULL", "RESEARCH_ONLY"}:
+            raise ValueError("research-only evidence cannot be public deployable evidence")
+
+
+def build_public_evidence(release: dict[str, Any]) -> dict[str, Any]:
+    evidence = release["evidence"]
+    return {
+        "schema_version": PUBLIC_SCHEMA_VERSION,
+        "run_id": release["run_id"],
+        "safe_scope": (
+            "Differential-risk review and confirmatory-testing support only. "
+            "This prototype does not diagnose disease or recommend treatment."
+        ),
+        "executive_summary": {
+            "primary_track": "PRE_LAB",
+            "cohort": release["dataset"]["cohort_counts"],
+            "policies": release["policies"],
+            "safe_claims": release["safe_claims"],
+        },
+        "cohort_and_partitions": {
+            "counts": release["dataset"]["cohort_counts"],
+            "partition_labels": release["dataset"]["partition_labels"],
+        },
+        "data_quality_and_leakage": {
+            "cohort_audit": evidence["cohort_audit"],
+            "leakage": evidence["leakage"],
+        },
+        "validation_and_frozen_test": {
+            "nested_validation": evidence["validation"],
+            "frozen_test": evidence["frozen_test"],
+            "metrics": release["metrics"],
+            "per_label": evidence["per_label"],
+        },
+        "baselines_and_ablations": {
+            "baselines": evidence["baselines"],
+            "ablations": evidence["ablations"],
+        },
+        "calibration_and_prediction_sets": {
+            "calibration": evidence["calibration"],
+            "prediction_sets": evidence["prediction_sets"],
+        },
+        "risk_coverage_and_decision_scenarios": {
+            "risk_coverage": evidence["risk_coverage"],
+            "scenarios": evidence["scenarios"],
+        },
+        "fairness_and_center_transfer": {
+            "fairness": evidence["fairness"],
+            "center_transfer": evidence["center_transfer"],
+        },
+        "limitations": release["limitations"],
+        "deployment_gates": release["deployment_gates"],
+    }
+
+
+def build_public_input_schema(release: dict[str, Any]) -> dict[str, Any]:
+    fields = []
+    for source in release["deployable_input_schema"]["fields"]:
+        field = dict(source)
+        field["field_id"] = field.pop("name")
+        fields.append(field)
+    return {
+        "schema_version": PUBLIC_SCHEMA_VERSION,
+        "run_id": release["run_id"],
+        "modes": ["PRE_LAB", "LAB_AWARE"],
+        "fields": fields,
+        "forbidden_fields": [
+            "name",
+            "email",
+            "phone",
+            "patient_id",
+            "uuid",
+            "notes",
+            "free_text",
+        ],
+    }
+
+
+def copy_verified_models(
+    release: dict[str, Any], release_path: Path
+) -> dict[str, dict[str, str]]:
+    WEB_MODEL.mkdir(parents=True, exist_ok=True)
+    expected = set()
+    copied = {}
+    for track, artifact in release["artifacts"]["models"].items():
+        source = release_path.parent / artifact["path"]
+        destination = WEB_MODEL / f"{track.lower()}.joblib"
+        temporary = destination.with_suffix(destination.suffix + ".tmp")
+        temporary.write_bytes(source.read_bytes())
+        temporary.replace(destination)
+        if content_hash(destination) != artifact["sha256"]:
+            raise ValueError(f"{track} copied model hash mismatch")
+        expected.add(destination.name)
+        copied[track] = {
+            "path": f"model/{destination.name}",
+            "sha256": artifact["sha256"],
+        }
+    for stale in WEB_MODEL.glob("*.joblib"):
+        if stale.name not in expected:
+            stale.unlink()
+    return copied
+
+
+def copy_verified_figures(
+    release: dict[str, Any], release_path: Path
+) -> dict[str, dict[str, str]]:
+    WEB_FIGURES.mkdir(parents=True, exist_ok=True)
+    expected = set()
+    copied = {}
+    for name, artifact in release["artifacts"].get("figures", {}).items():
+        source = release_path.parent / artifact["path"]
+        destination = WEB_FIGURES / Path(artifact["path"]).name
+        if content_hash(source) != artifact["sha256"]:
+            raise ValueError(f"{name} figure hash mismatch")
+        shutil.copyfile(source, destination)
+        expected.add(destination.name)
+        copied[name] = {
+            "path": f"figures/{destination.name}",
+            "sha256": artifact["sha256"],
+        }
+    for stale in WEB_FIGURES.glob("*"):
+        if stale.is_file() and stale.name not in expected:
+            stale.unlink()
+    return copied
+
+
+def _synthetic_cases(input_schema: dict[str, Any]) -> list[dict[str, Any]]:
+    numeric = [
+        field for field in input_schema["fields"] if field["type"] == "number"
     ]
-    if missing:
-        raise ValueError(f"Curated public cases do not match the contract: {missing}")
-    return cases
-
-
-def _thresholds(records: list[dict], policy: str = "operational") -> dict:
-    return {
-        "policy": policy,
-        "values": {
-            row["label"]: round(float(row[policy]), 4)
-            for row in records
-            if row.get("label") in ACTIVE_LABELS and row.get(policy) is not None
+    base = {field["field_id"]: None for field in input_schema["fields"]}
+    low = dict(base)
+    for index, field in enumerate(numeric[:6]):
+        low[field["field_id"]] = 35.0 + index
+    ood = dict(low)
+    if numeric:
+        ood[numeric[0]["field_id"]] = 10000
+    return [
+        {
+            "case_id": "SYNTH-LOW-UNCERTAINTY",
+            "label": "Illustrative complete pre-lab example",
+            "mode": "PRE_LAB",
+            "provenance": "illustrative_synthetic",
+            "values": low,
         },
+        {
+            "case_id": "SYNTH-MISSING",
+            "label": "Illustrative missing-input review example",
+            "mode": "PRE_LAB",
+            "provenance": "illustrative_synthetic",
+            "values": base,
+        },
+        {
+            "case_id": "SYNTH-OOD",
+            "label": "Illustrative out-of-distribution example",
+            "mode": "PRE_LAB",
+            "provenance": "illustrative_synthetic",
+            "values": ood,
+        },
+    ]
+
+
+def write_public_manifest(
+    release: dict[str, Any],
+    evidence: dict[str, Any],
+    input_schema: dict[str, Any],
+    cases: list[dict[str, Any]],
+    models: dict[str, Any],
+    figures: dict[str, Any],
+) -> dict[str, Any]:
+    manifest = {
+        "schema_version": PUBLIC_SCHEMA_VERSION,
+        "notebook_run_id": release["run_id"],
+        "scientific_schema_version": release["schema_version"],
+        "source_commit": release["source_commit"],
+        "generated_at": release["timestamp"],
+        "documents": {
+            "evidence": {
+                "path": "data/evidence.json",
+                "sha256": _json_hash(evidence),
+            },
+            "input_schema": {
+                "path": "data/input-schema.json",
+                "sha256": _json_hash(input_schema),
+            },
+            "demo_cases": {
+                "path": "data/demo-cases.json",
+                "sha256": _json_hash(cases),
+            },
+        },
+        "models": models,
+        "figures": figures,
+        "policy_ids": {
+            track: policy["policy_id"]
+            for track, policy in release["policies"].items()
+        },
+        "class_order": release["policies"]["PRE_LAB"]["class_order"],
+        "safe_scope": evidence["safe_scope"],
+        "production_rate_limit_required": True,
     }
-
-
-def _prediction_set_summary(rows: list[dict], cohort_size: int) -> dict[str, float]:
-    positives = sum(int(row["test_positives"]) for row in rows)
-    covered = sum(int(row["covered_positives"]) for row in rows)
-    return {
-        "avg_set_size": round(
-            sum(int(row["predicted_inclusions"]) for row in rows) / cohort_size,
-            4,
-        ),
-        "overall_coverage": round(covered / positives, 4),
-        "macro_label_coverage": round(
-            sum(float(row["empirical_coverage"]) for row in rows) / len(rows),
-            4,
-        ),
-        "false_negative_risk": round(1 - covered / positives, 4),
-        "policy": "exact_uncapped_empirical",
-    }
-
-
-def _label_distribution(cohort_size: int) -> list[dict]:
-    frame = _frame("label_distribution.csv")
-    frame["prevalence_pct"] = (
-        100 * frame["positives"].astype(float) / cohort_size
-    ).round(2)
-    return json.loads(frame.to_json(orient="records"))
-
-
-def _summary(
-    final_metrics: list[dict],
-    conformal_exact: list[dict],
-    cohort_size: int,
-) -> dict:
-    metrics = {row["track"]: row for row in final_metrics}
-    combinations = _frame("label_top_combinations.csv")
-    feature_sets = _frame("feature_sets.csv").set_index("feature_set")["n_features"]
-    resource = _frame("resource_simulation.csv").set_index("metric")["count"]
-    coinfection_rows = _frame("final_coinfection_metrics.csv")
-    coinfection = coinfection_rows[
-        coinfection_rows["partition"] == "frozen_test_once"
-    ].iloc[0]
-    loco = _frame("final_loco.csv")
-    n_multilabel = int(
-        combinations.loc[
-            combinations["combination"].str.contains(r"\+", regex=True),
-            "n_patients",
-        ].sum()
-    )
-    triage_distribution = {
-        name.removeprefix("tier_").replace("_", " "): int(value)
-        for name, value in resource.items()
-        if name.startswith("tier_")
-    }
-    return {
-        "project": "VECTRA-X",
-        "shape": [cohort_size, 109],
-        "supervised_cohort": cohort_size,
-        "excluded_unknown_target_rows": 1,
-        "active_labels": ACTIVE_LABELS,
-        "inactive_labels": ["chikungunya", "zika", "option_8"],
-        "n_multilabel_patients": n_multilabel,
-        "feature_set_sizes": {
-            "PRE_LAB_TRIAGE": int(feature_sets["PRE_LAB_TRIAGE"]),
-            "LAB_AWARE_CONFIRMATION": int(
-                feature_sets["LAB_AWARE_CONFIRMATION"]
-            ),
-        },
-        "n_train": cohort_size - 78,
-        "n_test": 78,
-        "best_model_per_track": {
-            track: row["model"] for track, row in metrics.items()
-        },
-        "test_metrics": {
-            track: {
-                key: value
-                for key, value in row.items()
-                if key not in {"track", "model"}
-            }
-            for track, row in metrics.items()
-        },
-        "conformal": _prediction_set_summary(conformal_exact, 78),
-        "coinfection": {
-            "best_model": str(coinfection["model"]),
-            "roc_auc": round(float(coinfection["roc_auc"]), 4),
-            "pr_auc": round(float(coinfection["pr_auc"]), 4),
-            "recall": round(float(coinfection["recall"]), 4),
-            "evidence_scope": "single frozen-test evaluation",
-        },
-        "triage_distribution": triage_distribution,
-        "loco_macro_f1": [round(float(value), 4) for value in loco["macro_f1"]],
-        "governance_note": (
-            "PRE_LAB is the primary research prototype. LAB_AWARE is a post-test "
-            "comparison and did not improve aggregate frozen-test macro-F1 or "
-            "macro-PR-AUC. Target-restating FULL evidence is not public."
-        ),
-    }
+    _write_json(WEB_DATA / "manifest.json", manifest)
+    _write_json(WEB_MODEL / "model-manifest.json", {
+        "run_id": release["run_id"],
+        "models": models,
+        "policy_ids": manifest["policy_ids"],
+        "class_order": manifest["class_order"],
+    })
+    return manifest
 
 
 def main() -> None:
-    WEB_DATA.mkdir(parents=True, exist_ok=True)
-    WEB_FIG.mkdir(parents=True, exist_ok=True)
-    SCHEMAS.mkdir(parents=True, exist_ok=True)
-
-    cohort = _frame("final_cohort_audit.csv").iloc[0]
-    cohort_size = int(cohort["n_supervised"])
-    if cohort_size != 299:
-        raise ValueError(f"Expected canonical supervised cohort 299, got {cohort_size}")
-
-    final_metrics = _records("final_test_metrics.csv")
-    if {row["track"] for row in final_metrics} != {"PRE_LAB", "LAB_AWARE"}:
-        raise ValueError("Final metrics must contain only PRE_LAB and LAB_AWARE")
-
-    conformal_exact = _records("final_conformal_exact.csv")
-    conformal_pragmatic = _records("final_conformal_pragmatic.csv")
-    threshold_policies = _records("threshold_policies.csv")
-    dashboard = {
-        "summary": _summary(final_metrics, conformal_exact, cohort_size),
-        "label_distribution": _label_distribution(cohort_size),
-        "top_combinations": _records("label_top_combinations.csv"),
-        "leaderboard": _records("final_model_comparison.csv"),
-        "per_label": _records("final_per_label_metrics.csv"),
-        "threshold_policies": threshold_policies,
-        "thresholds": _thresholds(threshold_policies),
-        "calibration": _records("final_calibration_metrics.csv"),
-        "conformal_exact": conformal_exact,
-        "conformal_pragmatic": conformal_pragmatic,
-        "importance_global": _records("feature_importance_global.csv"),
-        "fairness": _records("final_fairness_metrics.csv"),
-        "loco": _records("final_loco.csv"),
-        "resource": _records("resource_simulation.csv"),
-        "policy_tradeoff": _records("threshold_policy_resource_tradeoff.csv"),
-        "scenario_sensitivity": _records("final_scenario_sensitivity.csv"),
-        "leakage": _records(
-            "final_leakage_audit.csv",
-            [
-                "feature",
-                "decision",
-                "best_label",
-                "max_single_feature_auc",
-                "mutual_info",
-                "rationale",
-            ],
-        ),
-    }
-    _atomic_json(WEB_DATA / "dashboard.json", dashboard)
-
-    cases = _public_cases()
-    _atomic_json(WEB_DATA / "demo-cases.json", cases)
-    legacy_patients = WEB_DATA / "patients.json"
-    if legacy_patients.exists():
-        legacy_patients.unlink()
-
-    now = datetime.now(timezone.utc).replace(microsecond=0)
-    manifest = {
-        "schema_version": "2.0.0",
-        "run_id": f"{now.strftime('%Y-%m-%dT%H%M%SZ')}-final-prelab-et",
-        "generated_at": now.isoformat().replace("+00:00", "Z"),
-        "canonical": True,
-        "model_track": "PRE_LAB",
-        "model_name": dashboard["summary"]["best_model_per_track"]["PRE_LAB"],
-        "evaluation_split": "single frozen held-out test",
-        "cohort_size": cohort_size,
-        "active_labels": len(ACTIVE_LABELS),
-        "source_commit": _source_commit(),
-        "scientific_source": "VECTRA_X_Final_Competition_Notebook.ipynb",
-    }
-    _atomic_json(WEB_DATA / "manifest.json", manifest)
-
+    release, release_path = load_locked_release()
+    verify_release_provenance(release, release_path)
+    evidence = build_public_evidence(release)
+    input_schema = build_public_input_schema(release)
+    cases = _synthetic_cases(input_schema)
+    models = copy_verified_models(release, release_path)
+    figures = copy_verified_figures(release, release_path)
+    _write_json(WEB_DATA / "evidence.json", evidence)
+    _write_json(WEB_DATA / "input-schema.json", input_schema)
+    _write_json(WEB_DATA / "demo-cases.json", cases)
+    legacy = WEB_DATA / "dashboard.json"
+    if legacy.exists():
+        legacy.unlink()
+    manifest = write_public_manifest(
+        release, evidence, input_schema, cases, models, figures
+    )
     print(
-        f"[web export] canonical cohort n={cohort_size}; "
-        f"{len(cases)} anonymous cases; static figures retained"
+        f"[web export] run={manifest['notebook_run_id']} "
+        f"models={len(models)} synthetic_cases={len(cases)}"
     )
 
 

@@ -1,4 +1,4 @@
-﻿ablation,n_features,micro_f1,macro_f1,weighted_f1,samples_f1,hamming_loss,subset_accuracy,jaccard_samples,macro_recall,macro_precision,macro_roc_auc,macro_pr_auc
-all_pre_lab,81,0.7854,0.5532,0.7874,0.7879,0.1385,0.5068,0.7187,0.5697,0.5428,0.7087,0.504
-without_center,80,0.7816,0.5498,0.7848,0.7857,0.1421,0.5068,0.7164,0.575,0.5328,0.7034,0.4954
-without_missing_indicators,76,0.7775,0.5499,0.7859,0.7817,0.1466,0.4842,0.7093,0.5905,0.524,0.7318,0.5295
+﻿ablation,n_features,thresholds,micro_f1,macro_f1,weighted_f1,samples_f1,hamming_loss,subset_accuracy,jaccard_samples,macro_recall,macro_precision,macro_roc_auc,macro_pr_auc
+all_pre_lab,81,"{'malaria': 0.05, 'other_diseases': 0.44999999999999996, 'dengue': 0.49999999999999994, 'typhoid': 0.35, 'yellow_fever': 0.49999999999999994}",0.7871,0.5633,0.7976,0.7974,0.1439,0.4932,0.7236,0.6245,0.5278,0.7146,0.5011
+without_center,81,"{'malaria': 0.05, 'other_diseases': 0.44999999999999996, 'dengue': 0.49999999999999994, 'typhoid': 0.35, 'yellow_fever': 0.49999999999999994}",0.7871,0.5633,0.7976,0.7974,0.1439,0.4932,0.7236,0.6245,0.5278,0.7146,0.5011
+without_missing_indicators,76,"{'malaria': 0.35, 'other_diseases': 0.44999999999999996, 'dengue': 0.44999999999999996, 'typhoid': 0.5499999999999999, 'yellow_fever': 0.39999999999999997}",0.7842,0.5742,0.8017,0.7983,0.1484,0.4842,0.7217,0.6634,0.5212,0.7363,0.5206

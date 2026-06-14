@@ -3,7 +3,7 @@ from scripts.validate_final_notebook import validate_notebook
 
 def test_executed_notebook_is_clean_and_claim_safe():
     result = validate_notebook(
-        "notebooks/VECTRA_X_Final_Competition_Notebook.ipynb"
+        "notebooks/VECTRA_X_Final.ipynb"
     )
 
     assert result["error_outputs"] == 0

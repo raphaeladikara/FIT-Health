@@ -1,0 +1,26 @@
+﻿feature,importance_mean
+Circonference du bras (Mua circumference),0.027724000000000006
+Poids (Weight)__missing,0.026996000000000003
+Perte d'appétit ou Anorexie (Loss of appetite or Anorexia),0.025530000000000004
+Troubles de la conscience (Consciousness trouble),0.025113999999999997
+Céphalée (Headache),0.024794
+Diabète,0.021344000000000002
+Temps de remplissage capillaire (médiane secs IQR). / Capillary refill time (median secs IQR),0.017218
+Vertige (Dizzy),0.01688
+Pâleur cutanéo muqueuse ou Anémie (Mucosal skin pallor or Anemia),0.016336
+Centre de santé,0.016152
+bp__missing,0.013078000000000001
+Hypertension artérielle,0.011210000000000001
+Convulsions généralisées ou focales (Generalised or focal convulsion),0.01107
+Poids (Weight),0.010263999999999999
+Fréquence du pouls (battements/m in ± SD)./ Pulse rate (mean beats/min ± SD) - Shock ou Myocarditis,0.009738
+Douleur abdominale (stomac pain),0.009162
+Sensation de frissons ou de froid (Shiver or cold sensation),0.009108
+Convulsions multiples (Multiple convulsions),0.008948000000000001
+Nausée (Nausea),0.006222
+gender_female,0.005996
+Diarrhée  (Diarrhea),0.0057079999999999995
+Fréquence respiratoire (médiane IQR) / Respiratory rate (median breaths/min IQR),0.004884
+Vomissement (Vomiting),0.004714
+Splénomégalie modérée,0.004033999999999999
+Fièvre au cours des 7 derniers jours (Fever in the last 7 days),0.004018

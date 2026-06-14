@@ -3,19 +3,15 @@
   "type": "object",
   "required": [
     "schema_version",
-    "run_id",
+    "notebook_run_id",
+    "scientific_schema_version",
+    "source_commit",
     "generated_at",
-    "canonical",
-    "model_track",
-    "model_name",
-    "evaluation_split",
-    "cohort_size",
-    "active_labels",
-    "source_commit"
-  ],
-  "properties": {
-    "canonical": { "const": true },
-    "model_track": { "const": "PRE_LAB" },
-    "cohort_size": { "const": 299 }
-  }
+    "documents",
+    "models",
+    "policy_ids",
+    "class_order",
+    "safe_scope",
+    "production_rate_limit_required"
+  ]
 }

@@ -1,8 +1,8 @@
 import numpy as np
 import pandas as pd
 
-from src.calibration import cross_fitted_calibration
-from src.conformal import fit_conformal
+from src.calibration import cross_fitted_calibration, reliability_curve
+from src.conformal import conformal_metrics, fit_conformal
 
 
 def test_cross_fitted_calibration_never_trains_on_target_row():
@@ -26,3 +26,19 @@ def test_exact_conformal_does_not_cap_quantile_level():
 
     assert info["rare"]["quantile_level_used"] == 1.0
     assert info["rare"]["mode"] == "exact"
+
+
+def test_reliability_bins_include_count_and_positive_support():
+    table = reliability_curve(
+        np.array([0, 1, 1, 0]), np.array([0.1, 0.8, 0.7, 0.3]), n_bins=2
+    )
+    assert {"count", "positive_support"}.issubset(table.columns)
+
+
+def test_prediction_set_summary_names_policy_and_efficiency():
+    y = pd.DataFrame({"rare": [1, 0]})
+    p = np.array([[0.8], [0.2]])
+    info = fit_conformal(y, p, ["rare"], mode="pragmatic")
+    _, summary = conformal_metrics(y, p, info, ["rare"])
+    assert summary["policy_name"] == "pragmatic_efficiency_policy"
+    assert "singleton_rate" in summary

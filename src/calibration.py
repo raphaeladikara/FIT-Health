@@ -8,11 +8,40 @@ model's own training data).
 """
 from __future__ import annotations
 
+from dataclasses import dataclass
 import numpy as np
 import pandas as pd
 from sklearn.isotonic import IsotonicRegression
 from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import KFold
+
+
+@dataclass
+class ConstantCalibrator:
+    value: float
+    method: str = "constant"
+
+    def __call__(self, probability):
+        return np.full_like(np.asarray(probability, dtype=float), self.value)
+
+
+@dataclass
+class IsotonicCalibrator:
+    model: IsotonicRegression
+    method: str = "isotonic"
+
+    def __call__(self, probability):
+        return self.model.predict(np.clip(probability, 0, 1))
+
+
+@dataclass
+class SigmoidCalibrator:
+    model: LogisticRegression
+    method: str = "sigmoid"
+
+    def __call__(self, probability):
+        values = np.asarray(probability, dtype=float).reshape(-1, 1)
+        return self.model.predict_proba(values)[:, 1]
 
 
 def brier_score(y_true: np.ndarray, y_prob: np.ndarray) -> float:
@@ -49,6 +78,7 @@ def reliability_curve(y_true: np.ndarray, y_prob: np.ndarray, n_bins: int = 10
             "mean_pred": float(y_prob[mask].mean()),
             "frac_pos": float(y_true[mask].mean()),
             "count": int(mask.sum()),
+            "positive_support": int(y_true[mask].sum()),
         })
     return pd.DataFrame(rows)
 
@@ -80,15 +110,14 @@ def fit_calibrator(y_true: np.ndarray, y_prob: np.ndarray, method: str = "auto")
     if method == "auto":
         method = "isotonic" if n_pos >= 25 and len(y_true) >= 100 else "sigmoid"
     if len(np.unique(y_true)) < 2:
-        const = float(y_true.mean())
-        return lambda p: np.full_like(np.asarray(p, dtype=float), const)
+        return ConstantCalibrator(float(y_true.mean()))
     if method == "isotonic":
         iso = IsotonicRegression(out_of_bounds="clip")
         iso.fit(y_prob, y_true)
-        return lambda p: iso.predict(np.clip(p, 0, 1))
+        return IsotonicCalibrator(iso)
     lr = LogisticRegression(C=1e6, solver="lbfgs")
     lr.fit(y_prob.reshape(-1, 1), y_true)
-    return lambda p: lr.predict_proba(np.asarray(p).reshape(-1, 1))[:, 1]
+    return SigmoidCalibrator(lr)
 
 
 def calibrate_matrix(y_true_cal: pd.DataFrame, proba_cal: np.ndarray,

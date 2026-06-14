@@ -1,4 +1,75 @@
-from src.notebook_workflow import run_research_workflow
+import json
+
+import pytest
+
+from src.notebook_workflow import (
+    ScientificWorkflowState,
+    load_experiment_config,
+    run_research_workflow,
+)
+
+
+def test_experiment_config_is_explicit_and_validated(tmp_path):
+    config = load_experiment_config()
+
+    assert config.dataset_path.endswith("data/raw/data.csv")
+    assert config.target_policy == "complete_multilabel_only"
+    assert config.frozen_test.size == 0.25
+    assert config.validation.outer_folds == 5
+    assert config.validation.inner_folds == 3
+    assert len(config.validation.repeated_seeds) == 3
+    assert config.candidates
+    assert config.threshold.grid
+    assert config.calibration_methods
+    assert config.bootstrap.repetitions == 2000
+    assert config.release_schema_version
+
+    raw = json.loads(
+        (config.source_path).read_text(encoding="utf-8")
+    )
+    raw["unexpected"] = True
+    invalid = tmp_path / "invalid.json"
+    invalid.write_text(json.dumps(raw), encoding="utf-8")
+    with pytest.raises(ValueError, match="Unknown experiment keys"):
+        load_experiment_config(invalid)
+
+
+def test_experiment_config_rejects_duplicate_seeds(tmp_path):
+    config = load_experiment_config()
+    raw = json.loads(config.source_path.read_text(encoding="utf-8"))
+    raw["validation"]["repeated_seeds"] = [42, 42]
+    invalid = tmp_path / "duplicate-seeds.json"
+    invalid.write_text(json.dumps(raw), encoding="utf-8")
+
+    with pytest.raises(ValueError, match="duplicate"):
+        load_experiment_config(invalid)
+
+
+def test_frozen_test_state_machine_locks_policy_and_allows_one_evaluation():
+    state = ScientificWorkflowState()
+    with pytest.raises(RuntimeError, match="locked"):
+        state.evaluate_frozen_test_once(lambda manifest: {"ok": True})
+
+    state.prepare_training_pool("split-hash")
+    state.run_nested_validation({"candidate": "logreg"})
+    manifest = state.select_and_lock_policy(
+        {
+            "feature_contract_hash": "features",
+            "selected_config": "logreg",
+            "thresholds": {"dengue": 0.4},
+            "calibration_method": "sigmoid",
+            "seeds": [42],
+            "source_commit": "abc",
+        }
+    )
+    assert manifest["split_hash"] == "split-hash"
+    with pytest.raises(RuntimeError, match="locked"):
+        state.select_and_lock_policy({"selected_config": "other"})
+
+    state.fit_locked_policy({"model": "fitted"})
+    assert state.evaluate_frozen_test_once(lambda lock: {"lock": lock})["lock"] == manifest
+    with pytest.raises(RuntimeError, match="already"):
+        state.evaluate_frozen_test_once(lambda lock: {})
 
 
 def test_workflow_uses_verified_cohort_and_leakage_free_pre_lab():

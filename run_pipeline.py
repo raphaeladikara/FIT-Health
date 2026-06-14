@@ -12,6 +12,7 @@ from pathlib import Path
 import pandas as pd
 
 from src.notebook_workflow import ResearchWorkflowResult, run_research_workflow
+from src.release_bundle import export_release_bundle
 
 ROOT = Path(__file__).resolve().parent
 TABLES = ROOT / "outputs" / "tables"
@@ -70,6 +71,11 @@ def parse_args() -> argparse.Namespace:
         help="Use the reduced validation configuration for development checks.",
     )
     parser.add_argument(
+        "--write-release",
+        action="store_true",
+        help="Write a versioned scientific release even in quick mode.",
+    )
+    parser.add_argument(
         "--skip-web",
         action="store_true",
         help="Do not regenerate the static dashboard after a full run.",
@@ -80,7 +86,7 @@ def parse_args() -> argparse.Namespace:
 def main() -> None:
     args = parse_args()
     result = run_research_workflow(quick=args.quick)
-    if args.quick:
+    if args.quick and not args.write_release:
         print(
             "[pipeline] quick validation complete; canonical tables and web "
             "bundle were not overwritten"
@@ -88,9 +94,11 @@ def main() -> None:
         return
 
     written = export_final_tables(result)
+    release_path = export_release_bundle(result, ROOT)
     print(
         f"[pipeline] exported {len(written)} corrected tables; "
-        f"supervised cohort n={result.cohort_audit['n_supervised']}"
+        f"supervised cohort n={result.cohort_audit['n_supervised']}; "
+        f"release={release_path}"
     )
     if not args.skip_web:
         import export_web_data

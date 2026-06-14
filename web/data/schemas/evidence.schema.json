@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "run_id",
+    "safe_scope",
+    "executive_summary",
+    "cohort_and_partitions",
+    "validation_and_frozen_test",
+    "limitations",
+    "deployment_gates"
+  ]
+}

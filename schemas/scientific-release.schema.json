@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://vectra-x.local/schemas/scientific-release.schema.json",
+  "title": "VECTRA-X Scientific Release",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "run_id",
+    "source_commit",
+    "timestamp",
+    "notebook_identity",
+    "dataset",
+    "lock_manifest",
+    "policies",
+    "metrics",
+    "feature_contract",
+    "deployable_input_schema",
+    "artifacts",
+    "content_hash"
+  ],
+  "additionalProperties": true
+}

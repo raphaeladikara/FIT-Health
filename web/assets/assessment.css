@@ -1,0 +1,19 @@
+.assessment-page { min-height: 100vh; }
+.assessment-header { display: flex; align-items: center; justify-content: space-between; padding: 16px 28px; border-bottom: 1px solid var(--line-soft); }
+.assessment-shell { width: min(1240px, calc(100% - 32px)); margin: 32px auto 64px; }
+.assessment-intro { max-width: 72ch; margin-bottom: 24px; }
+.assessment-layout { display: grid; grid-template-columns: minmax(0, 1fr) minmax(320px, .8fr); gap: 24px; align-items: start; }
+.assessment-form, .assessment-result { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 24px; }
+.assessment-fields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; max-height: 65vh; overflow: auto; padding-right: 8px; }
+.assessment-field { min-width: 0; }
+.assessment-field input, .assessment-field select, .assessment-form select { width: 100%; min-height: 44px; background: var(--bg-2); border: 1px solid var(--line); border-radius: var(--radius-sm); padding: 9px 11px; }
+.assessment-field small { display: block; color: var(--muted); margin-top: 6px; }
+.field-error { color: var(--coral-soft); min-height: 1.4em; display: block; }
+.assessment-actions { display: flex; gap: 12px; margin-top: 20px; }
+.assessment-result { position: sticky; top: 20px; }
+.result-scope { color: var(--muted); padding-bottom: 16px; border-bottom: 1px solid var(--line-soft); }
+@media (max-width: 860px) {
+  .assessment-layout { grid-template-columns: 1fr; }
+  .assessment-fields { grid-template-columns: 1fr; max-height: none; }
+  .assessment-result { position: static; }
+}

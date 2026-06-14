@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import argparse
+import json
 from pathlib import Path
 from typing import Any
 
@@ -61,7 +62,7 @@ def validate_notebook(path: str | Path) -> dict[str, Any]:
             and "pragmatic policy" in markdown.lower()
         ),
     }
-    return {
+    report = {
         "error_outputs": int(error_outputs),
         "code_cells_without_execution_count": sum(
             count is None for count in execution_counts
@@ -75,24 +76,40 @@ def validate_notebook(path: str | Path) -> dict[str, Any]:
         "code_cells": len(code_cells),
         "markdown_cells": sum(c.cell_type == "markdown" for c in notebook.cells),
     }
+    report["errors"] = []
+    if report["error_outputs"]:
+        report["errors"].append("notebook contains error outputs")
+    if report["code_cells_without_execution_count"]:
+        report["errors"].append("notebook has unexecuted code cells")
+    if report["stale_execution_order"]:
+        report["errors"].append("notebook execution order is stale")
+    if report["forbidden_claims"]:
+        report["errors"].append("notebook contains forbidden hard-coded claims")
+    if report["required_result_tables_missing"]:
+        report["errors"].append("notebook omits required release-backed tables")
+    if report["required_language_missing"]:
+        report["errors"].append("notebook omits required scientific language")
+    report["warnings"] = []
+    report["passed_checks"] = [
+        "required result references present"
+        if not report["required_result_tables_missing"]
+        else ""
+    ]
+    report["passed_checks"] = [item for item in report["passed_checks"] if item]
+    return report
 
 
 def main() -> None:
     parser = argparse.ArgumentParser()
-    parser.add_argument("notebook")
+    parser.add_argument(
+        "notebook",
+        nargs="?",
+        default="notebooks/VECTRA_X_Final.ipynb",
+    )
     args = parser.parse_args()
     result = validate_notebook(args.notebook)
-    for key, value in result.items():
-        print(f"{key}: {value}")
-    failures = (
-        result["error_outputs"]
-        or result["code_cells_without_execution_count"]
-        or result["stale_execution_order"]
-        or result["forbidden_claims"]
-        or result["required_result_tables_missing"]
-        or result["required_language_missing"]
-    )
-    raise SystemExit(1 if failures else 0)
+    print(json.dumps(result, indent=2))
+    raise SystemExit(1 if result["errors"] else 0)
 
 
 if __name__ == "__main__":

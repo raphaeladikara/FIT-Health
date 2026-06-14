@@ -58,7 +58,7 @@ def train_test_indices(y: pd.DataFrame, test_size: float, random_state: int
                        ) -> tuple[np.ndarray, np.ndarray]:
     """Multi-label stratified train/test split (iterstrat) with fallback."""
     n = len(y)
-    if _HAS_ITERSTRAT:
+    if _HAS_ITERSTRAT and y.shape[1] > 1:
         splitter = MultilabelStratifiedShuffleSplit(
             n_splits=1, test_size=test_size, random_state=random_state)
         train_idx, test_idx = next(splitter.split(np.zeros(n), y.values))
@@ -76,11 +76,11 @@ def train_test_indices(y: pd.DataFrame, test_size: float, random_state: int
 def make_cv_splits(y: pd.DataFrame, n_folds: int, random_state: int) -> list[tuple[np.ndarray, np.ndarray]]:
     """K folds preserving label prevalence (iterstrat) with fallback."""
     n = len(y)
-    if _HAS_ITERSTRAT:
+    if _HAS_ITERSTRAT and y.shape[1] > 1:
         kf = MultilabelStratifiedKFold(n_splits=n_folds, shuffle=True, random_state=random_state)
         return list(kf.split(np.zeros(n), y.values))
     from sklearn.model_selection import StratifiedKFold
-    strat = y.sum(axis=1).clip(upper=2)
+    strat = y.iloc[:, 0] if y.shape[1] == 1 else y.sum(axis=1).clip(upper=2)
     kf = StratifiedKFold(n_splits=n_folds, shuffle=True, random_state=random_state)
     return list(kf.split(np.zeros(n), strat))
 

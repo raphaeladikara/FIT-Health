@@ -1,0 +1,32 @@
+{
+  "dataset_path": "data/raw/data.csv",
+  "target_policy": "complete_multilabel_only",
+  "frozen_test": {
+    "size": 0.25,
+    "seed": 42
+  },
+  "validation": {
+    "outer_folds": 5,
+    "inner_folds": 3,
+    "repeated_seeds": [42, 43, 44]
+  },
+  "candidates": [
+    {"id": "logreg_c0.1", "enabled": true},
+    {"id": "logreg_c0.5", "enabled": true},
+    {"id": "logreg_c2.0", "enabled": true},
+    {"id": "extra_trees_leaf2", "enabled": true},
+    {"id": "extra_trees_leaf5", "enabled": true}
+  ],
+  "threshold": {
+    "grid": [0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.55, 0.6, 0.65, 0.7, 0.75, 0.8, 0.85, 0.9, 0.95],
+    "objective": "f1",
+    "tie_break": "higher_recall_then_lower_threshold"
+  },
+  "calibration_methods": ["sigmoid", "isotonic"],
+  "bootstrap": {
+    "repetitions": 2000,
+    "confidence_level": 0.95
+  },
+  "minimum_subgroup_support": 5,
+  "release_schema_version": "1.0.0"
+}

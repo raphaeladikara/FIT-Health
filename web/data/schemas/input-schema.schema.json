@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "required": ["schema_version", "run_id", "modes", "fields", "forbidden_fields"],
+  "properties": {
+    "fields": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "field_id",
+          "display_label",
+          "type",
+          "stage",
+          "required",
+          "missingness_behavior",
+          "clinical_help"
+        ]
+      }
+    }
+  }
+}

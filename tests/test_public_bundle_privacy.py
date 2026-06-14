@@ -39,6 +39,12 @@ class PublicBundlePrivacyTest(unittest.TestCase):
     def test_legacy_patient_bundle_is_not_published(self):
         self.assertFalse((WEB_DATA / "patients.json").exists())
 
+    def test_public_bundle_contains_only_synthetic_cases(self):
+        cases = json.loads((WEB_DATA / "demo-cases.json").read_text(encoding="utf-8"))
+        self.assertTrue(
+            all(case.get("provenance") == "illustrative_synthetic" for case in cases)
+        )
+
 
 if __name__ == "__main__":
     unittest.main()

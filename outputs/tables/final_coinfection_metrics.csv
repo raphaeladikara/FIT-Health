@@ -1,9 +1,4 @@
-model,partition,roc_auc,pr_auc,recall,specificity,f1
-logreg_c0.1,training_only_OOF,0.826,0.856,,,
-logreg,training_only_OOF,0.821,0.854,,,
-logreg_c2.0,training_only_OOF,0.817,0.848,,,
-random_forest,training_only_OOF,0.805,0.803,,,
-extra_trees,training_only_OOF,0.812,0.821,,,
-extra_trees_leaf5,training_only_OOF,0.803,0.822,,,
-hist_gb,training_only_OOF,0.761,0.770,,,
-logreg_c0.1,frozen_test_once,0.665,0.696,0.605,0.775,0.657
+﻿model,partition,roc_auc,pr_auc,recall,specificity,f1
+logreg,training_only_OOF,0.8260726072607261,0.8550484905185805,,,
+extra_trees,training_only_OOF,0.813036303630363,0.815416043482017,,,
+logreg,frozen_test_once,0.6736842105263159,0.7119549159944946,0.6052631578947368,0.725,0.6388888888888888

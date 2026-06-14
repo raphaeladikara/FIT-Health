@@ -1,0 +1,30 @@
+{
+  "schema_version": "1.0.0",
+  "features": {
+    "age_years": {
+      "unit": "years",
+      "hard_invalid_min": 0,
+      "hard_invalid_max": 130,
+      "source_note": "Human age encoding validity; observed-range warnings are learned from training rows only."
+    },
+    "temperature_c": {
+      "unit": "degC",
+      "hard_invalid_min": 20,
+      "hard_invalid_max": 50,
+      "source_note": "Broad physiological/encoding validity guard, not a diagnostic range."
+    },
+    "bp_systolic": {
+      "unit": "mmHg",
+      "hard_invalid_min": 20,
+      "hard_invalid_max": 300,
+      "source_note": "Broad encoding validity guard."
+    },
+    "bp_diastolic": {
+      "unit": "mmHg",
+      "hard_invalid_min": 10,
+      "hard_invalid_max": 200,
+      "source_note": "Broad encoding validity guard."
+    }
+  },
+  "soft_warning_policy": "Fit observed quantile bounds on the training partition only."
+}

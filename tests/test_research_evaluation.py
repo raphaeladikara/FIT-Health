@@ -6,6 +6,7 @@ from src.research_evaluation import (
     paired_bootstrap_difference,
     selective_risk_curve,
 )
+from src.evaluation import apply_thresholds
 
 
 def test_always_malaria_baseline_flags_only_malaria():
@@ -50,3 +51,11 @@ def test_selective_risk_decreases_when_high_error_cases_are_deferred():
     curve = selective_risk_curve(correct, uncertainty)
 
     assert curve.iloc[-1]["risk"] <= curve.iloc[0]["risk"]
+
+
+def test_saved_selected_thresholds_control_decisions():
+    probabilities = np.array([[0.4], [0.6]])
+    decisions = apply_thresholds(
+        probabilities, {"dengue": 0.3}, ["dengue"]
+    )
+    assert decisions.ravel().tolist() == [1, 1]

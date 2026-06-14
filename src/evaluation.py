@@ -45,14 +45,25 @@ def multilabel_summary(y_true: pd.DataFrame, y_pred: np.ndarray,
                        y_proba: np.ndarray | None = None) -> dict[str, float]:
     """Aggregate multi-label metrics (threshold already applied to y_pred)."""
     yt = y_true.values if isinstance(y_true, pd.DataFrame) else y_true
+    single_label = yt.ndim == 2 and yt.shape[1] == 1
+    sample_f1 = (
+        f1_score(yt.ravel(), y_pred.ravel(), zero_division=0)
+        if single_label
+        else f1_score(yt, y_pred, average="samples", zero_division=0)
+    )
+    sample_jaccard = (
+        jaccard_score(yt.ravel(), y_pred.ravel(), zero_division=0)
+        if single_label
+        else jaccard_score(yt, y_pred, average="samples", zero_division=0)
+    )
     out = {
         "micro_f1": f1_score(yt, y_pred, average="micro", zero_division=0),
         "macro_f1": f1_score(yt, y_pred, average="macro", zero_division=0),
         "weighted_f1": f1_score(yt, y_pred, average="weighted", zero_division=0),
-        "samples_f1": f1_score(yt, y_pred, average="samples", zero_division=0),
+        "samples_f1": sample_f1,
         "hamming_loss": hamming_loss(yt, y_pred),
         "subset_accuracy": float((yt == y_pred).all(axis=1).mean()),
-        "jaccard_samples": jaccard_score(yt, y_pred, average="samples", zero_division=0),
+        "jaccard_samples": sample_jaccard,
         "macro_recall": recall_score(yt, y_pred, average="macro", zero_division=0),
         "macro_precision": precision_score(yt, y_pred, average="macro", zero_division=0),
     }

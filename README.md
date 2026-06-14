@@ -11,12 +11,12 @@ FIT Competition 2026, Track IV: AI-based Vector-Borne Disease Prediction.
 ## Canonical Artifacts
 
 - Scientific submission:
-  `notebooks/VECTRA_X_Final_Competition_Notebook.ipynb`
+  `notebooks/VECTRA_X_Final.ipynb`
 - Concise technical report:
   `outputs/reports/final_technical_report_sketch.md`
 - Audit closure:
   `outputs/reports/final_audit_resolution.md`
-- Public static dashboard:
+- Public dashboard (static evidence + local assessment API):
   `web/`
 - Corrected evidence tables:
   `outputs/tables/final_*.csv`
@@ -30,14 +30,15 @@ the locked models once on a frozen test set.
 
 | Track | Selected model | Macro-F1 | Micro-F1 | Macro PR-AUC |
 |---|---|---:|---:|---:|
-| PRE_LAB | Extra Trees | 0.4823 | 0.7673 | 0.5247 |
-| LAB_AWARE | HistGradientBoosting | 0.4439 | 0.7321 | 0.5024 |
+| PRE_LAB | Extra Trees | 0.4624 | 0.7440 | 0.5416 |
+| LAB_AWARE | HistGradientBoosting | 0.4777 | 0.7299 | 0.5141 |
 
-The supervised cohort contains **299 patients** from 300 raw rows. The LAB_AWARE
-track does not improve aggregate frozen-test macro-F1 or macro PR-AUC. Yellow
-fever has three positive frozen-test observations and zero recall. Leave-one-center-
-out macro-F1 is approximately **0.26-0.31**, making center transfer the main
-generalization warning.
+The supervised cohort contains **299 patients** from 300 raw rows. PRE_LAB remains the
+primary prototype: the LAB_AWARE track does not establish operational superiority on
+aggregate frozen-test micro-F1 or macro PR-AUC and depends on confirmatory inputs.
+Yellow fever has very few positive frozen-test observations and near-zero recall.
+Leave-one-center-out macro-F1 is approximately **0.26-0.31**, making center transfer
+the main generalization warning.
 
 Target-restating fields, including the other-disease presentation field and the
 disease-named dengue field, are excluded from public model evidence. Exact and
@@ -47,17 +48,19 @@ policy carries no formal coverage claim.
 ## Repository Structure
 
 ```text
-config/                 Reproducible analysis configuration
+config/                 Analysis config + experiment & clinical-range contracts (config.yaml, *.json)
 data/raw/               Official competition files, unchanged
 docs/                   Current documentation and retained improvement history
-notebooks/              The single executed final competition notebook
+notebooks/              The single executed final notebook: VECTRA_X_Final.ipynb
+outputs/releases/       Hash-verified scientific releases; latest.json marks the active run
 outputs/reports/        Technical reports, audits, limitations, and project history
 outputs/tables/         Canonical final evidence plus small web-support tables
+schemas/                JSON Schema for the scientific release bundle
 scripts/                Notebook builder and release validators
 src/                    Tested research workflow modules
 tests/                  Python research and repository contract tests
-web/                    Static landing page, guided demo, and analytics dashboard
-export_web_data.py      Builds the public JSON evidence bundle
+web/                    Public dashboard: static evidence + local Python assessment API
+export_web_data.py      Builds the public bundle from outputs/releases/latest.json
 run_pipeline.py         CLI counterpart of the canonical notebook workflow
 ```
 
@@ -84,8 +87,8 @@ Execute the final notebook:
 ```bash
 python -m jupyter nbconvert \
   --to notebook \
-  --execute notebooks/VECTRA_X_Final_Competition_Notebook.ipynb \
-  --output VECTRA_X_Final_Competition_Notebook.ipynb \
+  --execute notebooks/VECTRA_X_Final.ipynb \
+  --output VECTRA_X_Final.ipynb \
   --output-dir notebooks \
   --ExecutePreprocessor.timeout=-1
 ```
@@ -99,21 +102,22 @@ python run_pipeline.py --quick --skip-web  # development check only
 
 Quick mode never overwrites the canonical public web bundle.
 
-## Static Dashboard
+## Dashboard
 
-The dashboard is a zero-backend, Vercel-ready static application. It publishes
-aggregate evidence and at most 12 curated anonymous cases. It does not publish
-UUIDs, patient ground truth, or live inference.
+The dashboard is a Vercel-ready application with two layers: a static evidence bundle
+and a local Python assessment API that runs the exact exported joblib pipeline. The
+public bundle publishes aggregate evidence and curated anonymous cases only — never
+UUIDs or patient ground truth. Live assessment values are anonymous: not persisted,
+not stored in the browser, and never logged.
 
 ```bash
-python export_web_data.py
+python export_web_data.py             # rebuilds from outputs/releases/latest.json
 python scripts/validate_web_bundle.py
-cd web
-python -m http.server 8765
+python web/serve_live.py --port 4173  # serves static files + the local assessment API
 ```
 
-On Windows, `open_dashboard.bat` starts the same local static server. For Vercel,
-use `web/` as the project root with no build command.
+Open `http://localhost:4173`. For Vercel, use `web/` as the project root with no build
+command (output directory `.`).
 
 ## Verification
 

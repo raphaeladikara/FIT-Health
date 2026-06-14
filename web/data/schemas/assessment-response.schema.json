@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "provenance",
+    "mode",
+    "probabilities",
+    "thresholds",
+    "decisions",
+    "prediction_set",
+    "uncertainty",
+    "abstention",
+    "triage_category",
+    "explanation",
+    "warnings",
+    "safe_scope"
+  ]
+}

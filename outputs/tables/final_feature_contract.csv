@@ -1,0 +1,294 @@
+﻿track,raw_feature,model_feature,stage,decision
+PRE_LAB,Centre de santé,Centre de santé,T0_intake,pre_lab
+PRE_LAB,Genre (Gender),gender_female,T0_intake,pre_lab
+PRE_LAB,Âge (Age),Âge (Age),T0_intake,pre_lab
+PRE_LAB,Poids (Weight),Poids (Weight),T0_intake,pre_lab
+PRE_LAB,Poids (Weight),Poids (Weight)__missing,T0_intake,pre_lab
+PRE_LAB,Circonference du bras (Mua circumference),Circonference du bras (Mua circumference),T0_intake,pre_lab
+PRE_LAB,"Haute température.(temperature, Hyperpyrexia)","Haute température.(temperature, Hyperpyrexia)",T0_intake,pre_lab
+PRE_LAB,Fièvre depuis 48 heures(Fever 48 hrs),Fièvre depuis 48 heures(Fever 48 hrs),T0_intake,pre_lab
+PRE_LAB,Fièvre au cours des 7 derniers jours (Fever in the last 7 days),Fièvre au cours des 7 derniers jours (Fever in the last 7 days),T0_intake,pre_lab
+PRE_LAB,Type de fièvre (Type of Fever),Type de fièvre (Type of Fever),T0_intake,pre_lab
+PRE_LAB,Perte de poids (Loss of Weight),Perte de poids (Loss of Weight),T0_intake,pre_lab
+PRE_LAB,Maux de tête (headache),Maux de tête (headache),T0_intake,pre_lab
+PRE_LAB,Nausée (Nausea),Nausée (Nausea),T0_intake,pre_lab
+PRE_LAB,Vomissement (Vomiting),Vomissement (Vomiting),T0_intake,pre_lab
+PRE_LAB,Douleur articulaire (Joint pain),Douleur articulaire (Joint pain),T0_intake,pre_lab
+PRE_LAB,Gonflement des articulations (Joint Swelling),Gonflement des articulations (Joint Swelling),T0_intake,pre_lab
+PRE_LAB,Douleur musculaire ( Muscle pain),Douleur musculaire ( Muscle pain),T0_intake,pre_lab
+PRE_LAB,Douleur Thoracique (Chaist pain),Douleur Thoracique (Chaist pain),T0_intake,pre_lab
+PRE_LAB,Mal de dos / Douleur rachidienne ( Back pain / Rachiodynia),Mal de dos / Douleur rachidienne ( Back pain / Rachiodynia),T0_intake,pre_lab
+PRE_LAB,Troubles de la conscience (Consciousness trouble),Troubles de la conscience (Consciousness trouble),T0_intake,pre_lab
+PRE_LAB,Perte d'appétit ou Anorexie (Loss of appetite or Anorexia),Perte d'appétit ou Anorexie (Loss of appetite or Anorexia),T0_intake,pre_lab
+PRE_LAB,Éruptions cutanées ou Exanthème (Skin rash or Exanthema),Éruptions cutanées ou Exanthème (Skin rash or Exanthema),T0_intake,pre_lab
+PRE_LAB,Éruption morbilliforme (Morbilliform rash),Éruption morbilliforme (Morbilliform rash),T0_intake,pre_lab
+PRE_LAB,Saignement/ Manifestations hémorragiques (Bleeding),Saignement/ Manifestations hémorragiques (Bleeding),T0_intake,pre_lab
+PRE_LAB,Rhinorrhée (Rhinorrhea),Rhinorrhée (Rhinorrhea),T0_intake,pre_lab
+PRE_LAB,Somnolence ou léthargie  (Drowsiness or lethargy),Somnolence ou léthargie  (Drowsiness or lethargy),T0_intake,pre_lab
+PRE_LAB,Vertige (Dizzy),Vertige (Dizzy),T0_intake,pre_lab
+PRE_LAB,Douleur abdominale (stomac pain),Douleur abdominale (stomac pain),T0_intake,pre_lab
+PRE_LAB,Distension abdominale (Ventre gonflé) (Abdominal Distension (Swelling Stomach)/ Ascites),Distension abdominale (Ventre gonflé) (Abdominal Distension (Swelling Stomach)/ Ascites),T0_intake,pre_lab
+PRE_LAB,Mal de gorge (throat pain),Mal de gorge (throat pain),T0_intake,pre_lab
+PRE_LAB,Toux (Cough),Toux (Cough),T0_intake,pre_lab
+PRE_LAB,Diarrhée  (Diarrhea),Diarrhée  (Diarrhea),T0_intake,pre_lab
+PRE_LAB,Douleur rétro-orbitrale (Retro-orbital pain),Douleur rétro-orbitrale (Retro-orbital pain),T0_intake,pre_lab
+PRE_LAB,Céphalée (Headache),Céphalée (Headache),T0_intake,pre_lab
+PRE_LAB,Sensation de frissons ou de froid (Shiver or cold sensation),Sensation de frissons ou de froid (Shiver or cold sensation),T0_intake,pre_lab
+PRE_LAB,Mictions fréquentes.(Frequent Urination),Mictions fréquentes.(Frequent Urination),T0_intake,pre_lab
+PRE_LAB,Constipation,Constipation,T0_intake,pre_lab
+PRE_LAB,Oligurie (Oliguria),Oligurie (Oliguria),T0_intake,pre_lab
+PRE_LAB,Mictions fréquentes. (Frequent Urination),Mictions fréquentes. (Frequent Urination),T0_intake,pre_lab
+PRE_LAB,Prostration,Prostration,T0_intake,pre_lab
+PRE_LAB,Ictère (Icterus),Ictère (Icterus),T0_intake,pre_lab
+PRE_LAB,Epistaxis ((Bleeding nose),Epistaxis ((Bleeding nose),T0_intake,pre_lab
+PRE_LAB,Convulsions généralisées ou focales (Generalised or focal convulsion),Convulsions généralisées ou focales (Generalised or focal convulsion),T0_intake,pre_lab
+PRE_LAB,Convulsions multiples (Multiple convulsions),Convulsions multiples (Multiple convulsions),T0_intake,pre_lab
+PRE_LAB,Délire,Délire,T0_intake,pre_lab
+PRE_LAB,Confusion/ niveau de conscience altéré (impaired level of consciousness),Confusion/ niveau de conscience altéré (impaired level of consciousness),T0_intake,pre_lab
+PRE_LAB,Gonflement du visage (Facial Swelling),Gonflement du visage (Facial Swelling),T0_intake,pre_lab
+PRE_LAB,Délire /Discours irrationnel (Delirium/ Irrational Talking),Délire /Discours irrationnel (Delirium/ Irrational Talking),T0_intake,pre_lab
+PRE_LAB,Hémoglobinurie (Hemoglobinuria),Hémoglobinurie (Hemoglobinuria),T0_intake,pre_lab
+PRE_LAB,Goût amer dans la gorge (Bitter taste in your Throat),Goût amer dans la gorge (Bitter taste in your Throat),T0_intake,pre_lab
+PRE_LAB,Test de garrot positif (Positive tourniquet test),Test de garrot positif (Positive tourniquet test),T0_intake,pre_lab
+PRE_LAB,Raideur (Stiffness),Raideur (Stiffness),T0_intake,pre_lab
+PRE_LAB,Détresse respiratoire (Respiratory distress),Détresse respiratoire (Respiratory distress),T0_intake,pre_lab
+PRE_LAB,Choc septique (Shock),Choc septique (Shock),T0_intake,pre_lab
+PRE_LAB,Hépatomégalie (Hepatomegaly),Hépatomégalie (Hepatomegaly),T0_intake,pre_lab
+PRE_LAB,Insuffisance cardiaque  ou Myocardite(Heart failure or Myocarditis),Insuffisance cardiaque  ou Myocardite(Heart failure or Myocarditis),T0_intake,pre_lab
+PRE_LAB,Accumulation de liquide et détresse respiratoire (Accumulation of fluid and respiratory distress),Accumulation de liquide et détresse respiratoire (Accumulation of fluid and respiratory distress),T0_intake,pre_lab
+PRE_LAB,Splénomégalie modérée,Splénomégalie modérée,T0_intake,pre_lab
+PRE_LAB,Choc septique (Septicemia),Choc septique (Septicemia),T0_intake,pre_lab
+PRE_LAB,Syndrome d'icterus subaigu (Sub-icterus),Syndrome d'icterus subaigu (Sub-icterus),T0_intake,pre_lab
+PRE_LAB,Lymphadénopathie / Lymphadenopa thy,Lymphadénopathie / Lymphadenopa thy,T0_intake,pre_lab
+PRE_LAB,Température axillaire (médiane IQR) (°C) /Axillary temperature (median IQR) (°C),Température axillaire (médiane IQR) (°C) /Axillary temperature (median IQR) (°C),T1_vital,pre_lab
+PRE_LAB,Température axillaire (médiane IQR) (°C) /Axillary temperature (median IQR) (°C),Température axillaire (médiane IQR) (°C) /Axillary temperature (median IQR) (°C)__missing,T1_vital,pre_lab
+PRE_LAB,Fréquence respiratoire (médiane IQR) / Respiratory rate (median breaths/min IQR),Fréquence respiratoire (médiane IQR) / Respiratory rate (median breaths/min IQR),T1_vital,pre_lab
+PRE_LAB,Fréquence respiratoire (médiane IQR) / Respiratory rate (median breaths/min IQR),Fréquence respiratoire (médiane IQR) / Respiratory rate (median breaths/min IQR)__missing,T1_vital,pre_lab
+PRE_LAB,Fréquence du pouls (battements/m in ± SD)./ Pulse rate (mean beats/min ± SD) - Shock ou Myocarditis,Fréquence du pouls (battements/m in ± SD)./ Pulse rate (mean beats/min ± SD) - Shock ou Myocarditis,T1_vital,pre_lab
+PRE_LAB,Fréquence du pouls (battements/m in ± SD)./ Pulse rate (mean beats/min ± SD) - Shock ou Myocarditis,Fréquence du pouls (battements/m in ± SD)./ Pulse rate (mean beats/min ± SD) - Shock ou Myocarditis__missing,T1_vital,pre_lab
+PRE_LAB,Pression artérielle (moyenne mmHg ± SD). / Arterial blood pressure (mean mmHg ± SD),bp_systolic,T1_vital,pre_lab
+PRE_LAB,Pression artérielle (moyenne mmHg ± SD). / Arterial blood pressure (mean mmHg ± SD),bp_diastolic,T1_vital,pre_lab
+PRE_LAB,Pression artérielle (moyenne mmHg ± SD). / Arterial blood pressure (mean mmHg ± SD),bp_parse_failed,T1_vital,pre_lab
+PRE_LAB,Pression artérielle (moyenne mmHg ± SD). / Arterial blood pressure (mean mmHg ± SD),bp__missing,T1_vital,pre_lab
+PRE_LAB,Temps de remplissage capillaire (médiane secs IQR). / Capillary refill time (median secs IQR),Temps de remplissage capillaire (médiane secs IQR). / Capillary refill time (median secs IQR),T1_vital,pre_lab
+PRE_LAB,Pâleur cutanéo muqueuse ou Anémie (Mucosal skin pallor or Anemia),Pâleur cutanéo muqueuse ou Anémie (Mucosal skin pallor or Anemia),T0_intake,pre_lab
+PRE_LAB,Hypoglycémie (Hypoglycemia),Hypoglycémie (Hypoglycemia),T0_intake,pre_lab
+PRE_LAB,Diabète,Diabète,T0_intake,pre_lab
+PRE_LAB,Hypertension artérielle,Hypertension artérielle,T0_intake,pre_lab
+PRE_LAB,Drépanocytose,Drépanocytose,T0_intake,pre_lab
+PRE_LAB,Arthrose,Arthrose,T0_intake,pre_lab
+PRE_LAB,Asthme (Astma),Asthme (Astma),T0_intake,pre_lab
+PRE_LAB,Pneumonie (Pneumonia),Pneumonie (Pneumonia),T0_intake,pre_lab
+PRE_LAB,Dengue dans le menage (Household Dengue),Dengue dans le menage (Household Dengue),T0_intake,pre_lab
+LAB_AWARE,Centre de santé,Centre de santé,T0_intake,pre_lab
+LAB_AWARE,Genre (Gender),gender_female,T0_intake,pre_lab
+LAB_AWARE,Âge (Age),Âge (Age),T0_intake,pre_lab
+LAB_AWARE,Poids (Weight),Poids (Weight),T0_intake,pre_lab
+LAB_AWARE,Poids (Weight),Poids (Weight)__missing,T0_intake,pre_lab
+LAB_AWARE,Circonference du bras (Mua circumference),Circonference du bras (Mua circumference),T0_intake,pre_lab
+LAB_AWARE,"Haute température.(temperature, Hyperpyrexia)","Haute température.(temperature, Hyperpyrexia)",T0_intake,pre_lab
+LAB_AWARE,Fièvre depuis 48 heures(Fever 48 hrs),Fièvre depuis 48 heures(Fever 48 hrs),T0_intake,pre_lab
+LAB_AWARE,Fièvre au cours des 7 derniers jours (Fever in the last 7 days),Fièvre au cours des 7 derniers jours (Fever in the last 7 days),T0_intake,pre_lab
+LAB_AWARE,Type de fièvre (Type of Fever),Type de fièvre (Type of Fever),T0_intake,pre_lab
+LAB_AWARE,Perte de poids (Loss of Weight),Perte de poids (Loss of Weight),T0_intake,pre_lab
+LAB_AWARE,Maux de tête (headache),Maux de tête (headache),T0_intake,pre_lab
+LAB_AWARE,Nausée (Nausea),Nausée (Nausea),T0_intake,pre_lab
+LAB_AWARE,Vomissement (Vomiting),Vomissement (Vomiting),T0_intake,pre_lab
+LAB_AWARE,Douleur articulaire (Joint pain),Douleur articulaire (Joint pain),T0_intake,pre_lab
+LAB_AWARE,Gonflement des articulations (Joint Swelling),Gonflement des articulations (Joint Swelling),T0_intake,pre_lab
+LAB_AWARE,Douleur musculaire ( Muscle pain),Douleur musculaire ( Muscle pain),T0_intake,pre_lab
+LAB_AWARE,Douleur Thoracique (Chaist pain),Douleur Thoracique (Chaist pain),T0_intake,pre_lab
+LAB_AWARE,Mal de dos / Douleur rachidienne ( Back pain / Rachiodynia),Mal de dos / Douleur rachidienne ( Back pain / Rachiodynia),T0_intake,pre_lab
+LAB_AWARE,Troubles de la conscience (Consciousness trouble),Troubles de la conscience (Consciousness trouble),T0_intake,pre_lab
+LAB_AWARE,Perte d'appétit ou Anorexie (Loss of appetite or Anorexia),Perte d'appétit ou Anorexie (Loss of appetite or Anorexia),T0_intake,pre_lab
+LAB_AWARE,Éruptions cutanées ou Exanthème (Skin rash or Exanthema),Éruptions cutanées ou Exanthème (Skin rash or Exanthema),T0_intake,pre_lab
+LAB_AWARE,Éruption morbilliforme (Morbilliform rash),Éruption morbilliforme (Morbilliform rash),T0_intake,pre_lab
+LAB_AWARE,Saignement/ Manifestations hémorragiques (Bleeding),Saignement/ Manifestations hémorragiques (Bleeding),T0_intake,pre_lab
+LAB_AWARE,Rhinorrhée (Rhinorrhea),Rhinorrhée (Rhinorrhea),T0_intake,pre_lab
+LAB_AWARE,Somnolence ou léthargie  (Drowsiness or lethargy),Somnolence ou léthargie  (Drowsiness or lethargy),T0_intake,pre_lab
+LAB_AWARE,Vertige (Dizzy),Vertige (Dizzy),T0_intake,pre_lab
+LAB_AWARE,Douleur abdominale (stomac pain),Douleur abdominale (stomac pain),T0_intake,pre_lab
+LAB_AWARE,Distension abdominale (Ventre gonflé) (Abdominal Distension (Swelling Stomach)/ Ascites),Distension abdominale (Ventre gonflé) (Abdominal Distension (Swelling Stomach)/ Ascites),T0_intake,pre_lab
+LAB_AWARE,Mal de gorge (throat pain),Mal de gorge (throat pain),T0_intake,pre_lab
+LAB_AWARE,Toux (Cough),Toux (Cough),T0_intake,pre_lab
+LAB_AWARE,Diarrhée  (Diarrhea),Diarrhée  (Diarrhea),T0_intake,pre_lab
+LAB_AWARE,Douleur rétro-orbitrale (Retro-orbital pain),Douleur rétro-orbitrale (Retro-orbital pain),T0_intake,pre_lab
+LAB_AWARE,Céphalée (Headache),Céphalée (Headache),T0_intake,pre_lab
+LAB_AWARE,Sensation de frissons ou de froid (Shiver or cold sensation),Sensation de frissons ou de froid (Shiver or cold sensation),T0_intake,pre_lab
+LAB_AWARE,Mictions fréquentes.(Frequent Urination),Mictions fréquentes.(Frequent Urination),T0_intake,pre_lab
+LAB_AWARE,Constipation,Constipation,T0_intake,pre_lab
+LAB_AWARE,Oligurie (Oliguria),Oligurie (Oliguria),T0_intake,pre_lab
+LAB_AWARE,Mictions fréquentes. (Frequent Urination),Mictions fréquentes. (Frequent Urination),T0_intake,pre_lab
+LAB_AWARE,Prostration,Prostration,T0_intake,pre_lab
+LAB_AWARE,Ictère (Icterus),Ictère (Icterus),T0_intake,pre_lab
+LAB_AWARE,Epistaxis ((Bleeding nose),Epistaxis ((Bleeding nose),T0_intake,pre_lab
+LAB_AWARE,Convulsions généralisées ou focales (Generalised or focal convulsion),Convulsions généralisées ou focales (Generalised or focal convulsion),T0_intake,pre_lab
+LAB_AWARE,Convulsions multiples (Multiple convulsions),Convulsions multiples (Multiple convulsions),T0_intake,pre_lab
+LAB_AWARE,Délire,Délire,T0_intake,pre_lab
+LAB_AWARE,Confusion/ niveau de conscience altéré (impaired level of consciousness),Confusion/ niveau de conscience altéré (impaired level of consciousness),T0_intake,pre_lab
+LAB_AWARE,Gonflement du visage (Facial Swelling),Gonflement du visage (Facial Swelling),T0_intake,pre_lab
+LAB_AWARE,Délire /Discours irrationnel (Delirium/ Irrational Talking),Délire /Discours irrationnel (Delirium/ Irrational Talking),T0_intake,pre_lab
+LAB_AWARE,Hémoglobinurie (Hemoglobinuria),Hémoglobinurie (Hemoglobinuria),T0_intake,pre_lab
+LAB_AWARE,Goût amer dans la gorge (Bitter taste in your Throat),Goût amer dans la gorge (Bitter taste in your Throat),T0_intake,pre_lab
+LAB_AWARE,Test de garrot positif (Positive tourniquet test),Test de garrot positif (Positive tourniquet test),T0_intake,pre_lab
+LAB_AWARE,Raideur (Stiffness),Raideur (Stiffness),T0_intake,pre_lab
+LAB_AWARE,Détresse respiratoire (Respiratory distress),Détresse respiratoire (Respiratory distress),T0_intake,pre_lab
+LAB_AWARE,Choc septique (Shock),Choc septique (Shock),T0_intake,pre_lab
+LAB_AWARE,Hépatomégalie (Hepatomegaly),Hépatomégalie (Hepatomegaly),T0_intake,pre_lab
+LAB_AWARE,Insuffisance cardiaque  ou Myocardite(Heart failure or Myocarditis),Insuffisance cardiaque  ou Myocardite(Heart failure or Myocarditis),T0_intake,pre_lab
+LAB_AWARE,Accumulation de liquide et détresse respiratoire (Accumulation of fluid and respiratory distress),Accumulation de liquide et détresse respiratoire (Accumulation of fluid and respiratory distress),T0_intake,pre_lab
+LAB_AWARE,Splénomégalie modérée,Splénomégalie modérée,T0_intake,pre_lab
+LAB_AWARE,Choc septique (Septicemia),Choc septique (Septicemia),T0_intake,pre_lab
+LAB_AWARE,Syndrome d'icterus subaigu (Sub-icterus),Syndrome d'icterus subaigu (Sub-icterus),T0_intake,pre_lab
+LAB_AWARE,Lymphadénopathie / Lymphadenopa thy,Lymphadénopathie / Lymphadenopa thy,T0_intake,pre_lab
+LAB_AWARE,Température axillaire (médiane IQR) (°C) /Axillary temperature (median IQR) (°C),Température axillaire (médiane IQR) (°C) /Axillary temperature (median IQR) (°C),T1_vital,pre_lab
+LAB_AWARE,Température axillaire (médiane IQR) (°C) /Axillary temperature (median IQR) (°C),Température axillaire (médiane IQR) (°C) /Axillary temperature (median IQR) (°C)__missing,T1_vital,pre_lab
+LAB_AWARE,Fréquence respiratoire (médiane IQR) / Respiratory rate (median breaths/min IQR),Fréquence respiratoire (médiane IQR) / Respiratory rate (median breaths/min IQR),T1_vital,pre_lab
+LAB_AWARE,Fréquence respiratoire (médiane IQR) / Respiratory rate (median breaths/min IQR),Fréquence respiratoire (médiane IQR) / Respiratory rate (median breaths/min IQR)__missing,T1_vital,pre_lab
+LAB_AWARE,Fréquence du pouls (battements/m in ± SD)./ Pulse rate (mean beats/min ± SD) - Shock ou Myocarditis,Fréquence du pouls (battements/m in ± SD)./ Pulse rate (mean beats/min ± SD) - Shock ou Myocarditis,T1_vital,pre_lab
+LAB_AWARE,Fréquence du pouls (battements/m in ± SD)./ Pulse rate (mean beats/min ± SD) - Shock ou Myocarditis,Fréquence du pouls (battements/m in ± SD)./ Pulse rate (mean beats/min ± SD) - Shock ou Myocarditis__missing,T1_vital,pre_lab
+LAB_AWARE,Pression artérielle (moyenne mmHg ± SD). / Arterial blood pressure (mean mmHg ± SD),bp_systolic,T1_vital,pre_lab
+LAB_AWARE,Pression artérielle (moyenne mmHg ± SD). / Arterial blood pressure (mean mmHg ± SD),bp_diastolic,T1_vital,pre_lab
+LAB_AWARE,Pression artérielle (moyenne mmHg ± SD). / Arterial blood pressure (mean mmHg ± SD),bp_parse_failed,T1_vital,pre_lab
+LAB_AWARE,Pression artérielle (moyenne mmHg ± SD). / Arterial blood pressure (mean mmHg ± SD),bp__missing,T1_vital,pre_lab
+LAB_AWARE,Temps de remplissage capillaire (médiane secs IQR). / Capillary refill time (median secs IQR),Temps de remplissage capillaire (médiane secs IQR). / Capillary refill time (median secs IQR),T1_vital,pre_lab
+LAB_AWARE,Pâleur cutanéo muqueuse ou Anémie (Mucosal skin pallor or Anemia),Pâleur cutanéo muqueuse ou Anémie (Mucosal skin pallor or Anemia),T0_intake,pre_lab
+LAB_AWARE,Hypoglycémie (Hypoglycemia),Hypoglycémie (Hypoglycemia),T0_intake,pre_lab
+LAB_AWARE,Diabète,Diabète,T0_intake,pre_lab
+LAB_AWARE,Hypertension artérielle,Hypertension artérielle,T0_intake,pre_lab
+LAB_AWARE,Drépanocytose,Drépanocytose,T0_intake,pre_lab
+LAB_AWARE,Arthrose,Arthrose,T0_intake,pre_lab
+LAB_AWARE,Asthme (Astma),Asthme (Astma),T0_intake,pre_lab
+LAB_AWARE,Pneumonie (Pneumonia),Pneumonie (Pneumonia),T0_intake,pre_lab
+LAB_AWARE,Dengue dans le menage (Household Dengue),Dengue dans le menage (Household Dengue),T0_intake,pre_lab
+LAB_AWARE,Test TDR,Test TDR,T2_lab,lab_aware
+LAB_AWARE,Test TDR,Test TDR__missing,T2_lab,lab_aware
+LAB_AWARE,Goutte épaisse,Goutte épaisse,T2_lab,lab_aware
+LAB_AWARE,Goutte épaisse,Goutte épaisse__missing,T2_lab,lab_aware
+LAB_AWARE,Hémoconcentration,Hémoconcentration,T2_lab,lab_aware
+LAB_AWARE,Hematocrite (Hematrocrit),Hematocrite (Hematrocrit),T2_lab,lab_aware
+LAB_AWARE,Hematocrite (Hematrocrit),Hematocrite (Hematrocrit)__missing,T2_lab,lab_aware
+LAB_AWARE,Transaminases (Transaminases),Transaminases (Transaminases),T2_lab,lab_aware
+LAB_AWARE,Thrombocytopénie(Thrombocytopenia),Thrombocytopénie(Thrombocytopenia),T2_lab,lab_aware
+LAB_AWARE,Lymphocytopénie (Lymphocytopenia),Lymphocytopénie (Lymphocytopenia),T2_lab,lab_aware
+LAB_AWARE,Lymphocytes,Lymphocytes,T2_lab,lab_aware
+LAB_AWARE,Neutropénie (Neutropenia),Neutropénie (Neutropenia),T2_lab,lab_aware
+LAB_AWARE,Nombre de globules blancs (cellules/ML) / White blood cell count / WBC count (cells/ML),Nombre de globules blancs (cellules/ML) / White blood cell count / WBC count (cells/ML),T2_lab,lab_aware
+LAB_AWARE,Nombre de globules blancs (cellules/ML) / White blood cell count / WBC count (cells/ML),Nombre de globules blancs (cellules/ML) / White blood cell count / WBC count (cells/ML)__missing,T2_lab,lab_aware
+LAB_AWARE,Numération plaquettaire Platelet count,Numération plaquettaire Platelet count,T2_lab,lab_aware
+LAB_AWARE,Numération plaquettaire Platelet count,Numération plaquettaire Platelet count__missing,T2_lab,lab_aware
+LAB_AWARE,Neutrophiles / Neutrophils,Neutrophiles / Neutrophils,T2_lab,lab_aware
+LAB_AWARE,Neutrophiles / Neutrophils,Neutrophiles / Neutrophils__missing,T2_lab,lab_aware
+LAB_AWARE,CRP>50 /CRP 10-50,CRP>50 /CRP 10-50,T2_lab,lab_aware
+LAB_AWARE,CRP>50 /CRP 10-50,CRP>50 /CRP 10-50__missing,T2_lab,lab_aware
+LAB_AWARE,Créatinine élevée / Elevated Creatinine,Créatinine élevée / Elevated Creatinine,T2_lab,lab_aware
+LAB_AWARE,Créatinine élevée / Elevated Creatinine,Créatinine élevée / Elevated Creatinine__missing,T2_lab,lab_aware
+LAB_AWARE,ALAT / ASAT élevés. / Elevated ALAT / Elevated ASAT,ALAT / ASAT élevés. / Elevated ALAT / Elevated ASAT,T2_lab,lab_aware
+LAB_AWARE,ALAT / ASAT élevés. / Elevated ALAT / Elevated ASAT,ALAT / ASAT élevés. / Elevated ALAT / Elevated ASAT__missing,T2_lab,lab_aware
+RESEARCH_FULL,Centre de santé,Centre de santé,T0_intake,pre_lab
+RESEARCH_FULL,Genre (Gender),gender_female,T0_intake,pre_lab
+RESEARCH_FULL,Âge (Age),Âge (Age),T0_intake,pre_lab
+RESEARCH_FULL,Poids (Weight),Poids (Weight),T0_intake,pre_lab
+RESEARCH_FULL,Poids (Weight),Poids (Weight)__missing,T0_intake,pre_lab
+RESEARCH_FULL,Circonference du bras (Mua circumference),Circonference du bras (Mua circumference),T0_intake,pre_lab
+RESEARCH_FULL,"Haute température.(temperature, Hyperpyrexia)","Haute température.(temperature, Hyperpyrexia)",T0_intake,pre_lab
+RESEARCH_FULL,Fièvre depuis 48 heures(Fever 48 hrs),Fièvre depuis 48 heures(Fever 48 hrs),T0_intake,pre_lab
+RESEARCH_FULL,Fièvre au cours des 7 derniers jours (Fever in the last 7 days),Fièvre au cours des 7 derniers jours (Fever in the last 7 days),T0_intake,pre_lab
+RESEARCH_FULL,Type de fièvre (Type of Fever),Type de fièvre (Type of Fever),T0_intake,pre_lab
+RESEARCH_FULL,Perte de poids (Loss of Weight),Perte de poids (Loss of Weight),T0_intake,pre_lab
+RESEARCH_FULL,Maux de tête (headache),Maux de tête (headache),T0_intake,pre_lab
+RESEARCH_FULL,Nausée (Nausea),Nausée (Nausea),T0_intake,pre_lab
+RESEARCH_FULL,Vomissement (Vomiting),Vomissement (Vomiting),T0_intake,pre_lab
+RESEARCH_FULL,Douleur articulaire (Joint pain),Douleur articulaire (Joint pain),T0_intake,pre_lab
+RESEARCH_FULL,Gonflement des articulations (Joint Swelling),Gonflement des articulations (Joint Swelling),T0_intake,pre_lab
+RESEARCH_FULL,Douleur musculaire ( Muscle pain),Douleur musculaire ( Muscle pain),T0_intake,pre_lab
+RESEARCH_FULL,Douleur Thoracique (Chaist pain),Douleur Thoracique (Chaist pain),T0_intake,pre_lab
+RESEARCH_FULL,Mal de dos / Douleur rachidienne ( Back pain / Rachiodynia),Mal de dos / Douleur rachidienne ( Back pain / Rachiodynia),T0_intake,pre_lab
+RESEARCH_FULL,Troubles de la conscience (Consciousness trouble),Troubles de la conscience (Consciousness trouble),T0_intake,pre_lab
+RESEARCH_FULL,Perte d'appétit ou Anorexie (Loss of appetite or Anorexia),Perte d'appétit ou Anorexie (Loss of appetite or Anorexia),T0_intake,pre_lab
+RESEARCH_FULL,Éruptions cutanées ou Exanthème (Skin rash or Exanthema),Éruptions cutanées ou Exanthème (Skin rash or Exanthema),T0_intake,pre_lab
+RESEARCH_FULL,Éruption morbilliforme (Morbilliform rash),Éruption morbilliforme (Morbilliform rash),T0_intake,pre_lab
+RESEARCH_FULL,Saignement/ Manifestations hémorragiques (Bleeding),Saignement/ Manifestations hémorragiques (Bleeding),T0_intake,pre_lab
+RESEARCH_FULL,Rhinorrhée (Rhinorrhea),Rhinorrhée (Rhinorrhea),T0_intake,pre_lab
+RESEARCH_FULL,Somnolence ou léthargie  (Drowsiness or lethargy),Somnolence ou léthargie  (Drowsiness or lethargy),T0_intake,pre_lab
+RESEARCH_FULL,Vertige (Dizzy),Vertige (Dizzy),T0_intake,pre_lab
+RESEARCH_FULL,Douleur abdominale (stomac pain),Douleur abdominale (stomac pain),T0_intake,pre_lab
+RESEARCH_FULL,Distension abdominale (Ventre gonflé) (Abdominal Distension (Swelling Stomach)/ Ascites),Distension abdominale (Ventre gonflé) (Abdominal Distension (Swelling Stomach)/ Ascites),T0_intake,pre_lab
+RESEARCH_FULL,Mal de gorge (throat pain),Mal de gorge (throat pain),T0_intake,pre_lab
+RESEARCH_FULL,Toux (Cough),Toux (Cough),T0_intake,pre_lab
+RESEARCH_FULL,Diarrhée  (Diarrhea),Diarrhée  (Diarrhea),T0_intake,pre_lab
+RESEARCH_FULL,Douleur rétro-orbitrale (Retro-orbital pain),Douleur rétro-orbitrale (Retro-orbital pain),T0_intake,pre_lab
+RESEARCH_FULL,Céphalée (Headache),Céphalée (Headache),T0_intake,pre_lab
+RESEARCH_FULL,Sensation de frissons ou de froid (Shiver or cold sensation),Sensation de frissons ou de froid (Shiver or cold sensation),T0_intake,pre_lab
+RESEARCH_FULL,Mictions fréquentes.(Frequent Urination),Mictions fréquentes.(Frequent Urination),T0_intake,pre_lab
+RESEARCH_FULL,Constipation,Constipation,T0_intake,pre_lab
+RESEARCH_FULL,Oligurie (Oliguria),Oligurie (Oliguria),T0_intake,pre_lab
+RESEARCH_FULL,Mictions fréquentes. (Frequent Urination),Mictions fréquentes. (Frequent Urination),T0_intake,pre_lab
+RESEARCH_FULL,Prostration,Prostration,T0_intake,pre_lab
+RESEARCH_FULL,Ictère (Icterus),Ictère (Icterus),T0_intake,pre_lab
+RESEARCH_FULL,Epistaxis ((Bleeding nose),Epistaxis ((Bleeding nose),T0_intake,pre_lab
+RESEARCH_FULL,Convulsions généralisées ou focales (Generalised or focal convulsion),Convulsions généralisées ou focales (Generalised or focal convulsion),T0_intake,pre_lab
+RESEARCH_FULL,Convulsions multiples (Multiple convulsions),Convulsions multiples (Multiple convulsions),T0_intake,pre_lab
+RESEARCH_FULL,Délire,Délire,T0_intake,pre_lab
+RESEARCH_FULL,Confusion/ niveau de conscience altéré (impaired level of consciousness),Confusion/ niveau de conscience altéré (impaired level of consciousness),T0_intake,pre_lab
+RESEARCH_FULL,Gonflement du visage (Facial Swelling),Gonflement du visage (Facial Swelling),T0_intake,pre_lab
+RESEARCH_FULL,Délire /Discours irrationnel (Delirium/ Irrational Talking),Délire /Discours irrationnel (Delirium/ Irrational Talking),T0_intake,pre_lab
+RESEARCH_FULL,Hémoglobinurie (Hemoglobinuria),Hémoglobinurie (Hemoglobinuria),T0_intake,pre_lab
+RESEARCH_FULL,Goût amer dans la gorge (Bitter taste in your Throat),Goût amer dans la gorge (Bitter taste in your Throat),T0_intake,pre_lab
+RESEARCH_FULL,Test de garrot positif (Positive tourniquet test),Test de garrot positif (Positive tourniquet test),T0_intake,pre_lab
+RESEARCH_FULL,Raideur (Stiffness),Raideur (Stiffness),T0_intake,pre_lab
+RESEARCH_FULL,Détresse respiratoire (Respiratory distress),Détresse respiratoire (Respiratory distress),T0_intake,pre_lab
+RESEARCH_FULL,Choc septique (Shock),Choc septique (Shock),T0_intake,pre_lab
+RESEARCH_FULL,Hépatomégalie (Hepatomegaly),Hépatomégalie (Hepatomegaly),T0_intake,pre_lab
+RESEARCH_FULL,Insuffisance cardiaque  ou Myocardite(Heart failure or Myocarditis),Insuffisance cardiaque  ou Myocardite(Heart failure or Myocarditis),T0_intake,pre_lab
+RESEARCH_FULL,Accumulation de liquide et détresse respiratoire (Accumulation of fluid and respiratory distress),Accumulation de liquide et détresse respiratoire (Accumulation of fluid and respiratory distress),T0_intake,pre_lab
+RESEARCH_FULL,Splénomégalie modérée,Splénomégalie modérée,T0_intake,pre_lab
+RESEARCH_FULL,Choc septique (Septicemia),Choc septique (Septicemia),T0_intake,pre_lab
+RESEARCH_FULL,Syndrome d'icterus subaigu (Sub-icterus),Syndrome d'icterus subaigu (Sub-icterus),T0_intake,pre_lab
+RESEARCH_FULL,Lymphadénopathie / Lymphadenopa thy,Lymphadénopathie / Lymphadenopa thy,T0_intake,pre_lab
+RESEARCH_FULL,Température axillaire (médiane IQR) (°C) /Axillary temperature (median IQR) (°C),Température axillaire (médiane IQR) (°C) /Axillary temperature (median IQR) (°C),T1_vital,pre_lab
+RESEARCH_FULL,Température axillaire (médiane IQR) (°C) /Axillary temperature (median IQR) (°C),Température axillaire (médiane IQR) (°C) /Axillary temperature (median IQR) (°C)__missing,T1_vital,pre_lab
+RESEARCH_FULL,Fréquence respiratoire (médiane IQR) / Respiratory rate (median breaths/min IQR),Fréquence respiratoire (médiane IQR) / Respiratory rate (median breaths/min IQR),T1_vital,pre_lab
+RESEARCH_FULL,Fréquence respiratoire (médiane IQR) / Respiratory rate (median breaths/min IQR),Fréquence respiratoire (médiane IQR) / Respiratory rate (median breaths/min IQR)__missing,T1_vital,pre_lab
+RESEARCH_FULL,Fréquence du pouls (battements/m in ± SD)./ Pulse rate (mean beats/min ± SD) - Shock ou Myocarditis,Fréquence du pouls (battements/m in ± SD)./ Pulse rate (mean beats/min ± SD) - Shock ou Myocarditis,T1_vital,pre_lab
+RESEARCH_FULL,Fréquence du pouls (battements/m in ± SD)./ Pulse rate (mean beats/min ± SD) - Shock ou Myocarditis,Fréquence du pouls (battements/m in ± SD)./ Pulse rate (mean beats/min ± SD) - Shock ou Myocarditis__missing,T1_vital,pre_lab
+RESEARCH_FULL,Pression artérielle (moyenne mmHg ± SD). / Arterial blood pressure (mean mmHg ± SD),bp_systolic,T1_vital,pre_lab
+RESEARCH_FULL,Pression artérielle (moyenne mmHg ± SD). / Arterial blood pressure (mean mmHg ± SD),bp_diastolic,T1_vital,pre_lab
+RESEARCH_FULL,Pression artérielle (moyenne mmHg ± SD). / Arterial blood pressure (mean mmHg ± SD),bp_parse_failed,T1_vital,pre_lab
+RESEARCH_FULL,Pression artérielle (moyenne mmHg ± SD). / Arterial blood pressure (mean mmHg ± SD),bp__missing,T1_vital,pre_lab
+RESEARCH_FULL,Temps de remplissage capillaire (médiane secs IQR). / Capillary refill time (median secs IQR),Temps de remplissage capillaire (médiane secs IQR). / Capillary refill time (median secs IQR),T1_vital,pre_lab
+RESEARCH_FULL,Pâleur cutanéo muqueuse ou Anémie (Mucosal skin pallor or Anemia),Pâleur cutanéo muqueuse ou Anémie (Mucosal skin pallor or Anemia),T0_intake,pre_lab
+RESEARCH_FULL,Hypoglycémie (Hypoglycemia),Hypoglycémie (Hypoglycemia),T0_intake,pre_lab
+RESEARCH_FULL,Diabète,Diabète,T0_intake,pre_lab
+RESEARCH_FULL,Hypertension artérielle,Hypertension artérielle,T0_intake,pre_lab
+RESEARCH_FULL,Drépanocytose,Drépanocytose,T0_intake,pre_lab
+RESEARCH_FULL,Arthrose,Arthrose,T0_intake,pre_lab
+RESEARCH_FULL,Asthme (Astma),Asthme (Astma),T0_intake,pre_lab
+RESEARCH_FULL,Pneumonie (Pneumonia),Pneumonie (Pneumonia),T0_intake,pre_lab
+RESEARCH_FULL,Dengue dans le menage (Household Dengue),Dengue dans le menage (Household Dengue),T0_intake,pre_lab
+RESEARCH_FULL,Test TDR,Test TDR,T2_lab,lab_aware
+RESEARCH_FULL,Test TDR,Test TDR__missing,T2_lab,lab_aware
+RESEARCH_FULL,Goutte épaisse,Goutte épaisse,T2_lab,lab_aware
+RESEARCH_FULL,Goutte épaisse,Goutte épaisse__missing,T2_lab,lab_aware
+RESEARCH_FULL,Hémoconcentration,Hémoconcentration,T2_lab,lab_aware
+RESEARCH_FULL,Hematocrite (Hematrocrit),Hematocrite (Hematrocrit),T2_lab,lab_aware
+RESEARCH_FULL,Hematocrite (Hematrocrit),Hematocrite (Hematrocrit)__missing,T2_lab,lab_aware
+RESEARCH_FULL,Transaminases (Transaminases),Transaminases (Transaminases),T2_lab,lab_aware
+RESEARCH_FULL,Thrombocytopénie(Thrombocytopenia),Thrombocytopénie(Thrombocytopenia),T2_lab,lab_aware
+RESEARCH_FULL,Lymphocytopénie (Lymphocytopenia),Lymphocytopénie (Lymphocytopenia),T2_lab,lab_aware
+RESEARCH_FULL,Lymphocytes,Lymphocytes,T2_lab,lab_aware
+RESEARCH_FULL,Neutropénie (Neutropenia),Neutropénie (Neutropenia),T2_lab,lab_aware
+RESEARCH_FULL,Nombre de globules blancs (cellules/ML) / White blood cell count / WBC count (cells/ML),Nombre de globules blancs (cellules/ML) / White blood cell count / WBC count (cells/ML),T2_lab,lab_aware
+RESEARCH_FULL,Nombre de globules blancs (cellules/ML) / White blood cell count / WBC count (cells/ML),Nombre de globules blancs (cellules/ML) / White blood cell count / WBC count (cells/ML)__missing,T2_lab,lab_aware
+RESEARCH_FULL,Numération plaquettaire Platelet count,Numération plaquettaire Platelet count,T2_lab,lab_aware
+RESEARCH_FULL,Numération plaquettaire Platelet count,Numération plaquettaire Platelet count__missing,T2_lab,lab_aware
+RESEARCH_FULL,Neutrophiles / Neutrophils,Neutrophiles / Neutrophils,T2_lab,lab_aware
+RESEARCH_FULL,Neutrophiles / Neutrophils,Neutrophiles / Neutrophils__missing,T2_lab,lab_aware
+RESEARCH_FULL,CRP>50 /CRP 10-50,CRP>50 /CRP 10-50,T2_lab,lab_aware
+RESEARCH_FULL,CRP>50 /CRP 10-50,CRP>50 /CRP 10-50__missing,T2_lab,lab_aware
+RESEARCH_FULL,Créatinine élevée / Elevated Creatinine,Créatinine élevée / Elevated Creatinine,T2_lab,lab_aware
+RESEARCH_FULL,Créatinine élevée / Elevated Creatinine,Créatinine élevée / Elevated Creatinine__missing,T2_lab,lab_aware
+RESEARCH_FULL,ALAT / ASAT élevés. / Elevated ALAT / Elevated ASAT,ALAT / ASAT élevés. / Elevated ALAT / Elevated ASAT,T2_lab,lab_aware
+RESEARCH_FULL,ALAT / ASAT élevés. / Elevated ALAT / Elevated ASAT,ALAT / ASAT élevés. / Elevated ALAT / Elevated ASAT__missing,T2_lab,lab_aware
+RESEARCH_FULL,Dengue (Dengua),Dengue (Dengua),T3_restate,research_only
+RESEARCH_FULL,Autres maladies présentées par le patient,autres_maladies_pr_sent_es_par_le_patien__present,T3_restate,research_only
