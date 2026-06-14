@@ -119,3 +119,64 @@ def try_shap(model, X: pd.DataFrame, label: str, max_samples: int = 150):
     except Exception as exc:  # pragma: no cover
         logger.info("SHAP unavailable/failed for %s (%s); using permutation importance.", label, exc)
         return None
+
+
+def explain_deployed_tree(
+    model,
+    X_background: pd.DataFrame,
+    X_rows: pd.DataFrame,
+    label: str,
+    method: str = "auto",
+) -> dict[str, Any]:
+    """Explain the fitted deployed label model and report the explanation target."""
+    kind, obj = model.models_.get(label, ("const", 0.0))
+    if kind != "model":
+        return {
+            "method": "constant_prior",
+            "label": label,
+            "contributions": pd.DataFrame(),
+            "fidelity": "exact constant output",
+        }
+    pre = obj.named_steps["pre"]
+    clf = obj.named_steps["clf"]
+    feature_names = list(pre.get_feature_names_out())
+    transformed = pd.DataFrame(
+        pre.transform(X_rows), columns=feature_names, index=X_rows.index
+    )
+    if _HAS_SHAP and method in {"auto", "tree_shap"}:
+        try:
+            import shap
+
+            explainer = shap.TreeExplainer(clf)
+            values = explainer.shap_values(transformed)
+            if isinstance(values, list):
+                values = values[1]
+            return {
+                "method": "TreeSHAP",
+                "label": label,
+                "contributions": pd.DataFrame(
+                    np.asarray(values), columns=feature_names, index=X_rows.index
+                ),
+                "fidelity": "model-native additive tree explanation",
+            }
+        except Exception as exc:
+            logger.info("TreeSHAP local explanation failed for %s: %s", label, exc)
+    baseline = obj.predict_proba(X_rows)[:, 1]
+    raw_features = list(X_rows.columns)
+    contributions = np.zeros((len(X_rows), len(raw_features)))
+    for j, feature in enumerate(X_rows.columns):
+        permuted = X_rows.copy()
+        permuted[feature] = X_background[feature].median() if pd.api.types.is_numeric_dtype(
+            X_background[feature]
+        ) else X_background[feature].mode(dropna=True).iloc[0]
+        contributions[:, j] = baseline - obj.predict_proba(permuted)[:, 1]
+    return {
+        "method": "local permutation attribution",
+        "label": label,
+        "contributions": pd.DataFrame(
+            contributions,
+            columns=raw_features,
+            index=X_rows.index,
+        ),
+        "fidelity": "perturbation-based approximation of deployed probability",
+    }

@@ -26,7 +26,8 @@ import pandas as pd
 
 
 def fit_conformal(y_cal: pd.DataFrame, proba_cal: np.ndarray, labels: list[str],
-                  alpha: float = 0.10) -> dict[str, dict[str, float]]:
+                  alpha: float = 0.10, mode: str = "exact",
+                  pragmatic_cap: float = 0.90) -> dict[str, dict[str, float]]:
     """Return per-label conformal info: probability inclusion threshold + q."""
     yt = y_cal.values if isinstance(y_cal, pd.DataFrame) else y_cal
     info: dict[str, dict[str, float]] = {}
@@ -37,18 +38,18 @@ def fit_conformal(y_cal: pd.DataFrame, proba_cal: np.ndarray, labels: list[str],
             info[lab] = {"prob_threshold": 0.5, "q": 0.5, "n_calibration_pos": 0}
             continue
         scores = 1.0 - proba_cal[pos_mask, j]            # nonconformity on positives
-        # finite-sample corrected quantile level. For labels with very few
-        # calibration positives (e.g. yellow fever, ~12) the corrected level is
-        # forced to 1.0 and the set degenerates to "include for everyone". We
-        # cap the level at 0.90 so prediction sets stay informative; the
-        # resulting coverage is then approximate for rare labels (documented).
         level = min(1.0, np.ceil((n_pos + 1) * (1 - alpha)) / n_pos)
-        level_capped = min(level, 0.90)
-        q = float(np.quantile(scores, level_capped, method="higher"))
+        if mode not in {"exact", "pragmatic"}:
+            raise ValueError("mode must be 'exact' or 'pragmatic'")
+        level_used = level if mode == "exact" else min(level, pragmatic_cap)
+        q = float(np.quantile(scores, level_used, method="higher"))
         info[lab] = {
             "prob_threshold": float(np.clip(1.0 - q, 0.0, 1.0)),
             "q": q,
             "n_calibration_pos": n_pos,
+            "quantile_level_finite_sample": float(level),
+            "quantile_level_used": float(level_used),
+            "mode": mode,
         }
     return info
 
@@ -97,6 +98,14 @@ def conformal_metrics(y_true: pd.DataFrame, proba: np.ndarray,
         "pct_ambiguous_multi": round(float((set_sizes > 1).mean()) * 100, 2),
         "overall_coverage": round(
             float(set_label_matrix[yt == 1].mean()) if (yt == 1).any() else np.nan, 4),
+        "macro_label_coverage": round(
+            float(per_label["empirical_coverage"].mean()), 4
+        ),
+        "false_negative_risk": round(
+            float(1.0 - set_label_matrix[yt == 1].mean())
+            if (yt == 1).any() else np.nan,
+            4,
+        ),
     }
     return per_label, summary
 

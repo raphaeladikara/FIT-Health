@@ -21,6 +21,16 @@ from . import report_utils as ru
 logger = ru.get_logger(__name__)
 
 
+def _wilson_interval(successes: int, total: int, z: float = 1.96) -> tuple[float, float]:
+    if total <= 0:
+        return np.nan, np.nan
+    p = successes / total
+    denom = 1 + z * z / total
+    center = (p + z * z / (2 * total)) / denom
+    margin = z * np.sqrt((p * (1 - p) + z * z / (4 * total)) / total) / denom
+    return max(0.0, center - margin), min(1.0, center + margin)
+
+
 def age_groups(age: pd.Series) -> pd.Series:
     bins = [-0.1, 5, 12, 18, 50, 200]
     names = ["infant_<=5", "child_6_12", "adolescent_13_18", "adult_19_50", "elderly_>50"]
@@ -36,15 +46,29 @@ def subgroup_metrics(y_true: pd.DataFrame, y_pred: np.ndarray, labels: list[str]
         series = series.reset_index(drop=True)
         for level in series.dropna().unique():
             mask = (series == level).to_numpy(dtype=bool, na_value=False)
-            if mask.sum() < 3:
+            if mask.sum() < 1:
                 continue
             sub_t, sub_p = yt[mask], y_pred[mask]
             row = {"axis": axis, "level": str(level), "n": int(mask.sum()),
                    "macro_f1": round(f1_score(sub_t, sub_p, average="macro", zero_division=0), 4)}
             for j, lab in enumerate(labels):
                 pos = int(sub_t[:, j].sum())
-                row[f"recall_{lab}"] = (round(recall_score(sub_t[:, j], sub_p[:, j],
-                                        zero_division=0), 4) if pos else np.nan)
+                tp = int(((sub_t[:, j] == 1) & (sub_p[:, j] == 1)).sum())
+                fn = int(((sub_t[:, j] == 1) & (sub_p[:, j] == 0)).sum())
+                low, high = _wilson_interval(tp, pos)
+                row[f"support_pos_{lab}"] = pos
+                row[f"tp_{lab}"] = tp
+                row[f"fn_{lab}"] = fn
+                row[f"recall_{lab}"] = (
+                    round(recall_score(sub_t[:, j], sub_p[:, j], zero_division=0), 4)
+                    if pos else np.nan
+                )
+                row[f"recall_low_{lab}"] = round(low, 4) if pos else np.nan
+                row[f"recall_high_{lab}"] = round(high, 4) if pos else np.nan
+                row[f"evidence_{lab}"] = (
+                    "sufficient for descriptive comparison"
+                    if pos >= 5 else "insufficient evidence"
+                )
             rows.append(row)
     return pd.DataFrame(rows)
 

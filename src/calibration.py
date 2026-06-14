@@ -12,6 +12,7 @@ import numpy as np
 import pandas as pd
 from sklearn.isotonic import IsotonicRegression
 from sklearn.linear_model import LogisticRegression
+from sklearn.model_selection import KFold
 
 
 def brier_score(y_true: np.ndarray, y_prob: np.ndarray) -> float:
@@ -103,3 +104,42 @@ def calibrate_matrix(y_true_cal: pd.DataFrame, proba_cal: np.ndarray,
         calibrators[lab] = cal
         out[:, j] = np.clip(cal(proba_target[:, j]), 0, 1)
     return out, calibrators
+
+
+def cross_fitted_calibration(
+    y_true: pd.DataFrame,
+    proba: np.ndarray,
+    n_splits: int = 5,
+    random_state: int = 42,
+    method: str = "auto",
+) -> tuple[np.ndarray, pd.DataFrame]:
+    """Calibrate every row using a calibrator fitted on complementary rows."""
+    yt = y_true.to_numpy() if isinstance(y_true, pd.DataFrame) else np.asarray(y_true)
+    labels = (
+        list(y_true.columns)
+        if isinstance(y_true, pd.DataFrame)
+        else [f"label_{j}" for j in range(yt.shape[1])]
+    )
+    out = np.zeros_like(proba, dtype=float)
+    rows = []
+    splitter = KFold(n_splits=n_splits, shuffle=True, random_state=random_state)
+    for fold, (cal_idx, target_idx) in enumerate(splitter.split(yt)):
+        for j, label in enumerate(labels):
+            calibrator = fit_calibrator(
+                yt[cal_idx, j], proba[cal_idx, j], method=method
+            )
+            out[target_idx, j] = np.clip(
+                calibrator(proba[target_idx, j]), 0.0, 1.0
+            )
+            for idx in target_idx:
+                rows.append(
+                    {
+                        "target_index": int(idx),
+                        "label": label,
+                        "fold": fold,
+                        "calibration_indices": tuple(int(i) for i in cal_idx),
+                        "n_calibration": len(cal_idx),
+                        "support_pos": int(yt[cal_idx, j].sum()),
+                    }
+                )
+    return out, pd.DataFrame(rows)

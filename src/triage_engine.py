@@ -212,3 +212,45 @@ def policy_resource_tradeoff(proba: np.ndarray, labels: list[str],
         row["avg_flags_per_patient"] = round(total / n, 3)
         rows.append(row)
     return pd.DataFrame(rows)
+
+
+def scenario_sensitivity(
+    proba: np.ndarray,
+    labels: list[str],
+    weight_scenarios: dict[str, dict[str, float]],
+    threshold_scenarios: dict[str, dict[str, float]],
+    capacities: list[int],
+    false_negative_costs: list[float],
+) -> pd.DataFrame:
+    """Transparent operational projections under explicitly labeled assumptions."""
+    rows = []
+    for weight_name, weights in weight_scenarios.items():
+        w = np.array([weights.get(label, 1.0) for label in labels], dtype=float)
+        weighted_risk = (proba * w).sum(axis=1) / max(w.sum(), 1e-12)
+        order = np.argsort(weighted_risk)[::-1]
+        for threshold_name, thresholds in threshold_scenarios.items():
+            flags = np.column_stack(
+                [
+                    proba[:, j] >= thresholds.get(label, 0.5)
+                    for j, label in enumerate(labels)
+                ]
+            )
+            for capacity in capacities:
+                selected = order[: min(capacity, len(order))]
+                deferred_flags = int(flags[selected].sum())
+                for fn_cost in false_negative_costs:
+                    rows.append(
+                        {
+                            "weight_scenario": weight_name,
+                            "threshold_scenario": threshold_name,
+                            "capacity": int(capacity),
+                            "false_negative_cost": float(fn_cost),
+                            "projected_patients_prioritised": int(len(selected)),
+                            "projected_label_flags_reviewed": deferred_flags,
+                            "projected_unreviewed_flag_cost": round(
+                                float((flags.sum() - deferred_flags) * fn_cost), 4
+                            ),
+                            "interpretation": "scenario projection; not measured clinical impact",
+                        }
+                    )
+    return pd.DataFrame(rows)
