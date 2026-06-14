@@ -118,21 +118,39 @@ On Windows, double-click `open_dashboard.bat`. The launcher:
 4. starts the Next.js development server;
 5. opens the command center in the default browser.
 
-### Workspaces
+### Public surface
 
-- **Command Center**: operational indicators, ranked triage queue, immediate actions,
-  triage demand, uncertainty burden, and capacity interpretation.
-- **Patient Intelligence**: representative cases, calibrated disease probabilities,
-  conformal caution sets, uncertainty, co-infection risk, and recommended action.
-- **Resource Allocation**: rapid-test, bed, monitoring, and staff-review capacity;
-  deterministic prioritized allocation; threshold-policy burden.
-- **Trust & Evidence**: held-out metrics, false negatives, calibration, conformal
-  coverage, fairness, center transfer, explainability, and leakage controls.
-- **Methodology**: multi-label framing, clinical-stage controls, validation,
-  uncertainty, limitations, and ethics.
+- **Landing (`/`)**: a one-minute product briefing — thesis, the end-to-end decision
+  pipeline, differentiators, an evidence band with confidence intervals, and explicit
+  limitations. Honest run/evaluation provenance is shown beside the headline.
+- **Guided demo (`/demo`)**: a five-step, shareable judge walkthrough (cohort reality,
+  the leakage trap, a per-threshold patient decision, an ambiguous case, the resource
+  consequence), each linking into the operational workspace.
+- **Methodology (`/methodology`)**: feature stages, validation, thresholds, calibration,
+  conformal abstention, co-infection, triage, resource assumptions, privacy, artifact
+  provenance, limitations, and a linkable glossary.
+
+### Operational workspaces
+
+- **Command Center (`/command-center`)**: a data-generated situation summary, the
+  decision pipeline, a paginated triage queue (filters, clear-filters, empty state),
+  supporting charts, and an artifact-provenance panel.
+- **Patient Review (`/patients`)**: one anonymous record at a time — per-disease
+  decisions against each tuned threshold, ambiguity and co-infection, the recommended
+  action, unknown-case recovery, and a privacy-safe printable report.
+- **Batch Intake (`/intake`)**: schema-validated CSV intake; PRE_LAB is the default
+  deployable track and the FULL leakage track is never offered (live inference is a
+  deployment-mode capability — see below).
+- **Resource Scenarios (`/resources`)**: a labelled simulator with presets, paired
+  number/slider controls, a non-negative shortfall ledger, scenario-vs-current
+  comparison, three-state allocation, and visible demand assumptions.
+- **Trust Center (`/evidence`)**: six URL-driven questions (discrimination, missed
+  cases, calibration, abstention, generalization, leakage), each with confidence
+  intervals, support counts, and an explicit "what we cannot claim".
 
 The public web artifacts contain generated case IDs, never source UUIDs or
-ground-truth diagnosis labels.
+ground-truth diagnosis labels. The dashboard reads schema-v2 artifacts and labels
+any non-canonical (development) run wherever metrics appear.
 
 ## Test and Build the Web App
 

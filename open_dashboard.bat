@@ -3,6 +3,9 @@ setlocal EnableExtensions
 
 REM VECTRA-X Next.js Outbreak Triage Command Center launcher.
 REM Double-click this file, or run: open_dashboard.bat --hostname 0.0.0.0
+REM On launch it frees port 3000, clears the stale Next.js build cache so the
+REM UPDATED dashboard always compiles, starts the dev server, and opens the
+REM browser only once the server actually responds.
 
 cd /d "%~dp0"
 title VECTRA-X Command Center
@@ -29,6 +32,20 @@ if errorlevel 1 (
 if /I "%VECTRA_X_LAUNCHER_TEST%"=="1" (
     echo VECTRA_X_LAUNCHER_OK
     exit /b 0
+)
+
+REM --- Free port 3000 so the browser always opens the freshly started server,
+REM     never a leftover instance that may serve stale content.
+echo [PORT] Releasing port 3000 if a previous server is still running...
+for /f "tokens=5" %%P in ('netstat -ano ^| findstr ":3000" ^| findstr "LISTENING"') do (
+    taskkill /F /PID %%P >nul 2>nul
+)
+
+REM --- Clear the Next.js build/dev cache so edits to the UI are guaranteed to
+REM     be recompiled (a stale .next cache can otherwise serve the old design).
+if exist "web\.next" (
+    echo [CACHE] Clearing web\.next so the updated dashboard rebuilds...
+    rd /s /q "web\.next"
 )
 
 if not exist "web\node_modules" (
@@ -75,16 +92,24 @@ echo.
 echo ================================================================
 echo   VECTRA-X Outbreak Triage Command Center
 echo ================================================================
-echo   Project : %CD%
-echo   URL     : http://localhost:3000
-echo   Stop    : Press Ctrl+C in this window
+echo   Project       : %CD%
+echo   Landing page  : http://localhost:3000
+echo   Guided demo   : http://localhost:3000/demo
+echo   Command center: http://localhost:3000/command-center
+echo   Stop          : Press Ctrl+C in this window
 echo ================================================================
+echo   First launch compiles the app, so the page may take a few
+echo   seconds to appear. The browser opens automatically once the
+echo   server is ready.
 echo.
 
-start "" powershell.exe -NoProfile -WindowStyle Hidden -Command "Start-Sleep -Seconds 3; Start-Process 'http://localhost:3000'"
+REM --- Open the browser only after the dev server actually answers on :3000
+REM     (polls up to ~90s through the first cold compile).
+start "" powershell.exe -NoProfile -WindowStyle Hidden -Command "for($i=0;$i -lt 90;$i++){ try { $r=Invoke-WebRequest -UseBasicParsing -Uri 'http://localhost:3000' -TimeoutSec 2; if($r.StatusCode -ge 200){ Start-Process 'http://localhost:3000'; break } } catch {}; Start-Sleep -Seconds 1 }"
 
+REM --- Pin port 3000 so it matches the URL above; extra args are forwarded.
 pushd "web"
-call npm.cmd run dev -- %*
+call npm.cmd run dev -- -p 3000 %*
 set "EXIT_CODE=%ERRORLEVEL%"
 popd
 
