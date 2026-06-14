@@ -32,3 +32,9 @@ streamlit>=1.30      # tested 1.58.0
 openpyxl>=3.1        # read the data dictionary .xlsx
 PyYAML>=6.0          # config.yaml
 pypdf>=4.0           # optional: re-extract the blueprint PDF text
+
+# --- final competition notebook execution and validation ---
+nbformat>=5.10
+nbclient>=0.10
+ipykernel>=6.29
+pytest>=8.0
