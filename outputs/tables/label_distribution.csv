@@ -1,9 +1,9 @@
 ﻿label,positives,prevalence_pct,status
-malaria,270,90.0,active
-other_diseases,99,33.0,active
-dengue,56,18.67,active
-typhoid,29,9.67,active
-yellow_fever,12,4.0,active
+malaria,270,90.3,active
+other_diseases,99,33.11,active
+dengue,56,18.73,active
+typhoid,29,9.7,active
+yellow_fever,12,4.01,active
 chikungunya,0,0.0,inactive
 zika,0,0.0,inactive
 option_8,0,0.0,inactive

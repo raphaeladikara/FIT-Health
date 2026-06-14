@@ -2,24 +2,24 @@
 
 *Operational impact*
 
-_Generated: 2026-06-13 02:43 — VECTRA-X pipeline_
+_Generated: 2026-06-14 20:04 — VECTRA-X pipeline_
 
 | metric | count | pct |
 | --- | --- | --- |
-| total_patients | 300 | 100.0000 |
-| predicted_malaria | 300 | 100.0000 |
-| predicted_other_diseases | 94 | 31.3300 |
-| predicted_dengue | 102 | 34.0000 |
-| predicted_typhoid | 43 | 14.3300 |
-| predicted_yellow_fever | 44 | 14.6700 |
-| tier_Routine_Monitoring | 66 | 22.0000 |
-| tier_Clinical_Review | 87 | 29.0000 |
-| tier_Confirmatory_Test_Priority | 88 | 29.3300 |
-| tier_Urgent_Response_Priority | 59 | 19.6700 |
-| high_priority_patients | 147 | 49.0000 |
-| require_confirmatory_test | 88 | 29.3300 |
-| high_uncertainty_cases | 44 | 14.6700 |
-| ambiguous_or_coinfection_cases | 271 | 90.3300 |
+| total_patients | 299 | 100.0000 |
+| predicted_malaria | 299 | 100.0000 |
+| predicted_other_diseases | 131 | 43.8100 |
+| predicted_dengue | 66 | 22.0700 |
+| predicted_typhoid | 44 | 14.7200 |
+| predicted_yellow_fever | 6 | 2.0100 |
+| tier_Routine_Monitoring | 20 | 6.6900 |
+| tier_Clinical_Review | 130 | 43.4800 |
+| tier_Confirmatory_Test_Priority | 80 | 26.7600 |
+| tier_Urgent_Response_Priority | 69 | 23.0800 |
+| high_priority_patients | 149 | 49.8300 |
+| require_confirmatory_test | 80 | 26.7600 |
+| high_uncertainty_cases | 98 | 32.7800 |
+| ambiguous_or_coinfection_cases | 297 | 99.3300 |
 
 
 ![Priority distribution](../figures/resource_priority_distribution.png)

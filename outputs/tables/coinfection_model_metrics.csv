@@ -1,7 +1,7 @@
 ﻿model,roc_auc,pr_auc
-extra_trees,0.8628,0.8714
-logreg,0.8625,0.8746
-random_forest,0.8525,0.8503
-hist_gb,0.8447,0.8657
-xgboost,0.8418,0.8629
-lightgbm,0.8407,0.8556
+extra_trees,0.7833,0.778
+random_forest,0.7801,0.7655
+logreg,0.7696,0.8059
+xgboost,0.7495,0.7602
+hist_gb,0.7377,0.7509
+lightgbm,0.7372,0.7561

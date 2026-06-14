@@ -223,11 +223,22 @@ def _alias(col: str) -> str:
 def build_preprocessor(meta: FeatureMeta, scale_numeric: bool = False) -> ColumnTransformer:
     """sklearn ColumnTransformer: median-impute numeric (+optional scale),
     constant-0 impute binary/indicators. Fit inside CV to avoid leakage."""
-    numeric_steps: list[tuple[str, Any]] = [("impute", SimpleImputer(strategy="median"))]
+    numeric_steps: list[tuple[str, Any]] = [
+        ("impute", SimpleImputer(strategy="median", keep_empty_features=True))
+    ]
     if scale_numeric:
         numeric_steps.append(("scale", StandardScaler()))
     numeric_pipe = Pipeline(numeric_steps)
-    binary_pipe = Pipeline([("impute", SimpleImputer(strategy="constant", fill_value=0.0))])
+    binary_pipe = Pipeline([
+        (
+            "impute",
+            SimpleImputer(
+                strategy="constant",
+                fill_value=0.0,
+                keep_empty_features=True,
+            ),
+        )
+    ])
 
     transformers = []
     if meta.numeric_cols:

@@ -164,7 +164,15 @@ def run_research_workflow(quick: bool = False) -> ResearchWorkflowResult:
     candidate_models = (
         ["logreg", "extra_trees"]
         if quick
-        else ["logreg", "random_forest", "extra_trees", "hist_gb"]
+        else [
+            "logreg_c0.1",
+            "logreg",
+            "logreg_c2.0",
+            "random_forest",
+            "extra_trees",
+            "extra_trees_leaf5",
+            "hist_gb",
+        ]
     )
 
     raw = dl.load_raw(cfg)

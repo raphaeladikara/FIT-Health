@@ -1,1 +1,1 @@
-{"schema_version":"1.0.0","run_id":"2026-06-14T074514Z-prelab-et","generated_at":"2026-06-14T07:45:14Z","canonical":true,"model_track":"PRE_LAB","model_name":"extra_trees","evaluation_split":"held-out test","cohort_size":300,"active_labels":5,"source_commit":"546882f"}
+{"schema_version":"1.0.0","run_id":"2026-06-14T130432Z-prelab-et","generated_at":"2026-06-14T13:04:32Z","canonical":true,"model_track":"PRE_LAB","model_name":"extra_trees","evaluation_split":"held-out test","cohort_size":300,"active_labels":5,"source_commit":"2bc8ace0"}

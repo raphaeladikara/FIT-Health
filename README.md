@@ -9,6 +9,22 @@ FIT Competition 2026 — Track IV: AI-based Vector-Borne Disease Prediction.
 
 ---
 
+## Canonical competition artifact
+
+The primary scientific submission is
+`notebooks/VECTRA_X_Final_Competition_Notebook.ipynb`. It is a fully executed,
+formal-English research notebook that starts from the raw competition files and
+does not depend on the legacy precomputed leaderboard. It excludes the single row
+whose diagnosis targets are all unknown, producing a verified supervised cohort of
+299 patients, and removes the audited other-disease target-restatement field from
+deployable feature tracks.
+
+Execute it with:
+
+```bash
+python -m jupyter nbconvert --to notebook --execute notebooks/VECTRA_X_Final_Competition_Notebook.ipynb --output VECTRA_X_Final_Competition_Notebook.ipynb --output-dir notebooks --ExecutePreprocessor.timeout=-1
+```
+
 ## 1. What this is
 
 VECTRA-X reframes a deceptively simple disease-prediction dataset (300 patients ×
@@ -46,6 +62,7 @@ vectra_x_project/
 │   ├── interim/                   # cleaned snapshot
 │   └── processed/                 # y_multilabel + X_pre_lab / X_lab_aware / X_full / X_features_raw
 ├── notebooks/
+│   ├── VECTRA_X_Final_Competition_Notebook.ipynb  # canonical submission
 │   ├── 01_data_audit_eda.ipynb
 │   ├── 02_modeling_multilabel.ipynb
 │   └── 03_explainability_uncertainty_triage.ipynb
@@ -121,10 +138,10 @@ See `docs/dashboard-capabilities.md` for the explicit public/local capability ma
 
 ## 7. Outputs generated
 
-- **Reports** (`outputs/reports/`): blueprint execution summary, data audit, leakage
+- **Reports** (`outputs/reports/`): final technical report sketch, blueprint execution summary, data audit, leakage
   audit, EDA insights, modeling summary, threshold strategy, calibration, uncertainty,
-  conformal, explainability, fairness, triage, resource, **final technical report
-  draft**, presentation outline, jury Q&A bank, limitations & ethics.
+  conformal, explainability, fairness, triage, resource, presentation outline,
+  jury Q&A bank, limitations & ethics.
 - **Tables** (`outputs/tables/`, ~27 CSVs): leaderboard, per-label metrics, threshold
   optimisation & policies, calibration, conformal, fairness, feature importance,
   patient-level predictions, triage dashboard data, resource simulation, etc.
@@ -136,21 +153,24 @@ See `docs/dashboard-capabilities.md` for the explicit public/local capability ma
 - **Processed data** (`data/processed/`): `y_multilabel.csv`, `X_pre_lab.csv`,
   `X_lab_aware.csv`, `X_full.csv`, `X_features_raw.csv`.
 
-## 8. Key results (held-out test, reproducible)
+## 8. Corrected key results (frozen test, leakage-free)
 
 | Track | Best model | macro-F1 | micro-F1 | macro-PR-AUC |
 |---|---|---|---|---|
-| **PRE_LAB (deploy this)** | Extra Trees | 0.65 | 0.84 | 0.61 |
-| LAB_AWARE (after tests) | XGBoost | 0.56 | 0.81 | 0.57 |
-| FULL (leakage demo only) | HistGB | 0.70 | 0.89 | 0.68 |
+| **PRE_LAB research prototype** | Extra Trees | 0.482 | 0.767 | 0.525 |
+| LAB_AWARE confirmation study | HistGradientBoosting | 0.444 | 0.732 | 0.502 |
 
-Co-infection detector: ROC-AUC 0.86. Conformal: 94.8% empirical coverage, avg set size
-2.9. The large FULL-track gain is a **leakage artefact** (the *Dengue (Dengua)* feature
-restates the dengue outcome — dengue F1 rises 0.57 → 0.92) and is **not** deployable.
+The laboratory-aware track does not improve aggregate macro-F1 or macro-PR-AUC.
+Yellow fever has only three frozen-test positives and zero recall in both tracks.
+Exact and pragmatic prediction-set policies are reported separately; no formal
+coverage guarantee is claimed for the pragmatic policy. LOCO macro-F1 is
+approximately 0.265-0.302, making center transfer the principal robustness warning.
 
 ## 9. Important assumptions
 
-- The task is **multi-label** (158/300 patients have >1 diagnosis), not multi-class.
+- The task is **multi-label**, not multi-class.
+- The supervised cohort contains **299** patients; one row with all diagnosis
+  targets missing is excluded.
 - Five labels are active; **chikungunya, zika, option 8 have zero positives** and are
   excluded from scoring.
 - Missing values mean *unknown*, never *negative*; they are kept with `__missing`
@@ -160,12 +180,11 @@ restates the dengue outcome — dengue F1 rises 0.57 → 0.92) and is **not** de
 
 ## 10. ⚠️ Leakage warning
 
-The dataset contains diagnostic-test / current-disease features (*Dengue (Dengua)*,
-*Test TDR*, *Goutte épaisse*, and the diagnosis label columns themselves). These are
-**never** used by the pre-lab triage model. `outputs/reports/leakage_audit.md` and
-`outputs/tables/leakage_candidates.csv` document every decision. Any model that
-includes the leakage features will look excellent and be clinically worthless at
-triage time.
+The dataset contains diagnostic-test and target-restatement features, including
+*Dengue (Dengua)* and *Autres maladies présentées par le patient*. The latter becomes
+a presence indicator with single-feature ROC-AUC approximately 0.975 for
+`other_diseases`. These sources and all derived columns are excluded from deployable
+tracks. The final notebook documents every representation-aware governance decision.
 
 ## 11. Model limitations
 

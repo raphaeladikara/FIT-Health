@@ -1,0 +1,4 @@
+﻿baseline,micro_f1,macro_f1,weighted_f1,samples_f1,hamming_loss,subset_accuracy,jaccard_samples,macro_recall,macro_precision
+always_malaria,0.6974,0.1863,0.5414,0.7201,0.1513,0.4231,0.6453,0.2,0.1744
+prevalence,0.6974,0.1863,0.5414,0.7201,0.1513,0.4231,0.6453,0.2,0.1744
+random_prevalence,0.6581,0.3119,0.6394,0.6722,0.2051,0.2949,0.5759,0.3174,0.3087

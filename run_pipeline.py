@@ -78,7 +78,12 @@ def main(quick: bool = False, use_cache: bool = False) -> None:
 
     # ---------------- Stage 2: labels / target engineering -------------- #
     labels_info = ld.detect_labels(df, cfg)
-    y = labels_info["y"]
+    # Supervised modeling excludes rows with incomplete diagnosis targets.
+    # Keep the raw-schema audit above at n=300, then align every downstream
+    # feature, UUID, target, split, metric, and artifact to the verified cohort.
+    df = df.loc[labels_info["supervised_index"]].reset_index(drop=True)
+    uuid = df[cfg["io"]["uuid_col"]].reset_index(drop=True)
+    y = labels_info["y"].reset_index(drop=True)
     active = labels_info["active_labels"]
     y_out = pd.concat([uuid.reset_index(drop=True), y.reset_index(drop=True)], axis=1)
     ru.save_table(y_out, PROC / "y_multilabel.csv")
@@ -528,8 +533,25 @@ def _write_reports(cfg, R, F, summary, audit, labels_info, leak, leaderboard, be
     tm = pd.DataFrame([{"track": k, **m} for k, m in summary["test_metrics"].items()])
     rep.table(tm[["track", "macro_f1", "micro_f1", "macro_pr_auc", "macro_recall",
                   "hamming_loss", "subset_accuracy"]])
-    rep.p("**Pre-lab vs lab-aware vs full**: lab-aware/full score higher because they include "
-          "diagnostic-test signal; the pre-lab model is the realistic deployable triage model.")
+    pre_metrics = summary["test_metrics"]["PRE_LAB"]
+    lab_metrics = summary["test_metrics"]["LAB_AWARE"]
+    if (
+        lab_metrics["macro_f1"] > pre_metrics["macro_f1"]
+        and lab_metrics["macro_pr_auc"] > pre_metrics["macro_pr_auc"]
+    ):
+        comparison_text = (
+            "LAB_AWARE improves both frozen-test macro-F1 and macro-PR-AUC; "
+            "this remains a stage-specific comparison rather than evidence "
+            "that laboratory data improve early triage."
+        )
+    else:
+        comparison_text = (
+            "LAB_AWARE does not improve both frozen-test macro-F1 and "
+            "macro-PR-AUC. This is retained as a negative result; adding "
+            "laboratory variables is not claimed to improve aggregate performance."
+        )
+    rep.p(f"**Pre-lab vs lab-aware vs full**: {comparison_text} "
+          "FULL remains a research-only leakage demonstration and is never deployable.")
     rep.h2("Per-label metrics (held-out test)")
     rep.table(per_label_metrics)
     rep.h2("Co-infection detector (Track 4, cohort OOF)").table(co_table)
@@ -571,8 +593,10 @@ def _write_reports(cfg, R, F, summary, audit, labels_info, leak, leaderboard, be
 
     # --- conformal ---
     rep = ru.MarkdownReport("Conformal Prediction Summary", "Recall-oriented prediction sets")
-    rep.p(f"Target coverage = {100*(1-cfg['modeling']['conformal_alpha']):.0f}% (alpha="
-          f"{cfg['modeling']['conformal_alpha']}). "
+    rep.p(f"Exact uncapped empirical inclusion policy with nominal target "
+          f"{100*(1-cfg['modeling']['conformal_alpha']):.0f}% (alpha="
+          f"{cfg['modeling']['conformal_alpha']}). This small-sample result is "
+          "reported per label and is not a prospective coverage guarantee. "
           f"Avg set size = {conf_summary['avg_set_size']}, empty sets "
           f"{conf_summary['pct_empty_sets']}%, ambiguous (≥2) {conf_summary['pct_ambiguous_multi']}%.")
     rep.h2("Per-label coverage (held-out test)").table(conf_pl)

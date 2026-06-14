@@ -97,15 +97,23 @@ def available_model_names() -> list[str]:
 
 
 def _base_estimator(name: str, random_state: int):
-    if name == "logreg":
-        return LogisticRegression(max_iter=2000, class_weight="balanced", C=0.5)
+    if name == "logreg" or name.startswith("logreg_c"):
+        c_value = 0.5 if name == "logreg" else float(name.removeprefix("logreg_c"))
+        return LogisticRegression(
+            max_iter=2000, class_weight="balanced", C=c_value
+        )
     if name == "random_forest":
         return RandomForestClassifier(
             n_estimators=400, max_depth=None, min_samples_leaf=2,
             class_weight="balanced_subsample", random_state=random_state, n_jobs=-1)
-    if name == "extra_trees":
+    if name == "extra_trees" or name.startswith("extra_trees_leaf"):
+        leaf = (
+            2
+            if name == "extra_trees"
+            else int(name.removeprefix("extra_trees_leaf"))
+        )
         return ExtraTreesClassifier(
-            n_estimators=500, min_samples_leaf=2, class_weight="balanced",
+            n_estimators=500, min_samples_leaf=leaf, class_weight="balanced",
             random_state=random_state, n_jobs=-1)
     if name == "hist_gb":
         return HistGradientBoostingClassifier(
@@ -129,7 +137,7 @@ def _base_estimator(name: str, random_state: int):
 def make_pipeline(name: str, meta: pp.FeatureMeta, random_state: int) -> Pipeline:
     """Pipeline(preprocessor -> base classifier). Numeric scaling only for the
     linear model; tree/boosting models are scale-invariant."""
-    scale = name == "logreg"
+    scale = name.startswith("logreg")
     pre = pp.build_preprocessor(meta, scale_numeric=scale)
     return Pipeline([("pre", pre), ("clf", _base_estimator(name, random_state))])
 

@@ -2,7 +2,7 @@
 
 *Permutation importance + linear local*
 
-_Generated: 2026-06-13 02:43 — VECTRA-X pipeline_
+_Generated: 2026-06-14 20:04 — VECTRA-X pipeline_
 
 Features are anonymised/encoded clinical **signals** — explanations describe model behaviour, not medical causation.
 
@@ -11,21 +11,21 @@ Features are anonymised/encoded clinical **signals** — explanations describe m
 
 | feature | importance_mean |
 | --- | --- |
-| autres_maladies_pr_sent_es_par_le_patien__present | 0.0905 |
-| Température axillaire (médiane IQR) (°C) /Axillary temperature (median IQR) (°C)__missing | 0.0184 |
-| Diabète | 0.0126 |
-| Douleur abdominale (stomac pain) | 0.0122 |
-| Pâleur cutanéo muqueuse ou Anémie (Mucosal skin pallor or Anemia) | 0.0110 |
-| Vertige (Dizzy) | 0.0095 |
-| Douleur articulaire (Joint pain) | 0.0080 |
-| Convulsions généralisées ou focales (Generalised or focal convulsion) | 0.0048 |
-| Troubles de la conscience (Consciousness trouble) | 0.0039 |
-| Haute température.(temperature, Hyperpyrexia) | 0.0029 |
-| Céphalée (Headache) | 0.0028 |
-| Convulsions multiples (Multiple convulsions) | 0.0020 |
-| Distension abdominale (Ventre gonflé) (Abdominal Distension (Swelling Stomach)/ Ascites) | 0.0011 |
-| Fièvre depuis 48 heures(Fever 48 hrs) | 0.0007 |
-| Saignement/ Manifestations hémorragiques (Bleeding) | 0.0005 |
+| Pâleur cutanéo muqueuse ou Anémie (Mucosal skin pallor or Anemia) | 0.0256 |
+| Diabète | 0.0145 |
+| Détresse respiratoire (Respiratory distress) | 0.0130 |
+| Douleur abdominale (stomac pain) | 0.0125 |
+| Poids (Weight)__missing | 0.0123 |
+| Fréquence respiratoire (médiane IQR) / Respiratory rate (median breaths/min IQR)__missing | 0.0081 |
+| Troubles de la conscience (Consciousness trouble) | 0.0077 |
+| Hypertension artérielle | 0.0065 |
+| Température axillaire (médiane IQR) (°C) /Axillary temperature (median IQR) (°C) | 0.0060 |
+| Céphalée (Headache) | 0.0055 |
+| Fréquence du pouls (battements/m in ± SD)./ Pulse rate (mean beats/min ± SD) - Shock ou Myocarditis | 0.0051 |
+| bp__missing | 0.0045 |
+| Convulsions multiples (Multiple convulsions) | 0.0039 |
+| Oligurie (Oliguria) | 0.0032 |
+| Pneumonie (Pneumonia) | 0.0026 |
 
 
 ![Global importance](../figures/feature_importance_global.png)

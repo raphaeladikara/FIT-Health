@@ -1,41 +1,41 @@
 ﻿uuid,prediction_set,set_size,true_labels,interpretation,max_prob
-eb694f52-51ff-488d-9beb-2923a572a4cf,"{malaria, dengue, typhoid, yellow_fever}",4,{malaria},ambiguous — request confirmatory testing,0.894
-3f96e3e8-d1ed-4ff4-b945-8088af180529,"{malaria, dengue, typhoid, yellow_fever}",4,"{malaria, dengue}",ambiguous — request confirmatory testing,0.823
-f41c7b5c-d560-4352-82b2-cebfcdf2a68a,"{malaria, dengue, typhoid, yellow_fever}",4,"{malaria, dengue}",ambiguous — request confirmatory testing,0.874
-83257713-90ef-47db-acb6-f977a4b8ee1a,"{malaria, dengue, typhoid, yellow_fever}",4,"{dengue, yellow_fever}",ambiguous — request confirmatory testing,0.874
-76d34d9f-4f0b-4bb3-b610-8f41510b0aab,"{malaria, dengue, typhoid, yellow_fever}",4,{dengue},ambiguous — request confirmatory testing,0.707
-f5c31a1e-6059-44fb-8d10-feb7891a93ea,"{malaria, other_diseases, typhoid, yellow_fever}",4,"{malaria, other_diseases}",ambiguous — request confirmatory testing,0.881
-2e80ed76-27fd-467c-b9d8-fa3be6dd72a3,"{malaria, typhoid}",2,{malaria},ambiguous — request confirmatory testing,0.944
-708eccbd-9604-491a-b41c-6026aba3c908,"{malaria, other_diseases, dengue, typhoid, yellow_fever}",5,"{malaria, other_diseases}",ambiguous — request confirmatory testing,0.806
-8648cafa-454c-45d1-80e2-afdb5f25fd2b,"{malaria, other_diseases, dengue, typhoid, yellow_fever}",5,"{other_diseases, dengue}",ambiguous — request confirmatory testing,0.798
-cc1f97c7-8bef-484a-9fc5-7ea18c162db5,"{malaria, dengue, typhoid, yellow_fever}",4,{malaria},ambiguous — request confirmatory testing,0.934
-a61731ad-62a0-4edd-a463-f24e3428c1c1,"{malaria, other_diseases, dengue, yellow_fever}",4,"{malaria, other_diseases, dengue}",ambiguous — request confirmatory testing,0.811
-f6657bfb-245d-4d5f-be6b-c566dc567f71,"{malaria, dengue, typhoid, yellow_fever}",4,{malaria},ambiguous — request confirmatory testing,0.902
-e8b903b1-bd5c-4543-b1c4-de346742db75,"{malaria, typhoid}",2,"{malaria, dengue}",ambiguous — request confirmatory testing,0.96
-09e9b149-fe95-49f6-8513-7baf734163d4,"{malaria, typhoid}",2,{malaria},ambiguous — request confirmatory testing,0.988
-3e835e2c-0d50-4d96-b8be-2a4825dcbd9f,"{malaria, dengue, typhoid, yellow_fever}",4,"{malaria, dengue}",ambiguous — request confirmatory testing,0.949
-3dac4aac-1826-486d-8920-3002716aa3d7,"{malaria, typhoid}",2,{malaria},ambiguous — request confirmatory testing,0.968
-92823c9e-1862-4544-9db0-8140cd22624d,"{malaria, dengue, typhoid, yellow_fever}",4,"{malaria, dengue}",ambiguous — request confirmatory testing,0.974
-0e98a7d3-f9e9-4186-93cc-fcc500fe4de9,"{malaria, typhoid}",2,{malaria},ambiguous — request confirmatory testing,0.964
-c2147f1a-918f-46d8-b99c-3f1ed7b9ddbf,"{malaria, dengue, typhoid, yellow_fever}",4,"{malaria, yellow_fever}",ambiguous — request confirmatory testing,0.953
-bf16d39f-b71f-404a-8b0f-9ced4bb4db62,"{malaria, typhoid}",2,{malaria},ambiguous — request confirmatory testing,0.992
-98001c10-a4be-4f3e-a728-37ccb5723e06,"{malaria, other_diseases, yellow_fever}",3,"{malaria, other_diseases}",ambiguous — request confirmatory testing,0.968
-3f5b7ddc-4278-4338-8d1d-8ae2b3ac3150,"{malaria, yellow_fever}",2,{malaria},ambiguous — request confirmatory testing,0.979
-c38595c0-88f5-46e0-92bf-04afd4c43c57,"{malaria, typhoid}",2,{malaria},ambiguous — request confirmatory testing,0.993
-df8b33f5-856d-4d5c-9b9e-2944b97ddc43,"{malaria, dengue, typhoid, yellow_fever}",4,"{malaria, typhoid}",ambiguous — request confirmatory testing,0.795
-2a8dbf1c-d5d4-45eb-af40-590d7c36a9a1,"{malaria, dengue, typhoid, yellow_fever}",4,{dengue},ambiguous — request confirmatory testing,0.941
-024a8594-142b-418b-aa3e-0dd5ba63151b,"{malaria, other_diseases, yellow_fever}",3,"{malaria, other_diseases}",ambiguous — request confirmatory testing,0.973
-8961767d-f379-43ca-bab8-4911b8a5c84d,"{malaria, dengue, typhoid, yellow_fever}",4,{malaria},ambiguous — request confirmatory testing,0.74
-5336c50a-1a9f-4f13-a5a2-7dcc8e8736d0,"{malaria, dengue, typhoid, yellow_fever}",4,{dengue},ambiguous — request confirmatory testing,0.812
-fe200f8a-eb1d-44a5-8bb8-551b610276c6,"{malaria, yellow_fever}",2,{malaria},ambiguous — request confirmatory testing,0.998
-3c009222-de21-4929-8565-ce84e78e177b,"{malaria, typhoid, yellow_fever}",3,{malaria},ambiguous — request confirmatory testing,0.997
-8cba6468-e615-4aa6-b4bb-8e4d2da78418,"{malaria, dengue, typhoid, yellow_fever}",4,"{malaria, typhoid}",ambiguous — request confirmatory testing,0.958
-3edd6a95-c836-42b9-9c33-d99d20be677a,{malaria},1,{malaria},confident single diagnosis,0.997
-7155ac5a-c685-450d-b294-5bbff2909515,"{malaria, dengue, typhoid, yellow_fever}",4,"{dengue, typhoid}",ambiguous — request confirmatory testing,0.781
-7c786fab-5ece-4172-963f-d6ef9c774424,"{malaria, typhoid}",2,{malaria},ambiguous — request confirmatory testing,0.869
-99d051f1-db12-4291-81a0-808224d53350,"{malaria, yellow_fever}",2,{malaria},ambiguous — request confirmatory testing,0.971
-6b542c0a-13ad-403d-b219-932a7a40252a,"{malaria, dengue, typhoid, yellow_fever}",4,"{malaria, typhoid}",ambiguous — request confirmatory testing,0.815
-4702c9cd-9f33-431b-b56c-f1f04da208c5,"{malaria, dengue, typhoid, yellow_fever}",4,{malaria},ambiguous — request confirmatory testing,0.838
-b0fa50d0-55e9-42cd-9879-980ba2f7acee,"{malaria, yellow_fever}",2,{malaria},ambiguous — request confirmatory testing,0.955
-1fdc6aed-2c8c-4df4-a0ce-66501915a13e,"{malaria, other_diseases, yellow_fever}",3,"{malaria, other_diseases}",ambiguous — request confirmatory testing,0.798
-ce1416fc-6805-4403-8cce-44b6ea2bd499,"{malaria, other_diseases, yellow_fever}",3,"{malaria, other_diseases}",ambiguous — request confirmatory testing,0.729
+26d7d04a-1a1c-4d4b-b64a-606f968e6d9c,"{malaria, dengue, typhoid, yellow_fever}",4,{malaria},ambiguous — request confirmatory testing,0.866
+3f96e3e8-d1ed-4ff4-b945-8088af180529,"{malaria, other_diseases, dengue, typhoid, yellow_fever}",5,"{malaria, dengue}",ambiguous — request confirmatory testing,0.808
+f41c7b5c-d560-4352-82b2-cebfcdf2a68a,"{dengue, typhoid, yellow_fever}",3,"{malaria, dengue}",ambiguous — request confirmatory testing,0.851
+aeb1d26c-a9d3-4081-8b6d-6ed064bd5791,"{malaria, dengue, typhoid, yellow_fever}",4,"{dengue, yellow_fever}",ambiguous — request confirmatory testing,0.776
+76d34d9f-4f0b-4bb3-b610-8f41510b0aab,"{malaria, dengue, typhoid, yellow_fever}",4,{dengue},ambiguous — request confirmatory testing,0.81
+2e80ed76-27fd-467c-b9d8-fa3be6dd72a3,"{malaria, other_diseases, typhoid, yellow_fever}",4,{malaria},ambiguous — request confirmatory testing,0.967
+9c6a66f0-eb73-4139-9d53-cec94117485e,"{malaria, other_diseases, dengue, typhoid, yellow_fever}",5,{malaria},ambiguous — request confirmatory testing,0.753
+741111f9-8be6-4140-b7bb-61c78043e168,"{malaria, other_diseases, dengue, typhoid, yellow_fever}",5,"{malaria, other_diseases}",ambiguous — request confirmatory testing,0.881
+8648cafa-454c-45d1-80e2-afdb5f25fd2b,"{other_diseases, dengue, typhoid, yellow_fever}",4,"{other_diseases, dengue}",ambiguous — request confirmatory testing,0.703
+cc1f97c7-8bef-484a-9fc5-7ea18c162db5,"{malaria, dengue, typhoid, yellow_fever}",4,{malaria},ambiguous — request confirmatory testing,0.94
+f6657bfb-245d-4d5f-be6b-c566dc567f71,"{malaria, dengue, typhoid, yellow_fever}",4,{malaria},ambiguous — request confirmatory testing,0.908
+e8b903b1-bd5c-4543-b1c4-de346742db75,"{malaria, typhoid, yellow_fever}",3,"{malaria, dengue}",ambiguous — request confirmatory testing,0.975
+09e9b149-fe95-49f6-8513-7baf734163d4,"{malaria, typhoid, yellow_fever}",3,{malaria},ambiguous — request confirmatory testing,0.959
+f3042b8a-7be5-4ae7-a4f9-f89c0adfaba4,"{malaria, other_diseases, dengue, typhoid, yellow_fever}",5,"{malaria, other_diseases}",ambiguous — request confirmatory testing,0.927
+3e835e2c-0d50-4d96-b8be-2a4825dcbd9f,"{malaria, dengue, typhoid, yellow_fever}",4,"{malaria, dengue}",ambiguous — request confirmatory testing,0.924
+3dac4aac-1826-486d-8920-3002716aa3d7,"{malaria, typhoid, yellow_fever}",3,{malaria},ambiguous — request confirmatory testing,0.997
+f29f697b-e5f4-44b2-9709-e3a51d99ffa7,"{malaria, dengue, typhoid, yellow_fever}",4,"{malaria, typhoid}",ambiguous — request confirmatory testing,0.869
+92823c9e-1862-4544-9db0-8140cd22624d,"{malaria, dengue, typhoid, yellow_fever}",4,"{malaria, dengue}",ambiguous — request confirmatory testing,0.961
+0e98a7d3-f9e9-4186-93cc-fcc500fe4de9,"{malaria, other_diseases, typhoid, yellow_fever}",4,{malaria},ambiguous — request confirmatory testing,0.976
+e4b531f8-c02b-4940-8907-f4a92c1c428a,"{malaria, other_diseases, dengue, typhoid, yellow_fever}",5,"{malaria, other_diseases, yellow_fever}",ambiguous — request confirmatory testing,0.944
+98001c10-a4be-4f3e-a728-37ccb5723e06,"{malaria, other_diseases, typhoid, yellow_fever}",4,"{malaria, other_diseases}",ambiguous — request confirmatory testing,0.963
+0f049e97-774e-4e1c-8c44-9e96fbf0b828,"{malaria, other_diseases, typhoid, yellow_fever}",4,"{malaria, other_diseases}",ambiguous — request confirmatory testing,0.937
+4f1d2356-7fb5-449b-b2a8-70c5af92a41f,"{malaria, other_diseases, dengue, typhoid, yellow_fever}",5,"{malaria, dengue}",ambiguous — request confirmatory testing,0.879
+df8b33f5-856d-4d5c-9b9e-2944b97ddc43,"{malaria, dengue, typhoid, yellow_fever}",4,"{malaria, typhoid}",ambiguous — request confirmatory testing,0.76
+80f66ab2-0584-46e1-ab09-54f2aad20b31,"{malaria, dengue, typhoid, yellow_fever}",4,{malaria},ambiguous — request confirmatory testing,0.983
+2a8dbf1c-d5d4-45eb-af40-590d7c36a9a1,"{malaria, dengue, typhoid, yellow_fever}",4,{dengue},ambiguous — request confirmatory testing,0.88
+024a8594-142b-418b-aa3e-0dd5ba63151b,"{malaria, other_diseases, typhoid, yellow_fever}",4,"{malaria, other_diseases}",ambiguous — request confirmatory testing,0.995
+8961767d-f379-43ca-bab8-4911b8a5c84d,"{malaria, dengue, typhoid, yellow_fever}",4,{malaria},ambiguous — request confirmatory testing,0.819
+5336c50a-1a9f-4f13-a5a2-7dcc8e8736d0,"{malaria, other_diseases, dengue, typhoid, yellow_fever}",5,{dengue},ambiguous — request confirmatory testing,0.886
+ff10f47f-01e7-49be-9c66-a67a20f67a1a,"{malaria, other_diseases, dengue, typhoid, yellow_fever}",5,{malaria},ambiguous — request confirmatory testing,0.963
+fe200f8a-eb1d-44a5-8bb8-551b610276c6,"{malaria, typhoid, yellow_fever}",3,{malaria},ambiguous — request confirmatory testing,1.0
+3c009222-de21-4929-8565-ce84e78e177b,"{malaria, typhoid, yellow_fever}",3,{malaria},ambiguous — request confirmatory testing,1.0
+8cba6468-e615-4aa6-b4bb-8e4d2da78418,"{malaria, dengue, typhoid, yellow_fever}",4,"{malaria, typhoid}",ambiguous — request confirmatory testing,0.932
+7155ac5a-c685-450d-b294-5bbff2909515,"{malaria, dengue, typhoid, yellow_fever}",4,"{dengue, typhoid}",ambiguous — request confirmatory testing,0.827
+3b83b1db-b243-401f-8050-b8fcd33b76e2,"{malaria, other_diseases, typhoid, yellow_fever}",4,{malaria},ambiguous — request confirmatory testing,0.998
+7c786fab-5ece-4172-963f-d6ef9c774424,"{malaria, typhoid, yellow_fever}",3,{malaria},ambiguous — request confirmatory testing,0.88
+6b542c0a-13ad-403d-b219-932a7a40252a,"{malaria, other_diseases, dengue, typhoid, yellow_fever}",5,"{malaria, typhoid}",ambiguous — request confirmatory testing,0.872
+6ab3d7b6-24af-4994-ae49-d8789eba4316,"{malaria, other_diseases, dengue, typhoid, yellow_fever}",5,{malaria},ambiguous — request confirmatory testing,0.913
+b78d694b-5c7f-48ba-bec8-548e7a1d8fba,"{malaria, other_diseases, dengue, typhoid, yellow_fever}",5,{other_diseases},ambiguous — request confirmatory testing,0.834
+1fdc6aed-2c8c-4df4-a0ce-66501915a13e,"{malaria, other_diseases, typhoid, yellow_fever}",4,"{malaria, other_diseases}",ambiguous — request confirmatory testing,0.734

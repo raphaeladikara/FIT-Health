@@ -20,12 +20,12 @@
   ],
   "n_multilabel_patients": 158,
   "feature_set_sizes": {
-    "PRE_LAB_TRIAGE": 82,
-    "LAB_AWARE_CONFIRMATION": 98,
+    "PRE_LAB_TRIAGE": 81,
+    "LAB_AWARE_CONFIRMATION": 97,
     "FULL_RESEARCH_ONLY": 99
   },
-  "n_train": 223,
-  "n_test": 77,
+  "n_train": 221,
+  "n_test": 78,
   "models_available": [
     "logreg",
     "random_forest",
@@ -36,78 +36,80 @@
   ],
   "best_model_per_track": {
     "PRE_LAB": "extra_trees",
-    "LAB_AWARE": "xgboost",
+    "LAB_AWARE": "hist_gb",
     "FULL": "hist_gb"
   },
   "test_metrics": {
     "PRE_LAB": {
-      "micro_f1": 0.84,
-      "macro_f1": 0.6467,
-      "weighted_f1": 0.8476,
-      "samples_f1": 0.8446,
-      "hamming_loss": 0.1039,
-      "subset_accuracy": 0.6234,
-      "jaccard_samples": 0.7911,
-      "macro_recall": 0.7253,
-      "macro_precision": 0.6026,
-      "macro_roc_auc": 0.7944,
-      "macro_pr_auc": 0.6078
+      "micro_f1": 0.7673,
+      "macro_f1": 0.4823,
+      "weighted_f1": 0.7555,
+      "samples_f1": 0.7808,
+      "hamming_loss": 0.1462,
+      "subset_accuracy": 0.4487,
+      "jaccard_samples": 0.6976,
+      "macro_recall": 0.5011,
+      "macro_precision": 0.4675,
+      "macro_roc_auc": 0.7666,
+      "macro_pr_auc": 0.5247
     },
     "LAB_AWARE": {
-      "micro_f1": 0.8145,
-      "macro_f1": 0.5551,
-      "weighted_f1": 0.843,
-      "samples_f1": 0.8234,
-      "hamming_loss": 0.1195,
-      "subset_accuracy": 0.5325,
-      "jaccard_samples": 0.7554,
-      "macro_recall": 0.6116,
-      "macro_precision": 0.5251,
-      "macro_roc_auc": 0.7934,
-      "macro_pr_auc": 0.5678
+      "micro_f1": 0.7321,
+      "macro_f1": 0.4439,
+      "weighted_f1": 0.7496,
+      "samples_f1": 0.759,
+      "hamming_loss": 0.1821,
+      "subset_accuracy": 0.3462,
+      "jaccard_samples": 0.6564,
+      "macro_recall": 0.5217,
+      "macro_precision": 0.4024,
+      "macro_roc_auc": 0.7872,
+      "macro_pr_auc": 0.5024
     },
     "FULL": {
-      "micro_f1": 0.8927,
-      "macro_f1": 0.7049,
-      "weighted_f1": 0.9087,
-      "samples_f1": 0.8843,
-      "hamming_loss": 0.0649,
-      "subset_accuracy": 0.7273,
-      "jaccard_samples": 0.8474,
-      "macro_recall": 0.7069,
-      "macro_precision": 0.7333,
-      "macro_roc_auc": 0.8203,
-      "macro_pr_auc": 0.6818
+      "micro_f1": 0.8917,
+      "macro_f1": 0.6436,
+      "weighted_f1": 0.8873,
+      "samples_f1": 0.8983,
+      "hamming_loss": 0.0667,
+      "subset_accuracy": 0.7308,
+      "jaccard_samples": 0.8568,
+      "macro_recall": 0.6286,
+      "macro_precision": 0.6744,
+      "macro_roc_auc": 0.8829,
+      "macro_pr_auc": 0.6728
     }
   },
-  "calibration_mean_brier": 0.0819,
+  "calibration_mean_brier": 0.1062,
   "conformal": {
-    "avg_set_size": 2.8961,
+    "avg_set_size": 4.0385,
     "pct_empty_sets": 0.0,
-    "pct_singletons": 5.19,
-    "pct_ambiguous_multi": 94.81,
-    "overall_coverage": 0.9483
+    "pct_singletons": 0.0,
+    "pct_ambiguous_multi": 100.0,
+    "overall_coverage": 0.9487,
+    "macro_label_coverage": 0.966,
+    "false_negative_risk": 0.0513
   },
   "coinfection": {
     "best_model": "extra_trees",
-    "roc_auc": 0.8628,
-    "pr_auc": 0.8714,
-    "recall": 0.8354
+    "roc_auc": 0.7833,
+    "pr_auc": 0.778,
+    "recall": 0.7468
   },
   "uncertainty_counts": {
-    "moderate": 138,
-    "low": 118,
-    "high": 44
+    "moderate": 178,
+    "high": 98,
+    "low": 23
   },
   "triage_distribution": {
-    "Confirmatory Test Priority": 88,
-    "Clinical Review": 87,
-    "Routine Monitoring": 66,
-    "Urgent Response Priority": 59
+    "Clinical Review": 130,
+    "Confirmatory Test Priority": 80,
+    "Urgent Response Priority": 69,
+    "Routine Monitoring": 20
   },
   "shap_generated": true,
   "loco_macro_f1": [
-    0.3782,
-    0.3721
+    0.2645,
+    0.3062
   ]
 }

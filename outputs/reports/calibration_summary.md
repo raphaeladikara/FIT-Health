@@ -2,22 +2,22 @@
 
 *Trustworthy probabilities*
 
-_Generated: 2026-06-13 02:43 — VECTRA-X pipeline_
+_Generated: 2026-06-14 20:04 — VECTRA-X pipeline_
 
 | label | base_rate | brier | ece | mean_pred | variant |
 | --- | --- | --- | --- | --- | --- |
-| malaria | 0.8701 | 0.1071 | 0.0579 | 0.8461 | uncalibrated |
-| other_diseases | 0.3247 | 0.0380 | 0.1337 | 0.3387 | uncalibrated |
-| dengue | 0.1818 | 0.1299 | 0.0922 | 0.2600 | uncalibrated |
-| typhoid | 0.0909 | 0.1008 | 0.1121 | 0.1588 | uncalibrated |
-| yellow_fever | 0.0390 | 0.0338 | 0.0445 | 0.0796 | uncalibrated |
-| malaria | 0.8701 | 0.1109 | 0.0465 | 0.9167 | calibrated |
-| other_diseases | 0.3247 | 0.0146 | 0.0237 | 0.3224 | calibrated |
-| dengue | 0.1818 | 0.1219 | 0.0715 | 0.1714 | calibrated |
-| typhoid | 0.0909 | 0.0793 | 0.0513 | 0.0835 | calibrated |
-| yellow_fever | 0.0390 | 0.0363 | 0.0020 | 0.0370 | calibrated |
+| malaria | 0.8718 | 0.1125 | 0.0804 | 0.8566 | uncalibrated |
+| other_diseases | 0.3205 | 0.1499 | 0.1499 | 0.3375 | uncalibrated |
+| dengue | 0.1795 | 0.1280 | 0.1051 | 0.2579 | uncalibrated |
+| typhoid | 0.0897 | 0.0903 | 0.0971 | 0.1746 | uncalibrated |
+| yellow_fever | 0.0385 | 0.0505 | 0.0549 | 0.0934 | uncalibrated |
+| malaria | 0.8718 | 0.1142 | 0.0562 | 0.9258 | calibrated |
+| other_diseases | 0.3205 | 0.1714 | 0.1603 | 0.2785 | calibrated |
+| dengue | 0.1795 | 0.1295 | 0.0566 | 0.1670 | calibrated |
+| typhoid | 0.0897 | 0.0716 | 0.0798 | 0.0896 | calibrated |
+| yellow_fever | 0.0385 | 0.0369 | 0.0002 | 0.0383 | calibrated |
 
-Mean uncalibrated Brier (pre-lab, test) = 0.0819.
+Mean uncalibrated Brier (pre-lab, test) = 0.1062.
 
 
 ![Reliability curves](../figures/calibration_curves.png)

@@ -2,7 +2,7 @@
 
 *Multi-label clinical structure*
 
-_Generated: 2026-06-13 02:43 — VECTRA-X pipeline_
+_Generated: 2026-06-14 20:04 — VECTRA-X pipeline_
 
 - Malaria dominates (90% prevalence) — accuracy/micro metrics are misleading; macro-F1 and per-label recall are primary.
 - 158 patients carry >1 diagnosis — multi-label, not multi-class.

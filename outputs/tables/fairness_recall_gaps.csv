@@ -1,16 +1,15 @@
 ﻿axis,label,max_recall,min_recall,recall_gap,worst_level
 gender,malaria,1.0,1.0,0.0,Homme
-gender,other_diseases,1.0,1.0,0.0,Homme
-gender,dengue,0.8,0.6667,0.1333,Homme
-gender,typhoid,0.5,0.0,0.5,Femme
-gender,yellow_fever,1.0,0.5,0.5,Femme
+gender,other_diseases,0.75,0.6923,0.0577,Homme
+gender,dengue,0.4286,0.2857,0.1429,Homme
+gender,typhoid,0.5,0.3333,0.1667,Femme
 center,malaria,1.0,1.0,0.0,CMA de DO
-center,other_diseases,1.0,0.9474,0.0526,CMA de DAFRA
-center,dengue,0.75,0.5,0.25,CMA de DAFRA
-center,typhoid,0.5,0.0,0.5,CMA de DAFRA
-center,yellow_fever,1.0,0.0,1.0,CMA de DAFRA
-age_group,malaria,1.0,1.0,0.0,child_6_12
-age_group,other_diseases,1.0,0.6667,0.3333,adolescent_13_18
-age_group,dengue,1.0,0.0,1.0,adolescent_13_18
-age_group,typhoid,1.0,0.0,1.0,child_6_12
-age_group,yellow_fever,1.0,0.5,0.5,child_6_12
+center,other_diseases,1.0,0.6111,0.3889,CMA de DAFRA
+center,dengue,0.4167,0.0,0.4167,CMA de DAFRA
+center,typhoid,0.6,0.0,0.6,CMA de DAFRA
+center,yellow_fever,0.0,0.0,0.0,CMA de DO
+age_group,malaria,1.0,1.0,0.0,infant_<=5
+age_group,other_diseases,1.0,0.0,1.0,adolescent_13_18
+age_group,dengue,0.6667,0.0,0.6667,infant_<=5
+age_group,typhoid,1.0,0.0,1.0,infant_<=5
+age_group,yellow_fever,0.0,0.0,0.0,adult_19_50

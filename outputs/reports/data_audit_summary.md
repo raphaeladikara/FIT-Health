@@ -2,7 +2,7 @@
 
 *VECTRA-X — official dataset*
 
-_Generated: 2026-06-13 02:43 — VECTRA-X pipeline_
+_Generated: 2026-06-14 20:04 — VECTRA-X pipeline_
 
 **Shape:** 300 rows × 109 columns. **Duplicate rows:** 0. **Constant columns:** 11.
 
@@ -69,16 +69,16 @@ _Generated: 2026-06-13 02:43 — VECTRA-X pipeline_
 
 | label | positives | prevalence_pct | status |
 | --- | --- | --- | --- |
-| malaria | 270 | 90.0000 | active |
-| other_diseases | 99 | 33.0000 | active |
-| dengue | 56 | 18.6700 | active |
-| typhoid | 29 | 9.6700 | active |
-| yellow_fever | 12 | 4.0000 | active |
+| malaria | 270 | 90.3000 | active |
+| other_diseases | 99 | 33.1100 | active |
+| dengue | 56 | 18.7300 | active |
+| typhoid | 29 | 9.7000 | active |
+| yellow_fever | 12 | 4.0100 | active |
 | chikungunya | 0 | 0.0000 | inactive |
 | zika | 0 | 0.0000 | inactive |
 | option_8 | 0 | 0.0000 | inactive |
 
-Multi-label patients (>1 diagnosis): **158**; patients with no active label: **1**.
+Multi-label patients (>1 diagnosis): **158**; patients with no active label: **0**.
 
 Binary-vs-free-text label agreement = 100% on all labels (encoding validated).
 
