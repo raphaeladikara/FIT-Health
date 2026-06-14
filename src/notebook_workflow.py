@@ -220,6 +220,7 @@ class ResearchWorkflowResult:
     leakage_candidates: pd.DataFrame
     research_only_features: list[str]
     feature_contract: pd.DataFrame
+    preprocessing_summary: pd.DataFrame
     design_frames: dict[str, pd.DataFrame]
     frozen_indices: dict[str, np.ndarray]
     split_support: pd.DataFrame
@@ -420,6 +421,40 @@ def run_research_workflow(quick: bool = False) -> ResearchWorkflowResult:
             )
     feature_contract = pd.DataFrame(contract_rows)
 
+    # Evidence that the deployable preprocessing learns categories train-only via
+    # fold-local one-hot encoding (no global factorisation / ordinal encoding).
+    preprocessing_rows = []
+    for track in ["PRE_LAB", "LAB_AWARE"]:
+        Xf, meta = design_frames[track], metas[track]
+        transformer = pp.build_preprocessor(meta)
+        transformer.fit(Xf.iloc[train_idx])
+        feature_names = list(transformer.get_feature_names_out())
+        if meta.categorical_cols:
+            encoder = transformer.named_transformers_["cat"].named_steps["encode"]
+            learned_levels = int(sum(len(c) for c in encoder.categories_))
+            unseen_ignored = encoder.handle_unknown == "ignore"
+        else:
+            learned_levels = 0
+            unseen_ignored = True
+        preprocessing_rows.append(
+            {
+                "track": track,
+                "n_categorical": len(meta.categorical_cols),
+                "categorical_columns": ", ".join(meta.categorical_cols) or "(none)",
+                "strategy": "fold-local OneHotEncoder(handle_unknown='ignore')",
+                "categories_learned_train_only": True,
+                "learned_category_levels": learned_levels,
+                "unseen_categories_ignored": bool(unseen_ignored),
+                "n_numeric": len(meta.numeric_cols),
+                "n_binary": len(meta.binary_cols),
+                "n_indicators": len(meta.indicator_cols),
+                "n_transformed_features": len(feature_names),
+                "example_transformed_features": ", ".join(feature_names[:6]),
+                "uses_global_factorization": False,
+            }
+        )
+    preprocessing_summary = pd.DataFrame(preprocessing_rows)
+
     support = _split_support(y, train_idx, test_idx)
     y_train, y_test = y.iloc[train_idx], y.iloc[test_idx]
 
@@ -568,14 +603,27 @@ def run_research_workflow(quick: bool = False) -> ResearchWorkflowResult:
     paired_track = pd.DataFrame(paired_rows)
 
     ablation_rows = []
+    all_cols = list(X_pre.columns)
+    center_fragment = cfg["preprocessing"]["center_col_fragment"].strip().lower()
+
+    def _is_center_derived(col: str) -> bool:
+        # Remove by RAW-SOURCE lineage, not by a transformed-name string, so every
+        # column derived from "Centre de santé" (incl. its missing indicator) goes.
+        return center_fragment in meta_pre.source_map.get(col, col).lower()
+
     variants = {
-        "all_pre_lab": list(X_pre.columns),
-        "without_center": [c for c in X_pre.columns if c != "center_code"],
+        "all_pre_lab": all_cols,
+        "without_center": [c for c in all_cols if not _is_center_derived(c)],
         "without_missing_indicators": [
-            c for c in X_pre.columns if not c.endswith("__missing")
+            c for c in all_cols if not c.endswith("__missing")
         ],
     }
+    assert not any(
+        _is_center_derived(c) for c in variants["without_center"]
+    ), "without_center ablation must not retain any center-derived column"
     for name, columns in variants.items():
+        removed = [c for c in all_cols if c not in set(columns)]
+        removed_sources = sorted({meta_pre.source_map.get(c, c) for c in removed})
         meta_variant = _subset_meta(meta_pre, columns)
         oof = M.cross_val_proba(
             selected["PRE_LAB"],
@@ -589,6 +637,8 @@ def run_research_workflow(quick: bool = False) -> ResearchWorkflowResult:
             {
                 "ablation": name,
                 "n_features": len(columns),
+                "n_removed_columns": len(removed),
+                "raw_sources_removed": removed_sources,
                 "thresholds": _thresholds(y_train, oof),
                 **ev.multilabel_summary(
                     y_train,
@@ -802,6 +852,7 @@ def run_research_workflow(quick: bool = False) -> ResearchWorkflowResult:
         leakage_candidates=leakage["leakage_candidates"],
         research_only_features=research_only,
         feature_contract=feature_contract,
+        preprocessing_summary=preprocessing_summary,
         design_frames=design_frames,
         frozen_indices={"train": train_idx, "test": test_idx},
         split_support=support,

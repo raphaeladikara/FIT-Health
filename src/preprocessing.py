@@ -4,13 +4,16 @@ Two layers, kept separate to avoid CV leakage:
 
 1. ``make_feature_frame`` — *stateless* deterministic cleaning that does not
    depend on cross-validation statistics: decimal-comma numeric parsing, blood
-   pressure systolic/diastolic extraction, OUI/NON -> 1/0, categorical
-   factorisation, high-cardinality text -> presence flag, and per-column
-   ``__missing`` indicators (so "unknown" is never confused with "negative").
+   pressure systolic/diastolic extraction, OUI/NON -> 1/0, raw categorical
+   strings preserved verbatim (no factorisation / ordinal codes), high-cardinality
+   text -> presence flag, and per-column ``__missing`` indicators (so "unknown"
+   is never confused with "negative").
 
 2. ``build_preprocessor`` — a *stateful* sklearn ``ColumnTransformer`` (median
-   imputation for numeric, constant-0 for binary, optional scaling) that is fit
-   INSIDE each CV fold via a Pipeline, so imputation never leaks.
+   imputation for numeric, constant-0 for binary, and
+   ``OneHotEncoder(handle_unknown="ignore")`` for nominal categories, optional
+   scaling) that is fit INSIDE each CV fold via a Pipeline, so neither imputation
+   statistics nor one-hot categories ever leak from validation/test rows.
 
 Constant columns are dropped here — but logged with the reason, never silently.
 """

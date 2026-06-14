@@ -119,8 +119,10 @@ preset **Other**, no build command, output dir `.`.
 
 ## How to run & verify
 
-Python 3.10+ (verified on 3.12). Tests use **unittest**, not pytest. See `MEMORY.md`
-for the absolute python path on this machine.
+Python 3.10+ (verified on 3.12). Tests are **pytest**-style bare functions (run
+with `pytest`, not `unittest discover`). On this Windows machine pass
+`--basetemp=.pytmp` so pytest does not hit the `%TEMP%\pytest-of-*` permission
+error. See `MEMORY.md` for the absolute python path.
 
 ```bash
 # Reproduce research (CLI)
@@ -140,14 +142,14 @@ python scripts/validate_web_bundle.py
 python web/serve_live.py --port 4173        # open http://localhost:4173
 
 # Verify everything
-python -m unittest discover -s tests -q
+python -m pytest tests/ -q --basetemp=.pytmp   # pytest-style; .pytmp avoids a Windows temp ACL error
 python scripts/validate_final_notebook.py
 python scripts/validate_web_bundle.py
 cd web && npm test && npm run check          # node --test (tests/*.test.js) + tools/check-js.mjs
 # optional browser smoke: cd web && npm run test:browser
 ```
 
-## Current evidence (frozen test, run `20260614T162420Z`)
+## Current evidence (frozen test, run `20260614T182259Z`)
 
 | Track | Model | Macro-F1 | Micro-F1 | Macro PR-AUC | Macro ROC-AUC |
 |---|---|---:|---:|---:|---:|

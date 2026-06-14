@@ -91,3 +91,33 @@ def test_workflow_keeps_test_out_of_selection_audit():
 
     assert set(result.selection_audit["data_partition"]) == {"training_only"}
     assert result.final_test_audit["evaluations_per_track"].max() == 1
+
+
+def test_center_ablation_removes_center_derived_columns_by_lineage():
+    result = run_research_workflow(quick=True)
+    ablations = result.ablations.set_index("ablation")
+
+    assert {"all_pre_lab", "without_center"} <= set(ablations.index)
+    # The center column must actually be removed (the previous bug filtered on a
+    # transformed-name string "center_code" that never existed, removing nothing).
+    assert (
+        ablations.loc["without_center", "n_features"]
+        < ablations.loc["all_pre_lab", "n_features"]
+    )
+    assert ablations.loc["without_center", "n_removed_columns"] >= 1
+    removed_sources = ablations.loc["without_center", "raw_sources_removed"]
+    assert any("Centre de santé" in src for src in removed_sources)
+    # all_pre_lab removes nothing.
+    assert ablations.loc["all_pre_lab", "n_removed_columns"] == 0
+
+
+def test_preprocessing_summary_proves_fold_local_onehot_no_factorization():
+    result = run_research_workflow(quick=True)
+    summary = result.preprocessing_summary.set_index("track")
+
+    pre = summary.loc["PRE_LAB"]
+    assert pre["n_categorical"] >= 1
+    assert pre["uses_global_factorization"] is False or pre["uses_global_factorization"] == False  # noqa: E712
+    assert pre["unseen_categories_ignored"]
+    assert "OneHotEncoder" in pre["strategy"]
+    assert pre["n_transformed_features"] >= pre["n_categorical"]

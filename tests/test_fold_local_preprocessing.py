@@ -1,7 +1,10 @@
 import numpy as np
 import pandas as pd
+from sklearn.compose import ColumnTransformer
+from sklearn.preprocessing import OneHotEncoder
 
-from src.preprocessing import build_preprocessor, make_feature_frame
+from src.modeling import make_pipeline
+from src.preprocessing import FeatureMeta, build_preprocessor, make_feature_frame
 
 
 def test_stateless_derivation_preserves_category_strings():
@@ -68,3 +71,35 @@ def test_repeated_fits_have_deterministic_columns_and_preserve_row_order():
     assert first.get_feature_names_out().tolist() == second.get_feature_names_out().tolist()
     output = first.transform(frame)
     assert output[:, 0].tolist() == [38.0, 36.0, 37.0]
+
+
+def test_deployable_categoricals_are_not_globally_factorized():
+    raw = pd.DataFrame(
+        {
+            "Centre de santé": ["DAFRA", "DO", "DAFRA", "DO"],
+            "Temperature": ["37,2", "39,1", "38,0", "36,9"],
+        }
+    )
+    frame, meta = make_feature_frame(raw, list(raw.columns))
+
+    # Raw strings are preserved verbatim (object dtype), NOT integer codes.
+    assert "Centre de santé" in meta.categorical_cols
+    assert frame["Centre de santé"].dtype == object
+    assert set(frame["Centre de santé"].dropna()) == {"DAFRA", "DO"}
+    assert not np.issubdtype(frame["Centre de santé"].dropna().map(type).iloc[0], np.integer)
+
+
+def test_every_candidate_model_wraps_fold_local_onehot_preprocessor():
+    meta = FeatureMeta(
+        numeric_cols=["temperature"],
+        categorical_cols=["site"],
+    )
+    for name in ["logreg", "logreg_c0.1", "extra_trees", "random_forest", "hist_gb"]:
+        pipe = make_pipeline(name, meta, random_state=0)
+        pre = pipe.named_steps["pre"]
+        assert isinstance(pre, ColumnTransformer)
+        # Inspect the unfitted spec so no leakage-prone fit is required here.
+        cat_pipe = {tname: trans for tname, trans, _ in pre.transformers}["cat"]
+        encoder = cat_pipe.named_steps["encode"]
+        assert isinstance(encoder, OneHotEncoder)
+        assert encoder.handle_unknown == "ignore"
