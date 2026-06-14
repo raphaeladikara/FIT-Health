@@ -14,6 +14,7 @@ co-occurrence matrix.
 """
 from __future__ import annotations
 
+from dataclasses import dataclass
 from typing import Any
 
 import numpy as np
@@ -24,12 +25,40 @@ from . import report_utils as ru
 logger = ru.get_logger(__name__)
 
 _POS_TOKENS = {"1", "1.0", "oui", "positif", "yes", "true"}
+_NEG_TOKENS = {"0", "0.0", "non", "negatif", "négatif", "no", "false"}
+
+
+@dataclass(frozen=True)
+class SupervisedCohort:
+    """Indices retained for supervised learning and an audit of exclusions."""
+
+    included_index: pd.Index
+    excluded_index: pd.Index
+    exclusion_reason: pd.Series
 
 
 def _to_binary(series: pd.Series) -> pd.Series:
-    """Coerce a label column to {0,1}; missing -> 0 (no diagnosis recorded)."""
+    """Coerce a label column to nullable {0,1}; preserve unknown targets."""
     s = series.astype("string").str.strip().str.lower()
-    return s.isin(_POS_TOKENS).astype(int)
+    out = pd.Series(pd.NA, index=series.index, dtype="Int64")
+    out.loc[s.isin(_POS_TOKENS)] = 1
+    out.loc[s.isin(_NEG_TOKENS)] = 0
+    return out
+
+
+def build_supervised_cohort(df: pd.DataFrame, y_all: pd.DataFrame) -> SupervisedCohort:
+    """Return rows with complete diagnosis targets plus explicit exclusions."""
+    all_missing = y_all.isna().all(axis=1)
+    partly_missing = y_all.isna().any(axis=1) & ~all_missing
+    excluded = all_missing | partly_missing
+    reasons = pd.Series(index=y_all.index[excluded], dtype="string", name="reason")
+    reasons.loc[all_missing[all_missing].index] = "all diagnosis targets missing"
+    reasons.loc[partly_missing[partly_missing].index] = "one or more diagnosis targets missing"
+    return SupervisedCohort(
+        included_index=df.index[~excluded],
+        excluded_index=df.index[excluded],
+        exclusion_reason=reasons.reset_index(drop=True),
+    )
 
 
 def detect_labels(df: pd.DataFrame, cfg: dict[str, Any] | None = None) -> dict[str, Any]:
@@ -63,21 +92,24 @@ def detect_labels(df: pd.DataFrame, cfg: dict[str, Any] | None = None) -> dict[s
         alias_to_raw[alias] = col
         y_all[alias] = _to_binary(df[col])
 
-    positives = y_all.sum().sort_values(ascending=False)
+    cohort = build_supervised_cohort(df, y_all)
+    y_all_supervised = y_all.loc[cohort.included_index].astype(int)
+
+    positives = y_all_supervised.sum().sort_values(ascending=False)
     active_labels = positives[positives > 0].index.tolist()
     inactive_labels = positives[positives == 0].index.tolist()
 
     if cfg["labels"].get("drop_if_no_positives", True):
-        y = y_all[active_labels].copy()
+        y = y_all_supervised[active_labels].copy()
     else:
-        y = y_all.copy()
+        y = y_all_supervised.copy()
 
     logger.info("Detected %d label columns -> %d ACTIVE %s, %d INACTIVE %s",
                 len(label_cols), len(active_labels), active_labels,
                 len(inactive_labels), inactive_labels)
 
     # --- distribution ------------------------------------------------- #
-    n = len(df)
+    n = len(y)
     distribution = pd.DataFrame({
         "label": positives.index,
         "positives": positives.values,
@@ -98,11 +130,17 @@ def detect_labels(df: pd.DataFrame, cfg: dict[str, Any] | None = None) -> dict[s
     ).astype(int)
 
     # --- validate binary encoding against the free-text diagnosis ----- #
-    text_validation = _validate_against_text(df, y_all, alias_map, text_col)
+    text_validation = _validate_against_text(
+        df.loc[cohort.included_index], y_all_supervised, alias_map, text_col
+    )
 
     return {
         "y": y,
         "y_all": y_all,
+        "y_all_supervised": y_all_supervised,
+        "supervised_index": cohort.included_index,
+        "excluded_target_index": cohort.excluded_index,
+        "target_exclusion_reasons": cohort.exclusion_reason,
         "active_labels": active_labels,
         "inactive_labels": inactive_labels,
         "alias_to_raw": alias_to_raw,
