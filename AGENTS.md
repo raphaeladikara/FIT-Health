@@ -51,9 +51,10 @@ config/notebook_experiment.json  Experiment contract: target policy, nested-CV f
 config/clinical_ranges.json      Hard input-validity guards per feature (used by assessment validation)
 data/raw/                        Official files, unchanged: data.csv (';'-sep, decimal ','), desciption.xlsx
 data/{interim,processed,external}  Derived data stages
-notebooks/VECTRA_X_Final.ipynb   The executed scientific submission (86 cells; 16 numbered sections + appendix)
-src/                             Tested research workflow modules (~4.7k LOC) — see below
-scripts/                         build_final_notebook.py · validate_final_notebook.py · validate_web_bundle.py
+notebooks/VECTRA_X_Final.ipynb   Executed scientific notebook (95 cells; SELF-CONTAINED — section-local functions lifted from src/, readable inlined config, robust dataset discovery, no src/config imports, no in-memory module bootstrap)
+VECTRA_X_Final_Submission.ipynb  Repo-root copy of the above = the single-file, judge-facing self-contained submission (final deliverable)
+src/                             Tested research workflow modules (~4.7k LOC) — see below; the notebook generator lifts these function defs verbatim into section-local cells
+scripts/                         build_final_submission.py (CANONICAL generator: AST-lifts src/ defs into a 16-section notebook) · validate_final_notebook.py · validate_web_bundle.py · build_submission*.py + build_final_notebook.py + _execute.py + _original_notebook.ipynb (SUPERSEDED black-box generators — would regenerate the old _MODULE_SOURCES architecture; do not run)
 tests/                           Python contract/research tests (unittest)
 outputs/releases/                Hash-verified scientific releases; latest.json points to the active run_id
 outputs/tables/                  Canonical final_*.csv evidence tables
@@ -91,6 +92,47 @@ app/                             (currently empty)
 | `release_bundle.py` | Canonical, privacy-checked scientific release-bundle writer (drives `outputs/releases/`) |
 | `visualization.py` | Figures |
 | `report_utils.py` | Report/table helpers |
+
+## Self-contained competition submission
+
+The final FIT deliverable is **one file**: `VECTRA_X_Final_Submission.ipynb` (repo root),
+an identical executed copy of `notebooks/VECTRA_X_Final.ipynb`. Judges receive only that
+`.ipynb` plus the official dataset — never `src/`, `config/`, the release bundle, or web
+files. It is organised as a natural **16-section scientific report** (Sec. 1 Exec summary /
+reproducibility → Sec. 16 readiness checklist), where helper functions are defined as
+**ordinary `def`s in the section that uses them** — there is no raw-string module dump, no
+`exec`-bootstrapped in-memory package, and no single black-box workflow entry point.
+
+- `config/*` → inlined as small, readable, commented Python dicts (`CONFIG`, plus named
+  constants `RANDOM_STATE`, `VALIDATION_SEEDS`, `CANDIDATE_MODELS`, …). No external file.
+- The tested `src/` functions are **AST-lifted verbatim** into section-local code cells by
+  the generator: relative imports are stripped and sibling-module alias prefixes
+  (`ev.`, `M.`, `pp.`, …) are flattened to bare names so they live in the notebook
+  namespace. The monolithic `run_research_workflow` is decomposed into transparent
+  per-section orchestration that exposes intermediate variables (`df_raw`, `df_supervised`,
+  `y`, `feature_contract`, `final_test_metrics`, …). **No `src` package is ever imported.**
+- Dataset discovery (`find_dataset`/`load_official_dataset`) searches `data.csv`,
+  `data/raw/data.csv`, `/kaggle/input/**`, etc., handles the `;`-sep / decimal-`,` format,
+  and raises a clear error if absent.
+- Sec. 16 runs a **refactor-consistency check** (asserts the executed metrics still match
+  the prior version) and a **forbidden-string self-scan** (asserts no `_MODULE_SOURCES` /
+  `_vectra_lib` / `run_research_workflow` / `from src` / release-bundle / absolute-path
+  dependency); it locates itself by the `VECTRA_X_SELF_CONTAINED_SUBMISSION_MARKER` sentinel.
+- Callouts use a restrained scientific palette (evidence=blue, method=purple,
+  decision=teal, risk=amber, governance=red).
+
+**Regenerate + re-execute** (after any `src/`, config, or narrative change):
+
+```bash
+python scripts/build_final_submission.py   # AST-lifts src/ defs -> writes notebooks/VECTRA_X_Final.ipynb (unexecuted)
+copy notebooks/VECTRA_X_Final.ipynb VECTRA_X_Final_Submission.ipynb
+python -m jupyter nbconvert --to notebook --execute VECTRA_X_Final_Submission.ipynb \
+  --output VECTRA_X_Final_Submission.ipynb --ExecutePreprocessor.timeout=-1   # clean-kernel run from repo root
+copy VECTRA_X_Final_Submission.ipynb notebooks/VECTRA_X_Final.ipynb           # keep both in sync (executed)
+```
+
+The build script is a dev tool, **not** part of the submission. `_original_notebook.ipynb`
+is the pristine (pre-inlining) notebook the generator transforms; do not delete it.
 
 ## Web app architecture (`web/`)
 
