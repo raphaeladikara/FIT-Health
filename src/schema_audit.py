@@ -56,7 +56,7 @@ def classify_column(series: pd.Series, name: str, uuid_col: str,
     numeric = _try_numeric(series)
     numeric_ratio = numeric.notna().sum() / n_non_null if n_non_null else 0.0
 
-    # --- decide a semantic role --------------------------------------- #
+    # Decide a semantic role
     if name == uuid_col or (n_unique == n_non_null and n_non_null == n and "uuid" in name.lower()):
         role = "id"
     elif n_unique <= 1:

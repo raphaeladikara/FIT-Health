@@ -190,7 +190,7 @@ def audit_leakage(df: pd.DataFrame, y: pd.DataFrame, feature_cols: list[str],
 
     audit = pd.DataFrame(rows)
 
-    # ---- decision rules ---------------------------------------------- #
+    # Decision rules
     def decide(r) -> tuple[str, str, str]:
         auc = r["max_single_feature_auc"]
         auc = -1 if pd.isna(auc) else auc

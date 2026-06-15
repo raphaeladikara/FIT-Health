@@ -392,19 +392,40 @@ def run_research_workflow(quick: bool = False) -> ResearchWorkflowResult:
         len(feature_sets["LAB_AWARE_CONFIRMATION"]):
     ]
 
-    X_pre, meta_pre = pp.make_feature_frame(data, feature_sets["PRE_LAB_TRIAGE"], cfg)
-    X_lab, meta_lab = pp.make_feature_frame(
-        data, feature_sets["LAB_AWARE_CONFIRMATION"], cfg
+    # Learn the feature schema from the TRAINING POOL ONLY, then apply it to the
+    # whole cohort, so no frozen-test row influences a schema decision. The
+    # stateful imputer/encoder remain fold-local inside every CV fold.
+    track_feature_sets = {
+        "PRE_LAB": "PRE_LAB_TRIAGE",
+        "LAB_AWARE": "LAB_AWARE_CONFIRMATION",
+        "RESEARCH_FULL": "FULL_RESEARCH_ONLY",
+    }
+    feature_builders = {
+        track: pp.FeatureFrameBuilder(feature_sets[fs], cfg).fit(data.iloc[train_idx])
+        for track, fs in track_feature_sets.items()
+    }
+    design_frames = {t: b.transform(data) for t, b in feature_builders.items()}
+    metas = {t: b.meta_ for t, b in feature_builders.items()}
+    X_pre, X_lab, X_full = (
+        design_frames["PRE_LAB"],
+        design_frames["LAB_AWARE"],
+        design_frames["RESEARCH_FULL"],
     )
-    X_full, meta_full = pp.make_feature_frame(data, feature_sets["FULL_RESEARCH_ONLY"], cfg)
+    meta_pre, meta_lab, meta_full = (
+        metas["PRE_LAB"],
+        metas["LAB_AWARE"],
+        metas["RESEARCH_FULL"],
+    )
     pp.assert_no_research_features(
         list(X_pre.columns), meta_pre.source_map, set(research_only)
     )
     pp.assert_no_research_features(
         list(X_lab.columns), meta_lab.source_map, set(research_only)
     )
-    design_frames = {"PRE_LAB": X_pre, "LAB_AWARE": X_lab, "RESEARCH_FULL": X_full}
-    metas = {"PRE_LAB": meta_pre, "LAB_AWARE": meta_lab, "RESEARCH_FULL": meta_full}
+    raw_train = {
+        track: data.iloc[train_idx][feature_sets[fs]].reset_index(drop=True)
+        for track, fs in track_feature_sets.items()
+    }
 
     contract_rows = []
     audit_by_feature = leakage["audit"].set_index("feature")
@@ -475,11 +496,11 @@ def run_research_workflow(quick: bool = False) -> ResearchWorkflowResult:
     comparison_rows = []
     oof_store: dict[tuple[str, str], np.ndarray] = {}
     for track in ["PRE_LAB", "LAB_AWARE"]:
-        X, meta = design_frames[track], metas[track]
+        feature_cols_track = feature_sets[track_feature_sets[track]]
         splits = M.make_cv_splits(y_train, n_folds, rs)
         for model_name in candidate_models:
-            oof = M.cross_val_proba(
-                model_name, meta, X.iloc[train_idx], y_train, splits, rs
+            oof = M.fold_local_oof_proba(
+                model_name, raw_train[track], feature_cols_track, y_train, splits, rs, cfg
             )
             oof_store[(track, model_name)] = oof
             candidate_thresholds = _thresholds(y_train, oof)
@@ -519,11 +540,11 @@ def run_research_workflow(quick: bool = False) -> ResearchWorkflowResult:
 
     repeated_rows = []
     for track in ["PRE_LAB", "LAB_AWARE"]:
-        X, meta = design_frames[track], metas[track]
+        feature_cols_track = feature_sets[track_feature_sets[track]]
         for seed in repeated_seeds:
             splits = M.make_cv_splits(y_train, n_folds, seed)
-            oof = M.cross_val_proba(
-                selected[track], meta, X.iloc[train_idx], y_train, splits, seed
+            oof = M.fold_local_oof_proba(
+                selected[track], raw_train[track], feature_cols_track, y_train, splits, seed, cfg
             )
             selected_thresholds = _thresholds(y_train, oof)
             repeated_rows.append(

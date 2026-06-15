@@ -19,9 +19,13 @@ as zero-positive). Two model tracks: **PRE_LAB** (primary prototype, Extra Trees
 
 ## Golden rules (do not break these)
 
-1. **No leakage.** Stateful preprocessing, model selection, thresholds, and
-   calibration are learned without frozen-test labels. The test set is evaluated
-   **once**. Target-restating fields (e.g. `Autres maladies présentées par le
+1. **No leakage.** The feature **schema** (column typing, near-constant drops,
+   missingness indicators, high-cardinality handling — `FeatureFrameBuilder`) is fit
+   on the **training pool only** for the frozen-test path and **refit inside each
+   CV fold** (`fold_local_oof_proba`); the stateful imputer/encoder are likewise
+   fold-local. Model selection, thresholds, and calibration are learned without
+   frozen-test labels. The test set is evaluated **once**. Target-restating fields
+   (e.g. `Autres maladies présentées par le
    patient`, the disease-named "Dengue (Dengua)" field) are excluded from model
    evidence — see `leakage.research_only_features` in [config/config.yaml](config/config.yaml).
 2. **Multi-label, not multi-class.** Missing diagnosis targets stay *unknown* and are
@@ -51,10 +55,10 @@ config/notebook_experiment.json  Experiment contract: target policy, nested-CV f
 config/clinical_ranges.json      Hard input-validity guards per feature (used by assessment validation)
 data/raw/                        Official files, unchanged: data.csv (';'-sep, decimal ','), desciption.xlsx
 data/{interim,processed,external}  Derived data stages
-notebooks/VECTRA_X_Final.ipynb   Executed scientific notebook (95 cells; SELF-CONTAINED — section-local functions lifted from src/, readable inlined config, robust dataset discovery, no src/config imports, no in-memory module bootstrap)
+notebooks/VECTRA_X_Final.ipynb   Executed scientific notebook (125 cells; SELF-CONTAINED — section-local functions lifted from src/, readable inlined config, robust dataset discovery, no src/config imports, no in-memory module bootstrap)
 VECTRA_X_Final_Submission.ipynb  Repo-root copy of the above = the single-file, judge-facing self-contained submission (final deliverable)
 src/                             Tested research workflow modules (~4.7k LOC) — see below; the notebook generator lifts these function defs verbatim into section-local cells
-scripts/                         build_final_submission.py (CANONICAL generator: AST-lifts src/ defs into a 16-section notebook) · validate_final_notebook.py · validate_web_bundle.py · build_submission*.py + build_final_notebook.py + _execute.py + _original_notebook.ipynb (SUPERSEDED black-box generators — would regenerate the old _MODULE_SOURCES architecture; do not run)
+scripts/                         build_final_submission.py (CANONICAL generator: AST-lifts src/ defs into a 16-section notebook) · validate_final_notebook.py (validates the SELF-CONTAINED contract: clean+ordered execution, no over-claims, required computed evidence vars + language, no `from src`/release/bootstrap, self-marker present) · validate_web_bundle.py · build_submission*.py + build_final_notebook.py + _execute.py + _original_notebook.ipynb (SUPERSEDED black-box generators — would regenerate the old _MODULE_SOURCES architecture; do not run)
 tests/                           Python contract/research tests (unittest)
 outputs/releases/                Hash-verified scientific releases; latest.json points to the active run_id
 outputs/tables/                  Canonical final_*.csv evidence tables
@@ -78,8 +82,8 @@ app/                             (currently empty)
 | `label_detection.py` | Detects multi-label diagnosis columns, applies the French→English alias map, drops zero-positive labels |
 | `leakage_audit.py` | Name-pattern + mutual-information / single-feature-AUC leakage screens; routes target-restating fields to research-only |
 | `schema_audit.py` | Cohort/schema integrity and audit checks |
-| `preprocessing.py` | Fold-local yes/no token normalization, missingness/cardinality/near-constant handling |
-| `modeling.py` | Model training and the PRE_LAB / LAB_AWARE track definitions |
+| `preprocessing.py` | `FeatureFrameBuilder` (fit/transform: train-only feature schema — typing, near-constant drops, `__missing` indicators, high-cardinality handling, yes/no token normalization) + `build_preprocessor` (fold-local imputer/one-hot ColumnTransformer) |
+| `modeling.py` | Model training, PRE_LAB / LAB_AWARE track definitions, `cross_val_proba`, and `fold_local_oof_proba` (refits the whole schema inside each CV fold) |
 | `evaluation.py` / `research_evaluation.py` | Metrics (macro/micro-F1, PR-AUC), repeated nested validation, LOCO |
 | `calibration.py` | Probability calibration (sigmoid / isotonic) |
 | `conformal.py` | Conformal prediction sets (exact + pragmatic policies, ~90% target coverage) |
@@ -114,12 +118,23 @@ reproducibility → Sec. 16 readiness checklist), where helper functions are def
 - Dataset discovery (`find_dataset`/`load_official_dataset`) searches `data.csv`,
   `data/raw/data.csv`, `/kaggle/input/**`, etc., handles the `;`-sep / decimal-`,` format,
   and raises a clear error if absent.
-- Sec. 16 runs a **refactor-consistency check** (asserts the executed metrics still match
-  the prior version) and a **forbidden-string self-scan** (asserts no `_MODULE_SOURCES` /
-  `_vectra_lib` / `run_research_workflow` / `from src` / release-bundle / absolute-path
-  dependency); it locates itself by the `VECTRA_X_SELF_CONTAINED_SUBMISSION_MARKER` sentinel.
+- Sec. 16 runs **result invariants** (recomputed from the run — 299-patient cohort, five
+  active labels, disjoint split, one-shot frozen-test evaluation, training-only selection,
+  train-only feature schema, fold-local CV, evidence-limited yellow fever) and a
+  **self-containment scan** (asserts no `_MODULE_SOURCES` / `_vectra_lib` /
+  `run_research_workflow` / `from src` / release-bundle / absolute-path dependency); it
+  locates itself by the `VECTRA_X_SELF_CONTAINED_SUBMISSION_MARKER` sentinel.
 - Callouts use a restrained scientific palette (evidence=blue, method=purple,
   decision=teal, risk=amber, governance=red).
+- **Judge-facing rubric layer**: a scannable **executive snapshot** + **environment
+  compatibility guard** (Sec. 1), feature-governance + **dataset challenge map** figures
+  (Sec. 5), a **preprocessing decision table** + executable **integrity-assertion** cell
+  carrying the train-only/fold-local schema checks (Sec. 6), macro-vs-micro explainer +
+  candidate **leaderboard** plot (Sec. 7–8), per-label scorecard / confusion visuals + a
+  **rare-label reliability** table with triage-safe routing (Sec. 9, 9.3), a **reliability
+  diagram** (Sec. 10), an anonymised **patient triage case card** + **population-response**
+  figure (Sec. 14), computed **result invariants** + a **FIT rubric evidence map**
+  (Sec. 16.1–16.2).
 
 **Regenerate + re-execute** (after any `src/`, config, or narrative change):
 
@@ -191,19 +206,24 @@ cd web && npm test && npm run check          # node --test (tests/*.test.js) + t
 # optional browser smoke: cd web && npm run test:browser
 ```
 
-## Current evidence (frozen test, run `20260614T182259Z`)
+## Current evidence (frozen test — executed notebook, Sec. 9)
 
-| Track | Model | Macro-F1 | Micro-F1 | Macro PR-AUC | Macro ROC-AUC |
+Once-only frozen-test evaluation in
+[notebooks/VECTRA_X_Final.ipynb](notebooks/VECTRA_X_Final.ipynb) **after the train-only /
+fold-local schema fix** (train pool 221, frozen test 78; split seed unchanged):
+
+| Track | Model | Macro-F1 | Micro-F1 | Macro PR-AUC | Macro recall |
 |---|---|---:|---:|---:|---:|
-| PRE_LAB | Extra Trees | 0.4624 | 0.7440 | 0.5416 | 0.7620 |
-| LAB_AWARE | HistGradientBoosting | 0.4777 | 0.7299 | 0.5141 | 0.7915 |
+| PRE_LAB | Extra Trees | 0.476 | 0.756 | 0.539 | 0.506 |
+| LAB_AWARE | HistGradientBoosting | 0.478 | 0.730 | 0.514 | 0.587 |
 
 **PRE_LAB stays the primary prototype** (leads micro-F1 and macro PR-AUC); LAB_AWARE's
 small macro-F1 edge does not establish operational superiority and depends on
-confirmatory inputs. Yellow fever has very few frozen-test positives and near-zero
-recall. LOCO macro-F1 ≈ **0.26–0.31** → center transfer is the main generalization
-warning. Numbers come from [outputs/tables/final_test_metrics.csv](outputs/tables/final_test_metrics.csv);
-regenerate via the pipeline rather than hand-editing.
+confirmatory inputs. Yellow fever has **3** frozen-test positives and **0.00** recall
+(flagged evidence-limited; routed to confirmatory testing — Sec. 9.3). LOCO macro-F1
+≈ **0.27–0.30** → center transfer is the main generalization warning. These come from
+the executed notebook; the canonical `outputs/tables/*.csv` and the web release are
+**not** regenerated here — rerun `python run_pipeline.py` to refresh them to match.
 
 ## Skill-first workflow (for agents)
 

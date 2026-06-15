@@ -108,7 +108,7 @@ def detect_labels(df: pd.DataFrame, cfg: dict[str, Any] | None = None) -> dict[s
                 len(label_cols), len(active_labels), active_labels,
                 len(inactive_labels), inactive_labels)
 
-    # --- distribution ------------------------------------------------- #
+    # Distribution
     n = len(y)
     distribution = pd.DataFrame({
         "label": positives.index,
@@ -118,18 +118,18 @@ def detect_labels(df: pd.DataFrame, cfg: dict[str, Any] | None = None) -> dict[s
                    for i in range(len(positives))],
     })
 
-    # --- cardinality (number of active labels per patient) ------------ #
+    # Cardinality (number of active labels per patient)
     card = y.sum(axis=1)
     cardinality = (card.value_counts().sort_index()
                    .rename_axis("n_labels").reset_index(name="n_patients"))
     cardinality["pct"] = (cardinality["n_patients"] / n * 100).round(2)
 
-    # --- co-occurrence (active labels only) --------------------------- #
+    # Co-occurrence (active labels only)
     cooc = pd.DataFrame(
         np.dot(y.T.values, y.values), index=y.columns, columns=y.columns
     ).astype(int)
 
-    # --- validate binary encoding against the free-text diagnosis ----- #
+    # Validate binary encoding against the free-text diagnosis
     text_validation = _validate_against_text(
         df.loc[cohort.included_index], y_all_supervised, alias_map, text_col
     )

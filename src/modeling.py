@@ -183,12 +183,42 @@ class BinaryRelevanceModel:
 def cross_val_proba(model_name: str, meta: pp.FeatureMeta, X: pd.DataFrame,
                     y: pd.DataFrame, splits: list[tuple[np.ndarray, np.ndarray]],
                     random_state: int) -> np.ndarray:
-    """Out-of-fold predicted probabilities via binary relevance over CV folds."""
+    """Out-of-fold predicted probabilities via binary relevance over CV folds.
+
+    ``X`` is an already-cleaned design frame; the stateful imputer/encoder are
+    refit inside each fold via the model pipeline. The feature *schema* is taken
+    as given (fit on the training pool). For schema that is itself refit per fold,
+    use :func:`fold_local_oof_proba`.
+    """
     oof = np.zeros((len(X), y.shape[1]))
     for tr, va in splits:
         m = BinaryRelevanceModel(model_name, meta, random_state)
         m.fit(X.iloc[tr], y.iloc[tr])
         oof[va] = m.predict_proba(X.iloc[va])
+    return oof
+
+
+def fold_local_oof_proba(model_name: str, raw_df: pd.DataFrame, feature_cols: list[str],
+                         y: pd.DataFrame, splits: list[tuple[np.ndarray, np.ndarray]],
+                         random_state: int, cfg: dict | None = None) -> np.ndarray:
+    """Out-of-fold probabilities with the ENTIRE preprocessing schema refit inside
+    each fold.
+
+    A fresh :class:`~preprocessing.FeatureFrameBuilder` is fit on the fold's
+    training rows only, so column typing, near-constant drops, missingness
+    indicators and one-hot vocabularies never see the held-out rows; the stateful
+    imputer/encoder are then fit inside the same fold via the model pipeline.
+    ``raw_df`` holds the raw (uncleaned) per-track columns, positionally aligned
+    with ``y`` and the integer indices in ``splits``.
+    """
+    oof = np.zeros((len(raw_df), y.shape[1]))
+    for tr, va in splits:
+        builder = pp.FeatureFrameBuilder(feature_cols, cfg=cfg).fit(raw_df.iloc[tr])
+        X_tr = builder.transform(raw_df.iloc[tr])
+        X_va = builder.transform(raw_df.iloc[va])
+        m = BinaryRelevanceModel(model_name, builder.meta_, random_state)
+        m.fit(X_tr, y.iloc[tr])
+        oof[va] = m.predict_proba(X_va)
     return oof
 
 
