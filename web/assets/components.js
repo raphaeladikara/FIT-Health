@@ -42,12 +42,25 @@ export function SupportStatus(support, minimum = 5) {
   return `<span class="tag ${support < minimum ? "tag-risk" : ""}">${support < minimum ? "Insufficient evidence" : `${support} positives`}</span>`;
 }
 
+// Evidence status for a per-label scorecard row, driven solely by frozen-test
+// positive support. Rare labels never read as confident even when a point
+// metric looks high.
+export function EvidenceStatus(support) {
+  if (!Number.isFinite(Number(support)) || support < 5) {
+    return `<span class="tag tag-risk">Insufficient support</span>`;
+  }
+  if (support < 10) {
+    return `<span class="tag tag-warn">Evidence-limited</span>`;
+  }
+  return `<span class="tag tag-ok">Adequate support</span>`;
+}
+
 export function IntervalMetric(row) {
   return `<article class="metric-block"><span>${row.metric}</span><strong>${number(row.estimate, 2)}</strong><small>${number(row.lower, 2)} to ${number(row.upper, 2)} · n=${row.n_patients} · positives=${row.positive_support}</small></article>`;
 }
 
 export function DeploymentGate(gate) {
-  return `<li class="deployment-gate"><span aria-hidden="true">Pending</span><strong>${gate}</strong></li>`;
+  return `<li class="deployment-gate"><span class="tag tag-warn">Pending</span><strong>${gate}</strong><small>Required before any clinical deployment</small></li>`;
 }
 
 export function ScientificCaveat(text) {

@@ -91,9 +91,9 @@ function updateCompleteness() {
   const status = inputCompleteness(bundle.inputSchema, mode.value, formValues());
   const percentage = Math.round(status.fraction * 100);
   document.querySelector("#input-completeness").innerHTML =
-    `<div><span>Input completeness</span><strong>${status.completed} of ${status.total} fields</strong></div>
-     <div class="completeness-track" aria-label="${percentage}% complete"><span style="width:${percentage}%"></span></div>
-     <small>Missing values are handled by the locked pipeline, but extensive missingness can force abstention.</small>`;
+    `<div><span>Optional model fields populated</span><strong>${status.completed} of ${status.total}</strong></div>
+     <div class="completeness-track" aria-label="${percentage}% of model fields populated"><span style="width:${percentage}%"></span></div>
+     <small>All fields are optional — none are required to run the locked pipeline, which imputes missing values. Extensive missingness can route the case to mandatory review.</small>`;
 }
 
 
@@ -118,21 +118,32 @@ function renderAssessment(response) {
       .filter((row) => row.track === response.mode)
       .map((row) => [row.label, row.support_pos]),
   );
+  const predictionSet = new Set(response.prediction_set || []);
   document.querySelector("#assessment-status").innerHTML =
     `<div class="assessment-outcome ${response.abstention.required ? "requires-review" : ""}">
       <span>${response.abstention.required ? "Mandatory review state" : "Model assessment complete"}</span>
       <h3>${response.abstention.required ? "Clinical review required" : response.triage_category}</h3>
-      <p>${response.abstention.required ? response.abstention.reasons.map(titleCase).join(", ") : "No automatic abstention rule fired."}</p>
+      <p>${response.abstention.required
+        ? `Model output is generated below, but mandatory review is required: ${response.abstention.reasons.map(titleCase).join(", ")}.`
+        : "No automatic review rule fired. Calibrated probabilities and the prediction set are shown below as decision support only."}</p>
     </div>`;
   document.querySelector("#prototype-probabilities").innerHTML =
-    `<div class="probability-list">${Object.entries(response.probabilities).map(([label, probability]) =>
-      `<div class="prototype-probability">
+    `<div class="probability-list">${Object.entries(response.probabilities).map(([label, probability]) => {
+      const above = response.decisions[label];
+      const inSet = predictionSet.has(label);
+      const statusTag = above
+        ? `<em class="prob-flag above">Above threshold</em>`
+        : inSet
+          ? `<em class="prob-flag inset">In prediction set</em>`
+          : `<em class="prob-flag below">Below threshold</em>`;
+      return `<div class="prototype-probability">
         <div><strong>${titleCase(label)}</strong><small>${support[label]} frozen-test positives</small></div>
-        <div class="probability-track"><span class="probability-fill ${response.decisions[label] ? "positive" : ""}" style="width:${probability * 100}%"></span><i class="threshold-marker" style="left:${response.thresholds[label] * 100}%"></i></div>
-        <b>${percent(probability)}</b>
-      </div>`
-    ).join("")}</div>
-    <div class="assessment-foot"><span>Prediction set: <strong>${response.prediction_set.map(titleCase).join(", ") || "No informative set"}</strong></span><span>Uncertainty: <strong>${titleCase(response.uncertainty.category)}</strong></span></div>`;
+        <div class="probability-track"><span class="probability-fill ${above ? "positive" : ""}" style="width:${probability * 100}%"></span><i class="threshold-marker" style="left:${response.thresholds[label] * 100}%"></i></div>
+        <b>${percent(probability)}${statusTag}</b>
+      </div>`;
+    }).join("")}</div>
+    <div class="assessment-foot"><span>Prediction set: <strong>${response.prediction_set.map(titleCase).join(", ") || "No informative set"}</strong></span><span>Uncertainty: <strong>${titleCase(response.uncertainty.category)}</strong></span></div>
+    <p class="decision-boundary">${bundle.evidence.safe_scope}</p>`;
 }
 
 
@@ -151,23 +162,43 @@ function renderDecision(response) {
 }
 
 
+const CAPACITY_STATUS_COPY = {
+  "within-capacity": "Within capacity",
+  "near-limit": "Near limit",
+  "over-capacity": "Over capacity",
+};
+
+
 function renderProjection() {
   if (!assessment) return;
   const projection = assessmentToProjection(assessment, {
     cohortSize: Number(document.querySelector("#cohort-size").value),
+    reviewCapacity: Number(document.querySelector("#review-capacity").value),
     testCapacity: Number(document.querySelector("#test-capacity").value),
     urgentCapacity: Number(document.querySelector("#urgent-capacity").value),
   });
-  const metrics = [
-    ["Clinical reviews", projection.reviewNeeded, "Cases routed to mandatory review"],
-    ["Confirmatory tests", projection.testsNeeded, `${projection.unmetTests} beyond entered capacity`],
-    ["Urgent reviews", projection.urgentNeeded, `${projection.unmetUrgent} beyond entered capacity`],
-  ];
+  const cards = projection.categories.map((category) => {
+    const gapText = category.gap > 0
+      ? `${category.gap} beyond capacity`
+      : `${Math.abs(category.gap)} headroom`;
+    return `<article class="capacity-card status-${category.status}">
+      <span>${category.label}</span>
+      <strong>${category.demand}</strong>
+      <p class="capacity-status">${CAPACITY_STATUS_COPY[category.status]}</p>
+      <dl class="capacity-ledger"><div><dt>Demand</dt><dd>${category.demand}</dd></div><div><dt>Capacity</dt><dd>${category.capacity || "—"}</dd></div><div><dt>Gap</dt><dd>${gapText}</dd></div></dl>
+      <small>${category.note}</small>
+    </article>`;
+  }).join("");
+  const uncertainty = projection.highUncertainty;
+  const uncertaintyCard = `<article class="capacity-card status-context">
+    <span>${uncertainty.label}</span>
+    <strong>${uncertainty.demand}</strong>
+    <p class="capacity-status">${percent(uncertainty.fraction)} of cohort</p>
+    <small>${uncertainty.note}</small>
+  </article>`;
   document.querySelector("#prototype-response").innerHTML =
-    `<div class="response-metrics">${metrics.map(([label, value, note], index) =>
-      `<article class="${index > 0 && Number(note.split(" ")[0]) > 0 ? "overload" : ""}"><span>${label}</span><strong>${value}</strong><small>${note}</small></article>`
-    ).join("")}</div>
-    <div class="callout callout-warn"><strong>Scenario boundary:</strong> ${projection.interpretation}. Rates are derived from this demonstration state and are not population prevalence estimates.</div>`;
+    `<div class="response-metrics quad">${cards}${uncertaintyCard}</div>
+    <div class="callout callout-warn"><strong>Scenario projection:</strong> ${projection.interpretation}. Rates are derived from this demonstration state (n=78) and are illustrative planning assumptions — not measured clinical impact and not population prevalence estimates.</div>`;
 }
 
 
@@ -258,7 +289,7 @@ async function init() {
     setUrl();
     renderStage();
   });
-  ["cohort-size", "test-capacity", "urgent-capacity"].forEach((id) =>
+  ["cohort-size", "review-capacity", "test-capacity", "urgent-capacity"].forEach((id) =>
     document.querySelector(`#${id}`).addEventListener("input", renderProjection)
   );
 }

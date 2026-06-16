@@ -23,31 +23,84 @@ export function serializePrototypeState({ caseId = "", stage = "intake" }) {
 }
 
 
+// Scenario-assumption operational rates from the frozen-test demonstration
+// state (n=78). These are illustrative planning assumptions — NOT measured
+// clinical impact and NOT population prevalence. A cohort is a population, so
+// it is scaled by these fractional rates rather than by one case's 0/1 outcome.
+export const FROZEN_TEST_OPERATIONAL_RATES = {
+  review: 0.4615, // high-priority cases routed to clinician review (≈36/78)
+  test: 0.2436, // cases flagged for confirmatory-testing support (≈19/78)
+  urgent: 0.2179, // cases routed to urgent response priority (≈17/78)
+  uncertainty: 0.3077, // high-uncertainty cases needing enhanced scrutiny (≈24/78)
+};
+
+// Compare projected demand against entered capacity for one resource lane.
+export function capacityStatus(demand, capacity) {
+  if (!Number.isFinite(capacity) || capacity <= 0) {
+    return { capacity: 0, gap: demand, status: "over-capacity" };
+  }
+  const gap = demand - capacity;
+  if (gap > 0) return { capacity, gap, status: "over-capacity" };
+  if (demand >= capacity * 0.9) return { capacity, gap, status: "near-limit" };
+  return { capacity, gap, status: "within-capacity" };
+}
+
 export function assessmentToProjection(
   assessment,
   {
     cohortSize,
+    reviewCapacity = 0,
     testCapacity,
     urgentCapacity,
+    rates = FROZEN_TEST_OPERATIONAL_RATES,
   },
 ) {
-  const decisions = Object.values(assessment.decisions || {});
-  const testRate = decisions.some(Boolean) || assessment.abstention?.required ? 1 : 0;
-  const reviewRate = assessment.abstention?.required
-    || assessment.triage_category === "Clinical review required" ? 1 : 0;
-  const urgentRate = assessment.uncertainty?.category === "high"
-    || assessment.abstention?.required ? 1 : 0;
-  const testsNeeded = Math.round(testRate * cohortSize);
-  const reviewNeeded = Math.round(reviewRate * cohortSize);
-  const urgentNeeded = Math.round(urgentRate * cohortSize);
+  const n = Math.max(0, Math.round(Number(cohortSize)) || 0);
+  const demand = (rate) => Math.round(rate * n);
+  const reviewNeeded = demand(rates.review);
+  const testsNeeded = demand(rates.test);
+  const urgentNeeded = demand(rates.urgent);
+  const uncertaintyNeeded = demand(rates.uncertainty);
   return {
     interpretation: "scenario projection; not measured clinical impact",
-    cohortSize,
-    testsNeeded,
-    unmetTests: Math.max(0, testsNeeded - testCapacity),
+    cohortSize: n,
+    rates,
+    // Flat fields retained for back-compatibility with existing callers/tests.
     reviewNeeded,
+    testsNeeded,
     urgentNeeded,
-    unmetUrgent: Math.max(0, urgentNeeded - urgentCapacity),
+    uncertaintyNeeded,
+    unmetTests: Math.max(0, testsNeeded - (testCapacity || 0)),
+    unmetUrgent: Math.max(0, urgentNeeded - (urgentCapacity || 0)),
+    categories: [
+      {
+        key: "review",
+        label: "Clinical reviews",
+        demand: reviewNeeded,
+        note: "High-priority cases routed to clinician review",
+        ...capacityStatus(reviewNeeded, Number(reviewCapacity)),
+      },
+      {
+        key: "test",
+        label: "Confirmatory tests",
+        demand: testsNeeded,
+        note: "Cases flagged for confirmatory-testing support",
+        ...capacityStatus(testsNeeded, Number(testCapacity)),
+      },
+      {
+        key: "urgent",
+        label: "Urgent reviews",
+        demand: urgentNeeded,
+        note: "Cases routed to urgent response priority",
+        ...capacityStatus(urgentNeeded, Number(urgentCapacity)),
+      },
+    ],
+    highUncertainty: {
+      label: "High-uncertainty cases",
+      demand: uncertaintyNeeded,
+      fraction: rates.uncertainty,
+      note: "Subset requiring enhanced review scrutiny (overlaps the lanes above)",
+    },
   };
 }
 

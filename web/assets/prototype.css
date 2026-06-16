@@ -77,16 +77,41 @@
 .rare-warning-list strong { display: block; margin: 8px 0; }
 .decision-boundary { padding-top: 18px; border-top: 1px solid var(--line-soft); color: var(--muted); }
 .response-metrics { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+.response-metrics.quad { grid-template-columns: repeat(4, 1fr); }
 .response-metrics article { min-height: 145px; padding: 20px; border: 1px solid var(--line-soft); border-radius: var(--radius); background: var(--bg-2); display: flex; flex-direction: column; }
 .response-metrics article.overload { border-color: rgba(255, 122, 100, .45); background: rgba(255, 122, 100, .07); }
 .response-metrics span, .response-metrics small { color: var(--muted); }
-.response-metrics strong { margin: 12px 0 auto; font: 700 2.2rem var(--display); }
+.response-metrics strong { margin: 12px 0 6px; font: 700 2.2rem var(--display); }
+
+/* capacity cards: demand vs capacity vs gap with a status state */
+.capacity-card > span:first-child { font-size: var(--fs-sm); font-weight: 600; color: var(--text); }
+.capacity-card .capacity-status { margin: 0 0 12px; font: 600 var(--fs-xs) var(--mono); letter-spacing: .04em; }
+.capacity-card .capacity-ledger { margin: 0 0 12px; display: grid; gap: 0; }
+.capacity-card .capacity-ledger div { display: flex; justify-content: space-between; gap: 10px; padding: 5px 0; border-bottom: 1px solid var(--line-soft); }
+.capacity-card .capacity-ledger div:last-child { border-bottom: 0; }
+.capacity-card .capacity-ledger dt { color: var(--faint); font-size: var(--fs-xs); }
+.capacity-card .capacity-ledger dd { margin: 0; font: 600 var(--fs-xs) var(--mono); color: var(--text); }
+.capacity-card > small { margin-top: auto; color: var(--faint); font-size: var(--fs-xs); line-height: 1.45; }
+.capacity-card.status-over-capacity { border-color: rgba(255, 122, 100, .45); background: rgba(255, 122, 100, .07); }
+.capacity-card.status-over-capacity .capacity-status { color: var(--coral-soft); }
+.capacity-card.status-near-limit { border-color: rgba(242, 193, 78, .42); background: rgba(242, 193, 78, .06); }
+.capacity-card.status-near-limit .capacity-status { color: #f3d99a; }
+.capacity-card.status-within-capacity .capacity-status { color: var(--green); }
+.capacity-card.status-context { border-style: dashed; }
+.capacity-card.status-context .capacity-status { color: var(--teal); }
+
+/* per-label threshold / prediction-set status under each probability */
+.prob-flag { display: block; margin-top: 4px; font: 600 var(--fs-micro) var(--mono); letter-spacing: .03em; text-transform: none; font-style: normal; }
+.prob-flag.above { color: var(--coral-soft); }
+.prob-flag.inset { color: var(--amber); }
+.prob-flag.below { color: var(--faint); }
 .loading-state { min-height: 160px; display: flex; gap: 12px; align-items: center; justify-content: center; }
 .loading-state span { width: 12px; height: 12px; border-radius: 50%; background: var(--teal); animation: pulse 1s ease-in-out infinite alternate; }
 @keyframes pulse { to { opacity: .35; transform: scale(.75); } }
 @media (max-width: 1050px) {
   .prototype-layout { grid-template-columns: 1fr; }
   .evidence-drawer { position: static; }
+  .response-metrics.quad { grid-template-columns: repeat(2, 1fr); }
 }
 @media (max-width: 760px) {
   .prototype-header nav { display: none; }
@@ -95,7 +120,7 @@
   .prototype-run { width: 100%; }
   .prototype-stages { grid-template-columns: 1fr 1fr; }
   .prototype-stages button:nth-child(2) { border-right: 0; }
-  .intake-toolbar, .response-controls, .decision-summary, .rare-warning-list, .response-metrics { grid-template-columns: 1fr; }
+  .intake-toolbar, .response-controls, .decision-summary, .rare-warning-list, .response-metrics, .response-metrics.quad { grid-template-columns: 1fr; }
   .prototype-probability { grid-template-columns: 1fr; gap: 8px; }
   .prototype-probability b { text-align: left; }
   .assessment-foot { flex-direction: column; }

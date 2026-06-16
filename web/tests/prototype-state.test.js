@@ -3,6 +3,7 @@ import test from "node:test";
 
 import {
   assessmentToProjection,
+  capacityStatus,
   evidenceLimitedWarnings,
   inputCompleteness,
   parsePrototypeState,
@@ -26,7 +27,7 @@ test("prototype URL state is deterministic and rejects unknown stages", () => {
 });
 
 
-test("assessment output becomes an assumption-bound response projection", () => {
+test("response projection scales a cohort by demonstration-state rates, not one case's 0/1 outcome", () => {
   const projection = assessmentToProjection(
     {
       decisions: {
@@ -42,17 +43,39 @@ test("assessment output becomes an assumption-bound response projection", () => 
     },
     {
       cohortSize: 100,
+      reviewCapacity: 40,
       testCapacity: 20,
       urgentCapacity: 10,
     },
   );
 
   assert.equal(projection.interpretation, "scenario projection; not measured clinical impact");
-  assert.equal(projection.testsNeeded, 100);
-  assert.equal(projection.unmetTests, 80);
-  assert.equal(projection.reviewNeeded, 100);
-  assert.equal(projection.urgentNeeded, 100);
-  assert.equal(projection.unmetUrgent, 90);
+  // A 100-patient cohort must NOT report 100 of everything — demand is a fraction of the cohort.
+  assert.equal(projection.reviewNeeded, 46);
+  assert.equal(projection.testsNeeded, 24);
+  assert.equal(projection.urgentNeeded, 22);
+  assert.equal(projection.uncertaintyNeeded, 31);
+
+  const [review, test, urgent] = projection.categories;
+  assert.equal(review.demand, 46);
+  assert.equal(review.capacity, 40);
+  assert.equal(review.gap, 6);
+  assert.equal(review.status, "over-capacity");
+
+  assert.equal(test.gap, 4);
+  assert.equal(test.status, "over-capacity");
+
+  assert.equal(urgent.status, "over-capacity");
+  assert.equal(projection.highUncertainty.demand, 31);
+});
+
+
+test("capacity status reports headroom, near-limit, and over-capacity", () => {
+  assert.equal(capacityStatus(46, 40).status, "over-capacity");
+  assert.equal(capacityStatus(38, 40).status, "near-limit");
+  assert.equal(capacityStatus(20, 40).status, "within-capacity");
+  // Zero capacity is always over-capacity, with the full demand as the gap.
+  assert.deepEqual(capacityStatus(46, 0), { capacity: 0, gap: 46, status: "over-capacity" });
 });
 
 
