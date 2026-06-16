@@ -17,7 +17,7 @@ page.on("pageerror", (error) => errors.push(error.message));
 const baseUrl = process.env.BASE_URL || "http://localhost:4173";
 
 await page.goto(`${baseUrl}/`, { waitUntil: "networkidle0" });
-if (!(await page.$eval("h1", (node) => node.textContent)).includes("safer triage")) {
+if (!(await page.$eval("h1", (node) => node.textContent)).includes("VECTRA-X")) {
   throw new Error("Landing heading did not load");
 }
 
@@ -42,7 +42,7 @@ const prototypeStates = [
   {
     route: "/prototype.html?case=SYNTH-OOD&stage=response",
     selector: "#prototype-response",
-    text: "beyond entered capacity",
+    text: "beyond capacity",
   },
 ];
 for (const state of prototypeStates) {
@@ -112,7 +112,10 @@ await page.click("#open-menu");
 if (!(await page.$eval("#sidebar", (node) => node.classList.contains("open")))) {
   throw new Error("Mobile drawer did not open");
 }
-await page.click("#close-menu");
+await page.$eval("#close-menu", (button) => button.click());
+if (await page.$eval("#sidebar", (node) => node.classList.contains("open"))) {
+  throw new Error("Mobile drawer did not close");
+}
 
 await browser.close();
 if (errors.length) throw new Error(`Browser console errors:\n${errors.join("\n")}`);

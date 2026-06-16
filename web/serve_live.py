@@ -26,6 +26,19 @@ class LiveHandler(SimpleHTTPRequestHandler):
         self.send_error(404)
         return None
 
+    def do_GET(self):
+        if self.path == "/api/health":
+            payload = {"ok": True, "service": "vectra-x-live"}
+            encoded = json.dumps(payload, separators=(",", ":")).encode("utf-8")
+            self.send_response(200)
+            self.send_header("Content-Type", "application/json; charset=utf-8")
+            self.send_header("Cache-Control", "no-store")
+            self.send_header("Content-Length", str(len(encoded)))
+            self.end_headers()
+            self.wfile.write(encoded)
+            return
+        super().do_GET()
+
     def do_POST(self):
         started = time.perf_counter()
         status = 404

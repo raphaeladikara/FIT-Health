@@ -423,6 +423,14 @@ input[type="range"] { width: 100%; accent-color: var(--teal); height: 6px; }
 .scenario-option strong { display: block; font: 600 var(--fs-md) var(--sans); }
 .scenario-option span { display: block; margin-top: 8px; color: var(--muted); font-size: var(--fs-sm); line-height: 1.5; }
 
+.demo-review-panel { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin: 24px 0; }
+.demo-review-panel > div { border: 1px solid var(--line-soft); border-radius: var(--radius-sm); background: rgba(255, 255, 255, .025); padding: 14px; }
+.demo-review-panel span, .demo-input-list span { display: block; color: var(--muted); font-size: var(--fs-sm); }
+.demo-review-panel strong { display: block; margin-top: 4px; color: var(--text); }
+.demo-input-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.demo-input-list li { display: flex; justify-content: space-between; gap: 18px; border-bottom: 1px solid var(--line-soft); padding: 10px 0; }
+.demo-input-list strong { color: var(--text); white-space: nowrap; }
+
 .demo-controls { display: flex; justify-content: space-between; gap: 12px; border-top: 1px solid var(--line-soft); padding-top: 22px; }
 
 @keyframes fade { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }

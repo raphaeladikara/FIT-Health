@@ -6,5 +6,8 @@
     "check": "node tools/check-js.mjs",
     "test:browser": "node tests/smoke.spec.mjs",
     "serve:live": "python serve_live.py"
+  },
+  "devDependencies": {
+    "puppeteer-core": "^25.1.0"
   }
 }
