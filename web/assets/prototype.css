@@ -58,6 +58,7 @@
 .completeness-track { height: 7px; margin: 10px 0; overflow: hidden; border-radius: 999px; background: var(--bg); }
 .completeness-track span { display: block; height: 100%; border-radius: inherit; background: var(--teal); }
 .completeness small { color: var(--faint); }
+.prototype-alert { margin: 0 0 18px; }
 .prototype-actions { display: flex; justify-content: space-between; gap: 12px; padding-top: 20px; border-top: 1px solid var(--line-soft); }
 .evidence-drawer { position: sticky; top: 18px; padding: 22px; }
 .drawer-heading span { color: var(--teal); font: 600 var(--fs-xs) var(--mono); }
