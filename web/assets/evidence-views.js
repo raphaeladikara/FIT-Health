@@ -3,8 +3,10 @@ import {
   EvidenceScopeBadge,
   EvidenceStatus,
   ScientificCaveat,
+  evidenceMap,
   figure,
   metric,
+  scoreRing,
   table,
 } from "./components.js";
 import { number, percent, titleCase } from "./formatters.js";
@@ -37,8 +39,14 @@ export function executiveEvidence(bundle) {
   const counts = bundle.evidence.cohort_and_partitions.counts;
   const metrics = aggregateMetricRows(bundle).slice(0, 3);
   return `${EvidenceScopeBadge("Frozen test and training-only nested validation")}
-    <div class="insight-hero"><h2>Differential-risk review implemented as an auditable operational prototype.</h2><p>${bundle.evidence.narrative.patient_workflow}</p><a class="button button-primary" href="prototype.html">Open operational prototype</a></div>
-    <div class="metrics">${metrics.map((row) => metric(row.metric, number(row.estimate, 3), METRIC_INTERPRETATION[row.metric] || row.source)).join("")}</div>
+    <div class="insight-hero dashboard-visual-hero"><div><span>Operational research prototype</span><h2>Differential-risk review implemented as an auditable workflow.</h2><p>${bundle.evidence.narrative.patient_workflow}</p><a class="button button-primary" href="prototype.html">Open operational prototype</a></div><div class="hero-mini-map" aria-hidden="true"><i></i><i></i><i></i><i></i></div></div>
+    <div class="score-ring-grid">${metrics.map((row, index) => scoreRing(row.metric, row.estimate, METRIC_INTERPRETATION[row.metric] || row.source, ["teal", "sky", "coral"][index] || "teal")).join("")}</div>
+    ${evidenceMap([
+      { kicker: "Govern", title: "No leakage", body: "Feature schema, imputation, and encoding stay training-pool or fold-local." },
+      { kicker: "Predict", title: "Multi-label by design", body: "Several plausible disease labels can remain active for one patient." },
+      { kicker: "Defer", title: "Uncertainty is visible", body: "Prediction sets and caveats route ambiguity to review instead of hiding it." },
+      { kicker: "Operate", title: "Capacity-aware action", body: "Outputs connect to review tiers and confirmatory-test demand." },
+    ])}
     <div class="inline-stats"><span><strong>${counts.n_supervised}</strong> supervised patients</span><span><strong>${counts.training}</strong> training pool</span><span><strong>${counts.frozen_test}</strong> frozen test</span></div>
     ${ScientificCaveat(bundle.evidence.primary_track_summary.decision)}`;
 }
@@ -71,7 +79,8 @@ export function evaluationEvidence(bundle, track) {
     <p class="view-lede">${track === "PRE_LAB"
       ? "Primary deployable research track. Reported once on the 78-patient frozen test, no lab inputs required."
       : "Paired laboratory-aware comparison. Requires confirmatory inputs and does not establish operational superiority."}</p>
-    <div class="metrics">${headline.map((row) => metric(row.metric, number(row.estimate, 3), row.source)).join("")}</div>
+    <div class="score-ring-grid">${headline.map((row, index) => scoreRing(row.metric, row.estimate, row.source, ["teal", "sky", "coral", "amber"][index] || "teal")).join("")}</div>
+    ${figure("frozen-test-per-label.png", "Frozen-test per-label performance by label.", "Per-label evidence makes rare-label fragility visible beside stronger malaria support.")}
     <h3 class="section-heading">Per-label scorecard</h3>
     ${table(rows, [
       { key: "label", label: "Label", render: titleCase },

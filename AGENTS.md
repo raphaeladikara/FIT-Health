@@ -171,7 +171,9 @@ Pages: `index.html` (landing), `prototype.html` (integrated operational workflow
 supporting modules include `prototype.js`, `prototype-state.js`, `data-client.js`,
 `evidence-views.js`, `schema-form.js`, `resource-simulator.js`, `thresholds.js`,
 `provenance.js`, `formatters.js`, and `components.js`. Design system:
-[DESIGN.md](DESIGN.md).
+[DESIGN.md](DESIGN.md). Project-local visual assets live in `web/assets/images/`
+(currently the generated command-center hero used by the landing, dashboard, and
+prototype hero surfaces).
 
 Serve with `python web/serve_live.py --port 4173` (static files **and** the local API;
 `file://` can't load the JSON). Deploy to Vercel with `web/` as root, framework

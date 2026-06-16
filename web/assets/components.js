@@ -5,6 +5,33 @@ export function metric(label, value, source) {
   return `<article class="metric-block"><span>${label}</span><strong>${value}</strong><small>${source}</small></article>`;
 }
 
+export function scoreRing(label, value, caption, tone = "teal") {
+  const numeric = Number(value);
+  const bounded = Number.isFinite(numeric) ? Math.max(0, Math.min(1, numeric)) : 0;
+  const pct = Math.round(bounded * 100);
+  const display = Number.isFinite(numeric) ? numeric.toFixed(3) : "N/A";
+  return `<article class="score-ring-card tone-${tone}">
+    <div class="score-ring" aria-label="${label} ${display}">
+      <svg viewBox="0 0 100 100" focusable="false" aria-hidden="true">
+        <circle class="score-ring-track" cx="50" cy="50" r="38" pathLength="100"></circle>
+        <circle class="score-ring-value" cx="50" cy="50" r="38" pathLength="100" stroke-dasharray="${pct} 100"></circle>
+      </svg>
+      <strong>${display}</strong>
+    </div>
+    <div><span>${label}</span><p>${caption}</p></div>
+  </article>`;
+}
+
+export function evidenceMap(items) {
+  return `<div class="evidence-map" aria-label="Evidence workflow map">${items.map((item, index) => `
+    <article>
+      <b>${String(index + 1).padStart(2, "0")}</b>
+      <span>${item.kicker}</span>
+      <strong>${item.title}</strong>
+      <p>${item.body}</p>
+    </article>`).join("")}</div>`;
+}
+
 export function table(rows, columns) {
   if (!rows.length) return `<div class="callout">No rows match the current filters. Clear one or more filters to recover.</div>`;
   return `<div class="table-wrap"><table><thead><tr>${columns.map((column) => `<th>${column.label}</th>`).join("")}</tr></thead><tbody>${rows.map((row) => `<tr>${columns.map((column) => `<td>${column.render ? column.render(row[column.key], row) : row[column.key] ?? "N/A"}</td>`).join("")}</tr>`).join("")}</tbody></table></div>`;

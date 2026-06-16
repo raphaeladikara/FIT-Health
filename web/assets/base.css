@@ -5,13 +5,13 @@
    ========================================================================== */
 :root {
   /* --- surface elevation system (base -> floating) --- */
-  --bg: #081219;
-  --bg-2: #0b1922;
-  --surface: #11212c;
-  --surface-2: #172c38;
-  --elevated: #1d3441;
-  --line: #2a4554;
-  --line-soft: #1b323d;
+  --bg: #071116;
+  --bg-2: #0b1b21;
+  --surface: #10242b;
+  --surface-2: #17323a;
+  --elevated: #203c45;
+  --line: #31515c;
+  --line-soft: #1c3740;
 
   /* --- text (contrast-checked on --bg) --- */
   --text: #eef6f7;
@@ -19,13 +19,14 @@
   --faint: #8fa6ad;   /* captions — lifted for legibility */
 
   /* --- accents --- */
-  --teal: #3dd7c0;
-  --teal-bright: #6ff0dd;
+  --teal: #35dcc5;
+  --teal-bright: #91fff0;
   --teal-dark: #1ea796;
   --teal-deep: #0e5f57;
   --coral: #ff7a64;
   --coral-soft: #ffa99b;
   --amber: #f2c14e;
+  --sky: #69b7ff;
   --green: #5fd692;
   --violet: #9d8cff;
   --focus: #a6fff1;
@@ -91,11 +92,20 @@ button, a, input, select { -webkit-tap-highlight-color: transparent; }
 /* --- brand lockup --- */
 .brand { display: inline-flex; gap: 12px; align-items: center; text-decoration: none; }
 .brand-mark {
-  width: 42px; height: 42px; display: grid; place-items: center;
-  border-radius: 12px;
-  background: linear-gradient(150deg, var(--teal-bright), var(--teal-dark));
-  color: #052622; font: 800 14px/1 var(--mono); letter-spacing: -.04em;
-  box-shadow: var(--shadow-teal), inset 0 1px 0 rgba(255, 255, 255, .35);
+  position: relative; width: 46px; height: 46px; display: grid; place-items: center;
+  border-radius: 8px;
+  background:
+    linear-gradient(135deg, rgba(145, 255, 240, .9), rgba(53, 220, 197, .64) 42%, rgba(255, 122, 100, .9));
+  color: #041f1c; font: 800 13px/1 var(--mono); letter-spacing: -.05em;
+  box-shadow: var(--shadow-teal), inset 0 1px 0 rgba(255, 255, 255, .38);
+  isolation: isolate;
+}
+.brand-mark::before, .brand-mark::after {
+  content: ""; position: absolute; inset: 8px; border: 1.5px solid rgba(4, 31, 28, .72);
+  border-radius: 4px; transform: rotate(45deg); z-index: -1;
+}
+.brand-mark::after {
+  inset: 16px; border-color: rgba(4, 31, 28, .52); background: rgba(4, 31, 28, .14);
 }
 .brand strong, .brand small { display: block; }
 .brand strong { font: 700 15px/1.2 var(--display); letter-spacing: -.01em; }

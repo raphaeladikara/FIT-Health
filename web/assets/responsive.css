@@ -17,8 +17,11 @@
   .dashboard-header { min-height: 80px; justify-content: flex-start; gap: 14px; }
   .dashboard-header > div:nth-child(2) { flex: 1; min-width: 0; }
   .run-summary { display: none; }
-  .metrics, .grid-3 { grid-template-columns: 1fr; }
+  .metrics, .grid-3, .score-ring-grid { grid-template-columns: 1fr; }
   .grid-2, .case-layout, .resource-layout, .demo-shell { grid-template-columns: 1fr; }
+  .dashboard-visual-hero { grid-template-columns: 1fr; }
+  .hero-mini-map { display: none; }
+  .evidence-map { grid-template-columns: 1fr 1fr; }
   .filters { grid-template-columns: 1fr 1fr; }
   .workflow { grid-template-columns: 1fr 1fr; }
   .workflow div::after { display: none; }
@@ -40,6 +43,9 @@
   .probability-value { grid-column: 2; text-align: left; padding-left: 0; }
   .inline-stats { gap: 10px; }
   .inline-stats span { flex: 1 1 130px; }
+  .score-ring-card { grid-template-columns: 92px 1fr; }
+  .score-ring { width: 88px; height: 88px; }
+  .evidence-map { grid-template-columns: 1fr; padding: 12px; }
   .demo-header { padding: 0 18px; }
   .demo-workspace { padding: 22px; min-height: 0; }
   #demo-content h1 { font-size: 1.7rem; }
