@@ -26,6 +26,15 @@ FORBIDDEN_CLAIMS = {
     "safe to discharge",
     "validated clinical impact",
 }
+PUBLIC_SCHEMA_VERSION = "3.1.0"
+REQUIRED_EVIDENCE_FIELDS = {
+    "notebook_sha256",
+    "analysis_policy_id",
+    "primary_track_summary",
+    "narrative",
+    "rare_label_summary",
+    "center_transfer_summary",
+}
 
 
 def canonical_bytes(value: Any) -> bytes:
@@ -70,6 +79,26 @@ def validate_web_bundle() -> dict[str, list[str]]:
     evidence = payloads["evidence.json"]
     input_schema = payloads["input-schema.json"]
     cases = payloads["demo-cases.json"]
+    if manifest.get("schema_version") != PUBLIC_SCHEMA_VERSION:
+        errors.append(
+            f"public schema must be {PUBLIC_SCHEMA_VERSION}, "
+            f"got {manifest.get('schema_version')}"
+        )
+    else:
+        passed.append(f"public schema is {PUBLIC_SCHEMA_VERSION}")
+    missing_evidence = REQUIRED_EVIDENCE_FIELDS - set(evidence)
+    if missing_evidence:
+        errors.append(
+            f"evidence contract missing fields: {sorted(missing_evidence)}"
+        )
+    parity_fields = ("notebook_sha256", "analysis_policy_id")
+    for field in parity_fields:
+        if manifest.get(field) != evidence.get(field):
+            errors.append(f"{field} mismatch between manifest and evidence")
+    if not missing_evidence and all(
+        manifest.get(field) == evidence.get(field) for field in parity_fields
+    ):
+        passed.append("notebook and analysis policy provenance agree")
     for name, payload in payloads.items():
         forbidden = [key for key in walk(payload) if key.lower() in FORBIDDEN_KEYS]
         if forbidden:
@@ -107,6 +136,9 @@ def validate_web_bundle() -> dict[str, list[str]]:
     vercel_text = json.dumps(vercel)
     if "no-store" not in vercel_text or "Content-Security-Policy" not in vercel_text:
         errors.append("API caching or CSP security gate missing")
+    prototype = (WEB / "prototype.html").read_text(encoding="utf-8")
+    if "prototype.js" not in prototype or "noindex,nofollow" not in prototype:
+        errors.append("operational prototype entrypoint or noindex gate missing")
     if not errors:
         passed.extend(
             [

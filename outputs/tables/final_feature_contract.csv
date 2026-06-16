@@ -20,7 +20,6 @@ PRE_LAB,Douleur Thoracique (Chaist pain),Douleur Thoracique (Chaist pain),T0_int
 PRE_LAB,Mal de dos / Douleur rachidienne ( Back pain / Rachiodynia),Mal de dos / Douleur rachidienne ( Back pain / Rachiodynia),T0_intake,pre_lab
 PRE_LAB,Troubles de la conscience (Consciousness trouble),Troubles de la conscience (Consciousness trouble),T0_intake,pre_lab
 PRE_LAB,Perte d'appétit ou Anorexie (Loss of appetite or Anorexia),Perte d'appétit ou Anorexie (Loss of appetite or Anorexia),T0_intake,pre_lab
-PRE_LAB,Éruptions cutanées ou Exanthème (Skin rash or Exanthema),Éruptions cutanées ou Exanthème (Skin rash or Exanthema),T0_intake,pre_lab
 PRE_LAB,Éruption morbilliforme (Morbilliform rash),Éruption morbilliforme (Morbilliform rash),T0_intake,pre_lab
 PRE_LAB,Saignement/ Manifestations hémorragiques (Bleeding),Saignement/ Manifestations hémorragiques (Bleeding),T0_intake,pre_lab
 PRE_LAB,Rhinorrhée (Rhinorrhea),Rhinorrhée (Rhinorrhea),T0_intake,pre_lab
@@ -101,7 +100,6 @@ LAB_AWARE,Douleur Thoracique (Chaist pain),Douleur Thoracique (Chaist pain),T0_i
 LAB_AWARE,Mal de dos / Douleur rachidienne ( Back pain / Rachiodynia),Mal de dos / Douleur rachidienne ( Back pain / Rachiodynia),T0_intake,pre_lab
 LAB_AWARE,Troubles de la conscience (Consciousness trouble),Troubles de la conscience (Consciousness trouble),T0_intake,pre_lab
 LAB_AWARE,Perte d'appétit ou Anorexie (Loss of appetite or Anorexia),Perte d'appétit ou Anorexie (Loss of appetite or Anorexia),T0_intake,pre_lab
-LAB_AWARE,Éruptions cutanées ou Exanthème (Skin rash or Exanthema),Éruptions cutanées ou Exanthème (Skin rash or Exanthema),T0_intake,pre_lab
 LAB_AWARE,Éruption morbilliforme (Morbilliform rash),Éruption morbilliforme (Morbilliform rash),T0_intake,pre_lab
 LAB_AWARE,Saignement/ Manifestations hémorragiques (Bleeding),Saignement/ Manifestations hémorragiques (Bleeding),T0_intake,pre_lab
 LAB_AWARE,Rhinorrhée (Rhinorrhea),Rhinorrhée (Rhinorrhea),T0_intake,pre_lab
@@ -184,7 +182,6 @@ LAB_AWARE,CRP>50 /CRP 10-50,CRP>50 /CRP 10-50__missing,T2_lab,lab_aware
 LAB_AWARE,Créatinine élevée / Elevated Creatinine,Créatinine élevée / Elevated Creatinine,T2_lab,lab_aware
 LAB_AWARE,Créatinine élevée / Elevated Creatinine,Créatinine élevée / Elevated Creatinine__missing,T2_lab,lab_aware
 LAB_AWARE,ALAT / ASAT élevés. / Elevated ALAT / Elevated ASAT,ALAT / ASAT élevés. / Elevated ALAT / Elevated ASAT,T2_lab,lab_aware
-LAB_AWARE,ALAT / ASAT élevés. / Elevated ALAT / Elevated ASAT,ALAT / ASAT élevés. / Elevated ALAT / Elevated ASAT__missing,T2_lab,lab_aware
 RESEARCH_FULL,Centre de santé,Centre de santé,T0_intake,pre_lab
 RESEARCH_FULL,Genre (Gender),gender_female,T0_intake,pre_lab
 RESEARCH_FULL,Âge (Age),Âge (Age),T0_intake,pre_lab
@@ -206,7 +203,6 @@ RESEARCH_FULL,Douleur Thoracique (Chaist pain),Douleur Thoracique (Chaist pain),
 RESEARCH_FULL,Mal de dos / Douleur rachidienne ( Back pain / Rachiodynia),Mal de dos / Douleur rachidienne ( Back pain / Rachiodynia),T0_intake,pre_lab
 RESEARCH_FULL,Troubles de la conscience (Consciousness trouble),Troubles de la conscience (Consciousness trouble),T0_intake,pre_lab
 RESEARCH_FULL,Perte d'appétit ou Anorexie (Loss of appetite or Anorexia),Perte d'appétit ou Anorexie (Loss of appetite or Anorexia),T0_intake,pre_lab
-RESEARCH_FULL,Éruptions cutanées ou Exanthème (Skin rash or Exanthema),Éruptions cutanées ou Exanthème (Skin rash or Exanthema),T0_intake,pre_lab
 RESEARCH_FULL,Éruption morbilliforme (Morbilliform rash),Éruption morbilliforme (Morbilliform rash),T0_intake,pre_lab
 RESEARCH_FULL,Saignement/ Manifestations hémorragiques (Bleeding),Saignement/ Manifestations hémorragiques (Bleeding),T0_intake,pre_lab
 RESEARCH_FULL,Rhinorrhée (Rhinorrhea),Rhinorrhée (Rhinorrhea),T0_intake,pre_lab
@@ -289,6 +285,5 @@ RESEARCH_FULL,CRP>50 /CRP 10-50,CRP>50 /CRP 10-50__missing,T2_lab,lab_aware
 RESEARCH_FULL,Créatinine élevée / Elevated Creatinine,Créatinine élevée / Elevated Creatinine,T2_lab,lab_aware
 RESEARCH_FULL,Créatinine élevée / Elevated Creatinine,Créatinine élevée / Elevated Creatinine__missing,T2_lab,lab_aware
 RESEARCH_FULL,ALAT / ASAT élevés. / Elevated ALAT / Elevated ASAT,ALAT / ASAT élevés. / Elevated ALAT / Elevated ASAT,T2_lab,lab_aware
-RESEARCH_FULL,ALAT / ASAT élevés. / Elevated ALAT / Elevated ASAT,ALAT / ASAT élevés. / Elevated ALAT / Elevated ASAT__missing,T2_lab,lab_aware
 RESEARCH_FULL,Dengue (Dengua),Dengue (Dengua),T3_restate,research_only
 RESEARCH_FULL,Autres maladies présentées par le patient,autres_maladies_pr_sent_es_par_le_patien__present,T3_restate,research_only

@@ -9,6 +9,8 @@
     "source_commit",
     "timestamp",
     "notebook_identity",
+    "notebook_sha256",
+    "analysis_policy_id",
     "dataset",
     "lock_manifest",
     "policies",

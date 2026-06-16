@@ -155,8 +155,9 @@ Two layers, both sourced from the same hash-verified release:
 
 - **Static evidence (no backend):** `web/data/{evidence.json, input-schema.json,
   demo-cases.json, manifest.json}` (+ `data/schemas/`). `manifest.json`
-  (`schema_version` 3.0.0) carries sha256 hashes for every doc/figure/model, plus
-  `policy_ids`, `run_id`, `safe_scope`, and `production_rate_limit_required`.
+  (`schema_version` 3.1.0) carries sha256 hashes for every doc/figure/model, plus
+  `notebook_sha256`, `analysis_policy_id`, `policy_ids`, `run_id`, `safe_scope`,
+  and `production_rate_limit_required`.
 - **Live local assessment (small Python API):** `web/api/{inference.py, assess.py,
   validation.py}` runs the **exact exported** `web/model/{pre_lab,lab_aware}.joblib`
   pipelines. `inference.py` (`LockedInferenceService`) hash-checks models against
@@ -164,11 +165,13 @@ Two layers, both sourced from the same hash-verified release:
   endpoint; `validation.py` validates inputs against `input-schema.json` +
   `config/clinical_ranges.json`.
 
-Pages: `index.html` (landing), `dashboard.html` (analytics), `demo.html` (guided
-demo), `assessment.html` (live case assessment). Vanilla HTML/CSS/JS — `assets/router.js`
-routes; supporting modules include `data-client.js`, `evidence-views.js`,
-`schema-form.js`, `resource-simulator.js`, `thresholds.js`, `provenance.js`,
-`formatters.js`, `components.js`. Design system: [DESIGN.md](DESIGN.md).
+Pages: `index.html` (landing), `prototype.html` (integrated operational workflow),
+`dashboard.html` (analytics), `demo.html` (guided demo), and `assessment.html`
+(focused live assessment). Vanilla HTML/CSS/JS — `assets/router.js` routes;
+supporting modules include `prototype.js`, `prototype-state.js`, `data-client.js`,
+`evidence-views.js`, `schema-form.js`, `resource-simulator.js`, `thresholds.js`,
+`provenance.js`, `formatters.js`, and `components.js`. Design system:
+[DESIGN.md](DESIGN.md).
 
 Serve with `python web/serve_live.py --port 4173` (static files **and** the local API;
 `file://` can't load the JSON). Deploy to Vercel with `web/` as root, framework
@@ -193,14 +196,17 @@ python -m jupyter nbconvert --to notebook --execute \
 
 # Rebuild + validate the public web bundle (reads outputs/releases/latest.json only)
 python export_web_data.py
+python scripts/validate_notebook_release_parity.py
 python scripts/validate_web_bundle.py
 
 # Serve the dashboard + local assessment API
 python web/serve_live.py --port 4173        # open http://localhost:4173
+open_dashboard.bat                          # Windows: open dashboard.html via live server
 
 # Verify everything
 python -m pytest tests/ -q --basetemp=.pytmp   # pytest-style; .pytmp avoids a Windows temp ACL error
 python scripts/validate_final_notebook.py
+python scripts/validate_notebook_release_parity.py
 python scripts/validate_web_bundle.py
 cd web && npm test && npm run check          # node --test (tests/*.test.js) + tools/check-js.mjs
 # optional browser smoke: cd web && npm run test:browser
@@ -217,13 +223,17 @@ fold-local schema fix** (train pool 221, frozen test 78; split seed unchanged):
 | PRE_LAB | Extra Trees | 0.476 | 0.756 | 0.539 | 0.506 |
 | LAB_AWARE | HistGradientBoosting | 0.478 | 0.730 | 0.514 | 0.587 |
 
+Active scientific release: **`20260615T211254Z`** (scientific schema `1.1.0`, public
+schema `3.1.0`, analysis policy `3117420567f127a8`).
+
 **PRE_LAB stays the primary prototype** (leads micro-F1 and macro PR-AUC); LAB_AWARE's
 small macro-F1 edge does not establish operational superiority and depends on
 confirmatory inputs. Yellow fever has **3** frozen-test positives and **0.00** recall
 (flagged evidence-limited; routed to confirmatory testing — Sec. 9.3). LOCO macro-F1
 ≈ **0.27–0.30** → center transfer is the main generalization warning. These come from
-the executed notebook; the canonical `outputs/tables/*.csv` and the web release are
-**not** regenerated here — rerun `python run_pipeline.py` to refresh them to match.
+the executed notebook, canonical `outputs/tables/*.csv`, release bundle, model
+artifacts, and public web evidence; parity is enforced by
+`scripts/validate_notebook_release_parity.py`.
 
 ## Skill-first workflow (for agents)
 

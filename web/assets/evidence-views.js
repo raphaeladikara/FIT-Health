@@ -4,6 +4,7 @@ import {
   IntervalMetric,
   ScientificCaveat,
   SupportStatus,
+  metric,
   table,
 } from "./components.js";
 import { number, titleCase } from "./formatters.js";
@@ -14,15 +15,28 @@ const metricRows = (bundle, track = "PRE_LAB") =>
     (row) => row.track === track
   );
 
+export function aggregateMetricRows(bundle, track = "PRE_LAB") {
+  const row = bundle.evidence.validation_and_frozen_test.frozen_test.find(
+    (item) => item.track === track,
+  );
+  if (!row) return [];
+  return [
+    { metric: "Macro-F1", estimate: row.macro_f1, source: `Frozen test · ${track}` },
+    { metric: "Micro-F1", estimate: row.micro_f1, source: `Frozen test · ${track}` },
+    { metric: "Macro PR-AUC", estimate: row.macro_pr_auc, source: `Frozen test · ${track}` },
+    { metric: "Macro recall", estimate: row.macro_recall, source: `Frozen test · ${track}` },
+  ];
+}
+
 
 export function executiveEvidence(bundle) {
   const counts = bundle.evidence.cohort_and_partitions.counts;
-  const metrics = metricRows(bundle).slice(0, 3);
+  const metrics = aggregateMetricRows(bundle).slice(0, 3);
   return `${EvidenceScopeBadge("Frozen test and training-only nested validation")}
-    <div class="insight-hero"><h2>Differential-risk review with visible uncertainty and provenance.</h2><p>${bundle.evidence.safe_scope}</p></div>
-    <div class="metrics">${metrics.map(IntervalMetric).join("")}</div>
+    <div class="insight-hero"><h2>Differential-risk review implemented as an auditable operational prototype.</h2><p>${bundle.evidence.narrative.patient_workflow}</p><a class="button button-primary" href="prototype.html">Open operational prototype</a></div>
+    <div class="metrics">${metrics.map((row) => metric(row.metric, number(row.estimate, 3), row.source)).join("")}</div>
     <div class="inline-stats"><span><strong>${counts.n_supervised}</strong> supervised patients</span><span><strong>${counts.training}</strong> training pool</span><span><strong>${counts.frozen_test}</strong> frozen test</span></div>
-    ${ScientificCaveat(bundle.evidence.limitations[0])}`;
+    ${ScientificCaveat(bundle.evidence.primary_track_summary.decision)}`;
 }
 
 
@@ -71,8 +85,10 @@ export function uncertaintyEvidence(bundle) {
 
 export function fairnessEvidence(bundle) {
   const section = bundle.evidence.fairness_and_center_transfer;
+  const summary = bundle.evidence.center_transfer_summary;
   return `${EvidenceScopeBadge("Frozen test subgroups and center transfer")}
     <p class="view-lede">Subgroup estimates remain descriptive where positive support is small. Center identity is not treated as a causal explanation.</p>
+    ${ScientificCaveat(`${summary.interpretation} Observed LOCO macro-F1 range: ${number(summary.macro_f1_min, 3)} to ${number(summary.macro_f1_max, 3)}.`)}
     ${table(section.center_transfer, [
       { key: "test_on", label: "Held-out center" },
       { key: "n_test", label: "Patients" },

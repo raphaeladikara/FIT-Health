@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="description" content="VECTRA-X operational prototype: anonymous intake, locked-model assessment, review routing, and response projection.">
+  <title>Operational prototype | VECTRA-X</title>
+  <link rel="icon" href="data:,">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="assets/base.css">
+  <link rel="stylesheet" href="assets/dashboard.css">
+  <link rel="stylesheet" href="assets/assessment.css">
+  <link rel="stylesheet" href="assets/prototype.css">
+  <link rel="stylesheet" href="assets/responsive.css">
+</head>
+<body class="prototype-page">
+  <a class="skip-link" href="#prototype-main">Skip to prototype workspace</a>
+  <header class="prototype-header">
+    <a class="brand" href="index.html"><span class="brand-mark">VX</span><span><strong>VECTRA-X</strong><small>Operational prototype</small></span></a>
+    <nav aria-label="Prototype links">
+      <a href="dashboard.html">Scientific evidence</a>
+      <a href="assessment.html">Focused assessment</a>
+    </nav>
+  </header>
+
+  <main id="prototype-main" class="prototype-shell">
+    <section class="prototype-intro">
+      <div>
+        <span class="tag">Report-ready implementation</span>
+        <h1>From anonymous intake to an operational response scenario.</h1>
+        <p id="prototype-positioning">Loading the locked scientific release...</p>
+      </div>
+      <div class="prototype-run" id="prototype-run" aria-live="polite"></div>
+    </section>
+
+    <nav class="prototype-stages" aria-label="Prototype stages" id="prototype-stages"></nav>
+
+    <div class="prototype-layout">
+      <section class="prototype-workspace">
+        <header class="figure-header">
+          <div><span id="figure-number">Prototype figure 1</span><h2 id="stage-title">Case intake</h2></div>
+          <p id="stage-caption">What this demonstrates: schema-governed anonymous intake before model execution.</p>
+        </header>
+
+        <form id="prototype-form" novalidate>
+          <section class="prototype-stage" data-stage-panel="intake">
+            <div class="intake-toolbar">
+              <div class="field"><label for="prototype-case">Synthetic demonstration</label><select id="prototype-case"></select></div>
+              <div class="field"><label for="prototype-mode">Evidence mode</label><select id="prototype-mode"><option value="PRE_LAB">PRE_LAB, primary operational prototype</option><option value="LAB_AWARE">LAB_AWARE, post-test comparison</option></select></div>
+            </div>
+            <div class="completeness" id="input-completeness"></div>
+            <div id="prototype-fields" class="assessment-fields"></div>
+          </section>
+
+          <section class="prototype-stage" data-stage-panel="assessment" hidden>
+            <div id="assessment-status" class="stage-placeholder">
+              <h3>No locked assessment has been run.</h3>
+              <p>Complete the intake or load a synthetic case, then run the released model pipeline.</p>
+            </div>
+            <div id="prototype-probabilities"></div>
+          </section>
+
+          <section class="prototype-stage" data-stage-panel="decision" hidden>
+            <div id="prototype-decision" class="stage-placeholder">
+              <h3>Operational routing is waiting for model output.</h3>
+              <p>The prototype will show review, uncertainty, and confirmatory-test states without issuing a diagnosis.</p>
+            </div>
+          </section>
+
+          <section class="prototype-stage" data-stage-panel="response" hidden>
+            <div class="response-controls">
+              <div class="field"><label for="cohort-size">Scenario cohort</label><input id="cohort-size" type="number" min="1" value="100"></div>
+              <div class="field"><label for="test-capacity">Confirmatory-test capacity</label><input id="test-capacity" type="number" min="0" value="25"></div>
+              <div class="field"><label for="urgent-capacity">Urgent-review capacity</label><input id="urgent-capacity" type="number" min="0" value="15"></div>
+            </div>
+            <div id="prototype-response" class="stage-placeholder">
+              <h3>Response projection requires a completed assessment.</h3>
+              <p>All outputs are assumption-bound scenarios, not observed clinical outcomes or savings.</p>
+            </div>
+          </section>
+
+          <div class="prototype-actions">
+            <button class="button button-secondary" id="prototype-back" type="button">Previous stage</button>
+            <button class="button button-primary" id="prototype-next" type="button">Run locked assessment</button>
+          </div>
+        </form>
+      </section>
+
+      <aside class="evidence-drawer" aria-labelledby="evidence-drawer-title">
+        <div class="drawer-heading"><span>Scientific context</span><h2 id="evidence-drawer-title">Evidence travels with the decision.</h2></div>
+        <div id="prototype-evidence"></div>
+        <a class="button button-quiet" href="dashboard.html">Audit full evidence</a>
+      </aside>
+    </div>
+  </main>
+  <script type="module" src="assets/prototype.js"></script>
+</body>
+</html>

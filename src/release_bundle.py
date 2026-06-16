@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import math
 from pathlib import Path
 import subprocess
 from datetime import datetime, timezone
@@ -37,7 +38,11 @@ def _walk(value: Any):
 
 def canonical_json_bytes(payload: dict[str, Any]) -> bytes:
     return json.dumps(
-        payload, sort_keys=True, ensure_ascii=False, separators=(",", ":")
+        _json_value(payload),
+        sort_keys=True,
+        ensure_ascii=False,
+        separators=(",", ":"),
+        allow_nan=False,
     ).encode("utf-8")
 
 
@@ -52,6 +57,8 @@ def validate_scientific_release(release: dict[str, Any]) -> None:
         "source_commit",
         "timestamp",
         "notebook_identity",
+        "notebook_sha256",
+        "analysis_policy_id",
         "dataset",
         "lock_manifest",
         "policies",
@@ -69,6 +76,10 @@ def validate_scientific_release(release: dict[str, Any]) -> None:
         raise ReleaseValidationError(f"missing release fields: {sorted(missing)}")
     if release["source_commit"] != release["lock_manifest"].get("source_commit"):
         raise ReleaseValidationError("source commit disagrees with lock manifest")
+    if not release["analysis_policy_id"]:
+        raise ReleaseValidationError("analysis policy ID is missing")
+    if len(release["notebook_sha256"]) != 64:
+        raise ReleaseValidationError("notebook SHA-256 is invalid")
     for metric in release["metrics"]:
         metric_required = {
             "partition",
@@ -134,10 +145,11 @@ def _source_commit(root: Path) -> str:
 def _json_value(value: Any) -> Any:
     if isinstance(value, (np.integer,)):
         return int(value)
-    if isinstance(value, (np.floating,)):
-        return None if np.isnan(value) else float(value)
+    if isinstance(value, (float, np.floating)):
+        numeric = float(value)
+        return None if not math.isfinite(numeric) else numeric
     if isinstance(value, np.ndarray):
-        return value.tolist()
+        return _json_value(value.tolist())
     if isinstance(value, dict):
         return {str(key): _json_value(child) for key, child in value.items()}
     if isinstance(value, (list, tuple)):
@@ -255,7 +267,7 @@ def export_release_bundle(
     result,
     root: str | Path,
     *,
-    schema_version: str = "1.0.0",
+    schema_version: str = "1.1.0",
     run_id: str | None = None,
 ) -> Path:
     """Export the workflow result as the sole scientific source of truth."""
@@ -358,12 +370,29 @@ def export_release_bundle(
         "calibration_method": "training_oof_per_label",
         "seeds": result.config.get("project", {}).get("random_state", 42),
     }
+    analysis_policy_id = _hash_values(
+        {
+            "active_labels": result.active_labels,
+            "selected_policy": lock_manifest["selected_config"],
+            "thresholds": {
+                track: {
+                    label: round(float(value), 6)
+                    for label, value in thresholds.items()
+                }
+                for track, thresholds in result.thresholds.items()
+            },
+            "n_supervised": result.cohort_audit["n_supervised"],
+        }
+    )[:16]
+    notebook_path = root_path / "VECTRA_X_Final_Submission.ipynb"
     release = {
         "schema_version": schema_version,
         "run_id": run_id,
         "source_commit": source_commit,
         "timestamp": timestamp.isoformat().replace("+00:00", "Z"),
-        "notebook_identity": "notebooks/VECTRA_X_Final.ipynb",
+        "notebook_identity": "VECTRA_X_Final_Submission.ipynb",
+        "notebook_sha256": content_hash(notebook_path),
+        "analysis_policy_id": analysis_policy_id,
         "dataset": {
             "fingerprint": content_hash(root_path / "data" / "raw" / "data.csv"),
             "cohort_counts": {

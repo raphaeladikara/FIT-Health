@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Generate the fully self-contained, section-by-section VECTRA-X submission
+"""Generate the single-file, section-by-section VECTRA-X submission
 notebook from the tested src/ functions.
 
 This is a DEVELOPMENT tool — NOT part of the submission. It lifts the *real*
@@ -162,7 +162,7 @@ def front_matter():
 
 **FIT Competition 2026 — Track IV: AI-based Vector-Borne Disease Prediction (Human Health / Digital Health Intelligence)**
 
-This notebook is a single, fully self-contained scientific submission. Every helper function, preprocessing rule, model, metric and figure is defined in the section that uses it, as ordinary Python; the notebook executes from the official competition dataset alone, with no dependency on any external module, configuration file, or precomputed result.
+This notebook is a single-file scientific submission with an executed submission-dependency audit. Every helper function, preprocessing rule, model, metric and figure is defined in the section that uses it, as ordinary Python; the notebook executes from the official competition dataset alone, with no dependency on any external module, configuration file, or precomputed result.
 
 > VECTRA-X transforms early patient-level information into auditable triage signals, uncertainty-aware review recommendations, and population-level resource-planning evidence. **It is not intended to autonomously diagnose patients.**
 
@@ -1169,7 +1169,7 @@ To see which early, pre-laboratory observations separate one disease from anothe
 
     add_code(r'''
 # Top differentiating clinical signals per disease (train pool only)
-# Self-contained: coerce each pre-lab feature to a numeric signal (yes/no -> 1/0,
+# Submission-local helper: coerce each pre-lab feature to a numeric signal (yes/no -> 1/0,
 # otherwise decimal-comma numeric), then rank by standardized mean difference
 # between label-positive and label-negative patients in the TRAINING POOL.
 _yes_tok = {"oui", "positif", "positive", "yes", "true", "présent", "present", "1", "1.0"}
@@ -1835,6 +1835,26 @@ final_test_audit = pd.DataFrame(
 display(Markdown("### Executed numerical abstract (frozen test)"))
 display(final_test_metrics[["track", "model", "macro_f1", "macro_pr_auc", "macro_recall", "micro_f1"]]
         .style.format(precision=3))
+
+# Stable machine-readable evidence marker for release/web parity validation.
+_evidence_snapshot = {
+    "analysis_policy_id": hashlib.sha256(json.dumps({
+        "active_labels": class_order,
+        "selected_policy": selected_policy,
+        "thresholds": {
+            track: {label: round(float(value), 6) for label, value in thresholds.items()}
+            for track, thresholds in selected_thresholds.items()
+        },
+        "n_supervised": len(df_supervised),
+    }, sort_keys=True, separators=(",", ":")).encode("utf-8")).hexdigest()[:16],
+    "frozen_test": final_test_metrics[
+        ["track", "model", "macro_f1", "macro_pr_auc", "macro_recall", "micro_f1"]
+    ].to_dict(orient="records"),
+    "per_label": final_per_label[
+        ["track", "label", "support_pos", "precision", "recall", "f1", "pr_auc", "fn", "fp"]
+    ].to_dict(orient="records"),
+}
+print("VECTRA_X_EVIDENCE_SNAPSHOT=" + json.dumps(_evidence_snapshot, sort_keys=True))
 ''')
 
     add_code(r'''
@@ -2654,7 +2674,7 @@ def section_16():
     add_md(r"""
 # 16. Final Submission Readiness Checklist
 
-The first table is a static summary of the submission requirements. The cells that follow are computed from the executed workflow: a list of claims checked against the in-memory results, a map onto the FIT scoring rubric, a set of result invariants, and a self-containment scan. Together they let a judge confirm that the notebook is self-contained and that each headline claim is backed by an executed result in this same file.
+The first table is a static summary of the submission requirements. The cells that follow are computed from the executed workflow: a list of claims checked against the in-memory results, a map onto the FIT scoring rubric, a set of result invariants, and a submission-dependency audit. Together they let a judge confirm that the single-file submission has no hidden project dependency and that each headline claim is backed by an executed result in this same file.
 
 | Requirement | Status | Evidence |
 | --- | --- | --- |
@@ -2788,13 +2808,13 @@ assert _inv_ok, result_invariants[result_invariants["status"] == "review"]
 ''')
 
     add_md(r"""
-## 16.3 Self-containment scan
+## 16.3 Submission dependency audit
 
 The cell below scans the decoded notebook (cell sources and textual outputs) for strings that would signal a hidden dependency on the original repository — analysis-package imports, in-memory module bootstrapping, external configuration, release bundles, or machine-specific absolute paths — together with a small set of over-claims this submission deliberately avoids. Patterns are assembled by concatenation so the scanner's own source never contains a literal match.
 """)
 
     add_code(r'''
-# Self-containment scan
+# Submission dependency audit
 _SELF_MARKER = "VECTRA_X_SELF_CONTAINED_SUBMISSION_MARKER"
 
 _forbidden = {
@@ -2858,7 +2878,7 @@ integrity_scan = pd.DataFrame([
 print("Scanned (decoded):", _scanned_label)
 display(integrity_scan)
 _all_pass = bool((integrity_scan["status"] == "PASS").all())
-print("Self-containment scan:", "all patterns clear" if _all_pass else "see flagged rows")
+print("Submission dependency audit:", "all patterns clear" if _all_pass else "see flagged rows")
 assert _all_pass, integrity_scan[integrity_scan["status"] == "FAIL"]
 ''')
 

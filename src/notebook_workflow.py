@@ -828,9 +828,24 @@ def run_research_workflow(quick: bool = False) -> ResearchWorkflowResult:
                 "status": "supported",
             },
             {
-                "claim": "Laboratory-aware modeling improves frozen-test macro-F1.",
-                "evidence": f"PRE_LAB={pre_row['macro_f1']:.3f}; LAB_AWARE={lab_row['macro_f1']:.3f}.",
-                "status": "supported" if lab_row["macro_f1"] > pre_row["macro_f1"] else "not supported",
+                "claim": (
+                    "LAB_AWARE shows at most a small frozen-test macro-F1 edge; "
+                    "PRE_LAB remains the primary operational track."
+                ),
+                "evidence": (
+                    f"PRE_LAB macro-F1={pre_row['macro_f1']:.3f}, "
+                    f"micro-F1={pre_row['micro_f1']:.3f}, "
+                    f"macro-PR-AUC={pre_row['macro_pr_auc']:.3f}; "
+                    f"LAB_AWARE macro-F1={lab_row['macro_f1']:.3f}."
+                ),
+                "status": (
+                    "PRE_LAB leads micro-F1 and macro-PR-AUC"
+                    if (
+                        pre_row["micro_f1"] >= lab_row["micro_f1"]
+                        and pre_row["macro_pr_auc"] >= lab_row["macro_pr_auc"]
+                    )
+                    else "mixed"
+                ),
             },
             {
                 "claim": "Prediction-set evidence is exact only for the uncapped empirical policy.",

@@ -35,7 +35,7 @@ export function EvidenceScopeBadge(scope) {
 }
 
 export function ProvenanceStrip(manifest) {
-  return `<div class="provenance-strip"><strong>Locked run ${manifest.notebook_run_id}</strong><span>Scientific schema ${manifest.scientific_schema_version}</span><span>Source ${manifest.source_commit.slice(0, 12)}</span></div>`;
+  return `<div class="provenance-strip"><strong>Locked run ${manifest.notebook_run_id}</strong><span>Policy ${manifest.analysis_policy_id}</span><span>Notebook ${manifest.notebook_sha256.slice(0, 12)}</span><span>Source ${manifest.source_commit.slice(0, 12)}</span></div>`;
 }
 
 export function SupportStatus(support, minimum = 5) {

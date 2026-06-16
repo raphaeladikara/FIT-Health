@@ -94,10 +94,12 @@ class LockedInferenceService:
         if len(prediction_set) >= max(4, len(self.class_order)):
             reasons.append("UNINFORMATIVE_SET")
         return {
-            "schema_version": "3.0.0",
+            "schema_version": "3.1.0",
             "provenance": {
                 "run_id": self.run_id,
                 "policy_id": bundle["policy_id"],
+                "analysis_policy_id": self.manifest["analysis_policy_id"],
+                "notebook_sha256": self.manifest["notebook_sha256"],
                 "model_hash": self.manifest["models"][mode]["sha256"],
             },
             "mode": mode,
@@ -136,8 +138,12 @@ class LockedInferenceService:
         self, mode: str, reasons: list[str]
     ) -> dict[str, Any]:
         return {
-            "schema_version": "3.0.0",
-            "provenance": {"run_id": self.run_id},
+            "schema_version": "3.1.0",
+            "provenance": {
+                "run_id": self.run_id,
+                "analysis_policy_id": self.manifest["analysis_policy_id"],
+                "notebook_sha256": self.manifest["notebook_sha256"],
+            },
             "mode": mode,
             "probabilities": {},
             "thresholds": {},

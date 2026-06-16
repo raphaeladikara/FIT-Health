@@ -29,7 +29,11 @@ def test_locked_inference_uses_bundle_thresholds_and_class_order():
     assert list(response["probabilities"]) == instance.class_order
     assert response["thresholds"] == instance.bundles["PRE_LAB"]["thresholds"]
     assert all(np.isfinite(list(response["probabilities"].values())))
+    assert response["schema_version"] == "3.1.0"
     assert response["provenance"]["run_id"] == instance.run_id
+    assert response["provenance"]["analysis_policy_id"] == instance.manifest[
+        "analysis_policy_id"
+    ]
 
 
 def test_validation_rejects_unknown_identifier_and_hard_invalid_value():

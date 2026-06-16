@@ -4,6 +4,8 @@
   "required": [
     "schema_version",
     "notebook_run_id",
+    "notebook_sha256",
+    "analysis_policy_id",
     "scientific_schema_version",
     "source_commit",
     "generated_at",

@@ -14,9 +14,19 @@ def test_exporter_reads_locked_release_and_writes_versioned_contracts():
     evidence = json.loads((WEB_DATA / "evidence.json").read_text(encoding="utf-8"))
     input_schema = json.loads((WEB_DATA / "input-schema.json").read_text(encoding="utf-8"))
 
-    assert manifest["schema_version"] == "3.0.0"
+    assert manifest["schema_version"] == "3.1.0"
     assert manifest["notebook_run_id"] == evidence["run_id"] == input_schema["run_id"]
     assert set(manifest["policy_ids"]) == {"PRE_LAB", "LAB_AWARE"}
+    assert len(manifest["notebook_sha256"]) == 64
+    assert manifest["analysis_policy_id"]
+    assert evidence["notebook_sha256"] == manifest["notebook_sha256"]
+    assert evidence["analysis_policy_id"] == manifest["analysis_policy_id"]
+    assert evidence["primary_track_summary"]["track"] == "PRE_LAB"
+    assert evidence["narrative"]["prototype_positioning"]
+    assert evidence["rare_label_summary"]["yellow_fever"]["frozen_support"] == 3
+    assert evidence["center_transfer_summary"]["macro_f1_min"] <= evidence[
+        "center_transfer_summary"
+    ]["macro_f1_max"]
     assert "FULL" not in json.dumps(evidence)
 
 

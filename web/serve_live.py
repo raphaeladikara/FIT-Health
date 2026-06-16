@@ -5,15 +5,17 @@ import argparse
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 import json
 from pathlib import Path
+import sys
 import time
+
+WEB_ROOT = Path(__file__).resolve().parent
+REPO_ROOT = WEB_ROOT.parent
 
 try:
     from .api.assess import MAX_REQUEST_BYTES, handle_assessment
 except ImportError:  # direct script execution from web/
-    from api.assess import MAX_REQUEST_BYTES, handle_assessment
-
-
-WEB_ROOT = Path(__file__).resolve().parent
+    sys.path.insert(0, str(REPO_ROOT))
+    from web.api.assess import MAX_REQUEST_BYTES, handle_assessment
 
 
 class LiveHandler(SimpleHTTPRequestHandler):

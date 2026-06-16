@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="VECTRA-X turns pre-lab signals into uncertainty-aware, resource-conscious triage recommendations.">
   <title>VECTRA-X | Clinical decision support</title>
+  <link rel="icon" href="data:,">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap">
@@ -21,6 +22,7 @@
     <nav aria-label="Primary">
       <a href="#evidence">Evidence</a>
       <a href="#limitations">Limitations</a>
+      <a href="prototype.html">Prototype</a>
       <a class="button button-quiet" href="dashboard.html">Open analytics</a>
     </nav>
   </header>
@@ -32,7 +34,7 @@
         <h1>From uncertain signals to <em>safer triage</em> decisions.</h1>
         <p class="hero-lede">VECTRA-X turns pre-lab patient signals into multi-label triage recommendations, calibrated uncertainty, and resource-aware actions.</p>
         <div class="hero-actions">
-          <a class="button button-primary" href="assessment.html">Run live assessment</a>
+          <a class="button button-primary" href="prototype.html">Open operational prototype</a>
           <a class="button button-secondary" href="dashboard.html">Explore full evidence</a>
         </div>
         <p class="hero-note">Anonymous inputs are processed without persistence or raw-input logging.</p>
@@ -91,18 +93,18 @@
       <ul>
         <li><strong>n=299</strong><span>Verified supervised cohort with high metric variance.</span></li>
         <li><strong>4%</strong><span>Yellow fever prevalence, making rare-label estimates fragile.</span></li>
-        <li><strong>0.26–0.31</strong><span>LOCO macro-F1, showing substantial center shift.</span></li>
+        <li><strong>0.27–0.30</strong><span>LOCO macro-F1, showing substantial center shift.</span></li>
         <li><strong>Human review</strong><span>Required for escalation, ambiguity, and abstention.</span></li>
       </ul>
     </section>
 
     <section class="final-cta">
       <div><p class="section-kicker">See the system make a decision</p><h2>Follow one case from signal to action.</h2></div>
-      <div class="hero-actions"><a class="button button-primary" href="assessment.html">Run live assessment</a><a class="text-link" href="dashboard.html#limitations">Review deployment gates</a></div>
+      <div class="hero-actions"><a class="button button-primary" href="prototype.html">Open operational prototype</a><a class="text-link" href="dashboard.html#limitations">Review deployment gates</a></div>
     </section>
   </main>
 
-  <footer class="site-footer"><span>VECTRA-X · FIT Competition 2026</span><span>Public static prototype · no live inference</span></footer>
+  <footer class="site-footer"><span>VECTRA-X · FIT Competition 2026</span><span>Release-locked live prototype · anonymous, no persistence</span></footer>
   <script type="module" src="assets/landing.js"></script>
 </body>
 </html>

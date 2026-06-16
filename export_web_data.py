@@ -16,7 +16,8 @@ WEB = ROOT / "web"
 WEB_DATA = WEB / "data"
 WEB_MODEL = WEB / "model"
 WEB_FIGURES = WEB / "figures"
-PUBLIC_SCHEMA_VERSION = "3.0.0"
+PUBLIC_SCHEMA_VERSION = "3.1.0"
+NOTEBOOK = ROOT / "VECTRA_X_Final_Submission.ipynb"
 
 
 def _read_json(path: Path) -> dict[str, Any]:
@@ -32,6 +33,76 @@ def _write_json(path: Path, payload: Any) -> None:
 
 def _json_hash(payload: Any) -> str:
     return hashlib.sha256(canonical_json_bytes(payload)).hexdigest()
+
+
+def _analysis_policy_id(release: dict[str, Any]) -> str:
+    if release.get("analysis_policy_id"):
+        return str(release["analysis_policy_id"])
+    selected = {
+        track: {
+            "policy_id": policy["policy_id"],
+            "thresholds": policy["thresholds"],
+            "model_hash": policy["model_hash"],
+        }
+        for track, policy in release["policies"].items()
+    }
+    return _json_hash(selected)[:16]
+
+
+def _primary_track_summary(release: dict[str, Any]) -> dict[str, Any]:
+    rows = {
+        row["track"]: row for row in release["evidence"]["frozen_test"]
+    }
+    primary = rows["PRE_LAB"]
+    comparison = rows["LAB_AWARE"]
+    return {
+        "track": "PRE_LAB",
+        "model": primary["model"],
+        "macro_f1": primary["macro_f1"],
+        "micro_f1": primary["micro_f1"],
+        "macro_pr_auc": primary["macro_pr_auc"],
+        "macro_recall": primary["macro_recall"],
+        "comparison_track": "LAB_AWARE",
+        "comparison_macro_f1": comparison["macro_f1"],
+        "comparison_micro_f1": comparison["micro_f1"],
+        "comparison_macro_pr_auc": comparison["macro_pr_auc"],
+        "decision": (
+            "PRE_LAB remains the primary operational prototype because it leads "
+            "micro-F1 and macro PR-AUC without requiring laboratory inputs."
+        ),
+    }
+
+
+def _rare_label_summary(release: dict[str, Any]) -> dict[str, Any]:
+    rows = {
+        row["label"]: row
+        for row in release["evidence"]["per_label"]
+        if row["track"] == "PRE_LAB"
+    }
+    return {
+        label: {
+            "frozen_support": int(rows[label]["support_pos"]),
+            "recall": rows[label]["recall"],
+            "f1": rows[label]["f1"],
+            "false_negatives": int(rows[label]["fn"]),
+            "routing": "confirmatory_testing_and_clinician_review",
+        }
+        for label in ("typhoid", "yellow_fever")
+    }
+
+
+def _center_transfer_summary(release: dict[str, Any]) -> dict[str, Any]:
+    rows = release["evidence"]["center_transfer"]
+    values = [float(row["macro_f1"]) for row in rows]
+    return {
+        "macro_f1_min": min(values),
+        "macro_f1_max": max(values),
+        "n_centers": len(rows),
+        "interpretation": (
+            "Center transfer is the principal generalization warning; local "
+            "validation is required before operational use."
+        ),
+    }
 
 
 def load_locked_release(
@@ -69,9 +140,14 @@ def verify_release_provenance(
 
 def build_public_evidence(release: dict[str, Any]) -> dict[str, Any]:
     evidence = release["evidence"]
+    primary = _primary_track_summary(release)
     return {
         "schema_version": PUBLIC_SCHEMA_VERSION,
         "run_id": release["run_id"],
+        "notebook_sha256": release.get(
+            "notebook_sha256", content_hash(NOTEBOOK)
+        ),
+        "analysis_policy_id": _analysis_policy_id(release),
         "safe_scope": (
             "Differential-risk review and confirmatory-testing support only. "
             "This prototype does not diagnose disease or recommend treatment."
@@ -82,6 +158,21 @@ def build_public_evidence(release: dict[str, Any]) -> dict[str, Any]:
             "policies": release["policies"],
             "safe_claims": release["safe_claims"],
         },
+        "primary_track_summary": primary,
+        "narrative": {
+            "prototype_positioning": (
+                "A single-file scientific submission with an executed "
+                "submission-dependency audit, implemented as a live operational "
+                "prototype for differential-risk review."
+            ),
+            "patient_workflow": (
+                "Anonymous intake is converted into calibrated differential risk, "
+                "uncertainty, review routing, and an assumption-bound resource projection."
+            ),
+            "primary_track_decision": primary["decision"],
+        },
+        "rare_label_summary": _rare_label_summary(release),
+        "center_transfer_summary": _center_transfer_summary(release),
         "cohort_and_partitions": {
             "counts": release["dataset"]["cohort_counts"],
             "partition_labels": release["dataset"]["partition_labels"],
@@ -235,6 +326,8 @@ def write_public_manifest(
     manifest = {
         "schema_version": PUBLIC_SCHEMA_VERSION,
         "notebook_run_id": release["run_id"],
+        "notebook_sha256": release.get("notebook_sha256", content_hash(NOTEBOOK)),
+        "analysis_policy_id": _analysis_policy_id(release),
         "scientific_schema_version": release["schema_version"],
         "source_commit": release["source_commit"],
         "generated_at": release["timestamp"],
@@ -265,6 +358,8 @@ def write_public_manifest(
     _write_json(WEB_DATA / "manifest.json", manifest)
     _write_json(WEB_MODEL / "model-manifest.json", {
         "run_id": release["run_id"],
+        "notebook_sha256": manifest["notebook_sha256"],
+        "analysis_policy_id": manifest["analysis_policy_id"],
         "models": models,
         "policy_ids": manifest["policy_ids"],
         "class_order": manifest["class_order"],

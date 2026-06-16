@@ -1,3 +1,3 @@
 ﻿micro_f1,macro_f1,weighted_f1,samples_f1,hamming_loss,subset_accuracy,jaccard_samples,macro_recall,macro_precision,macro_roc_auc,macro_pr_auc,track,model
-0.744,0.4624,0.749,0.7607,0.1641,0.4487,0.6827,0.5057,0.4381,0.762,0.5416,PRE_LAB,extra_trees
+0.7561,0.4759,0.7511,0.7667,0.1538,0.4615,0.6902,0.5057,0.4527,0.7724,0.5394,PRE_LAB,extra_trees
 0.7299,0.4777,0.7537,0.7548,0.1897,0.359,0.6547,0.5869,0.4095,0.7915,0.5141,LAB_AWARE,hist_gb
