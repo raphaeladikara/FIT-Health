@@ -25,6 +25,7 @@ const form = document.querySelector("#prototype-form");
 const fields = document.querySelector("#prototype-fields");
 const mode = document.querySelector("#prototype-mode");
 const caseSelect = document.querySelector("#prototype-case");
+const alertId = "prototype-alert";
 
 
 function formValues() {
@@ -34,6 +35,23 @@ function formValues() {
 
 function setUrl() {
   history.replaceState({}, "", `${location.pathname}${serializePrototypeState(current)}`);
+}
+
+
+function showIntakeAlert(message) {
+  let alert = document.querySelector(`#${alertId}`);
+  if (!alert) {
+    alert = document.createElement("div");
+    alert.id = alertId;
+    alert.className = "callout callout-risk prototype-alert";
+    document.querySelector("#input-completeness").after(alert);
+  }
+  alert.innerHTML = `<strong>Assessment unavailable.</strong><p>${message}</p>`;
+}
+
+
+function clearIntakeAlert() {
+  document.querySelector(`#${alertId}`)?.remove();
 }
 
 
@@ -203,6 +221,7 @@ function renderProjection() {
 
 
 async function runAssessment() {
+  clearIntakeAlert();
   document.querySelectorAll(".field-error").forEach((node) => { node.textContent = ""; });
   const errors = validateFormValues(bundle.inputSchema, mode.value, formValues());
   if (Object.keys(errors).length) {
@@ -220,7 +239,11 @@ async function runAssessment() {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(serializeAssessment(bundle.inputSchema, mode.value, formValues())),
   });
-  const payload = await response.json();
+  if ([404, 405, 501].includes(response.status)) {
+    throw new Error("The live assessment API is not available from the current static server. Serve with python web/serve_live.py --port 4173 so /api/assess can run the locked model locally.");
+  }
+  const isJson = response.headers.get("content-type")?.includes("application/json");
+  const payload = isJson ? await response.json() : { error: await response.text() };
   if (!response.ok) throw new Error(payload.error || "Assessment failed");
   assessment = payload;
   renderAssessment(payload);
@@ -296,6 +319,13 @@ async function init() {
 
 
 function showError(error) {
+  if (current.stage === "intake") {
+    const unavailable = error.message.includes("404") || error.message.includes("501") || error.message.includes("Unsupported method") || error.message.includes("Not Found")
+      ? "The live assessment API is not available from the current static server. Serve with python web/serve_live.py --port 4173 so /api/assess can run the locked model locally."
+      : error.message;
+    showIntakeAlert(unavailable);
+    return;
+  }
   document.querySelector("#assessment-status").innerHTML =
     `<div class="callout callout-risk"><strong>Assessment unavailable.</strong><p>${error.message}</p></div>`;
 }

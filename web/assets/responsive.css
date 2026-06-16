@@ -49,5 +49,7 @@
   .demo-header { padding: 0 18px; }
   .demo-workspace { padding: 22px; min-height: 0; }
   #demo-content h1 { font-size: 1.7rem; }
+  .demo-review-panel { grid-template-columns: 1fr; }
+  .demo-input-list li { align-items: flex-start; flex-direction: column; gap: 4px; }
   .section-heading { font-size: var(--fs-lg); }
 }

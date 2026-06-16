@@ -203,7 +203,7 @@ python scripts/validate_web_bundle.py
 
 # Serve the dashboard + local assessment API
 python web/serve_live.py --port 4173        # open http://localhost:4173
-open_dashboard.bat                          # Windows: open index.html via live server
+open_dashboard.bat                          # Windows: creates/uses .dashboard-venv, picks an open 4173-4177 port, opens index.html
 
 # Verify everything
 python -m pytest tests/ -q --basetemp=.pytmp   # pytest-style; .pytmp avoids a Windows temp ACL error

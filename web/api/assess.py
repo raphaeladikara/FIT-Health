@@ -4,6 +4,7 @@ from __future__ import annotations
 from http.server import BaseHTTPRequestHandler
 import json
 from pathlib import Path
+import traceback
 from typing import Any
 
 from .inference import LockedInferenceService
@@ -60,6 +61,7 @@ def handle_assessment(
     except ValueError:
         return 409, headers, {"error": "Model version is incompatible"}
     except Exception:
+        traceback.print_exc()
         return 500, headers, {"error": "Assessment could not be completed"}
 
 
