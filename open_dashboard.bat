@@ -1,8 +1,8 @@
 @echo off
 REM ====================================================================
 REM  VECTRA-X dashboard launcher
-REM  Serves the dashboard and local assessment API, then opens the
-REM  evidence dashboard in your browser. A server is required because
+REM  Serves the landing page, dashboard, and local assessment API, then
+REM  opens the landing page in your browser. A server is required because
 REM  browsers block fetch() of local JSON over file://.
 REM
 REM  Prereq (run once after training / release refresh):
@@ -84,9 +84,9 @@ if not defined PY_EXE (
 )
 
 set "PORT=4173"
-set "URL=http://127.0.0.1:%PORT%/dashboard.html"
+set "URL=http://127.0.0.1:%PORT%/index.html"
 echo.
-echo   VECTRA-X dashboard  -  %URL%
+echo   VECTRA-X landing page  -  %URL%
 echo   Serving with: "%PY_EXE%" %PY_ARGS% web\serve_live.py --port %PORT%
 echo   Close the "VECTRA-X server" window to stop the server.
 echo.
@@ -96,7 +96,7 @@ if defined VECTRA_X_DRY_RUN (
   exit /b 0
 )
 
-REM Start the live server in its own window, give it a moment, then open the dashboard.
+REM Start the live server in its own window, give it a moment, then open the landing page.
 start "VECTRA-X server" "%PY_EXE%" %PY_ARGS% web\serve_live.py --port %PORT%
 timeout /t 1 >nul
 start "" "%URL%"

@@ -121,7 +121,7 @@ Open `http://localhost:4173/prototype.html` for the integrated workflow or
 `http://localhost:4173/dashboard.html` for the evidence audit. For Vercel, use `web/`
 as the project root with no build command (output directory `.`).
 On Windows, double-click `open_dashboard.bat` from the repo root to start the same
-live server and open `dashboard.html` directly.
+live server and open the landing page directly.
 
 ## Verification
 

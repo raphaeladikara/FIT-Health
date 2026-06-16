@@ -71,7 +71,7 @@ Open `http://localhost:4173/prototype.html`. The run ID must match
 `outputs/releases/latest.json`.
 
 From the repository root on Windows, `open_dashboard.bat` starts this same live
-server and opens `http://127.0.0.1:4173/dashboard.html` for the evidence dashboard.
+server and opens `http://127.0.0.1:4173/index.html` for the landing page.
 
 ## Test
 
